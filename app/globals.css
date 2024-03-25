@@ -1,42 +1,57 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url(fonts.css);
 
 @layer base {
   :root {
-    --background: 200 20% 98%;
-    --btn-background: 200 10% 91%;
-    --btn-background-hover: 200 10% 89%;
-    --foreground: 200 50% 3%;
+    --background: #ffffff;
+    --foreground: #1e1e1e;
+    --primary: #fda403;
+    --secondary: #1e1e1e;
+    --tertiary: #ffffff;
+    --quaternary: #f7f7f7;
+    --quinary: #f4f4f4;
   }
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --background: 200 50% 3%;
-      --btn-background: 200 10% 9%;
-      --btn-background-hover: 200 10% 12%;
-      --foreground: 200 20% 96%;
+      --background: #ffffff;
+      --foreground: #1e1e1e;
+      --primary: #fda403;
+      --secondary: #1e1e1e;
+      --tertiary: #ffffff;
+      --quaternary: #f7f7f7;
+      --quinary: #f4f4f4;
     }
   }
 }
 
-@layer base {
-  * {
-    @apply border-foreground/20;
-  }
+.ripple {
+  position: relative;
+  overflow: hidden;
+  transform: translate3d(0, 0, 0);
 }
 
-.animate-in {
-  animation: animateIn 0.3s ease 0.15s both;
+.ripple:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, #000 10%, transparent 10.01%);
+  background-repeat: no-repeat;
+  background-position: 50%;
+  transform: scale(10, 10);
+  opacity: 0;
+  transition: transform 0.5s, opacity 1s;
 }
 
-@keyframes animateIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.ripple:active:after {
+  transform: scale(0, 0);
+  opacity: 0.2;
+  transition: 0s;
 }

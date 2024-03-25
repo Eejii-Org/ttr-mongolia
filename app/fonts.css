@@ -1,0 +1,162 @@
+/* GIP-Black */
+@font-face {
+  font-family: "GIP";
+  src: url("/static/fonts/GIP-Black.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+}
+
+/* GIP-BlackItalic */
+@font-face {
+  font-family: "GIP";
+  src: url("/static/fonts/GIP-BlackItalic.otf") format("opentype");
+  font-weight: 900;
+  font-style: italic;
+}
+
+/* GIP-Bold */
+@font-face {
+  font-family: "GIP";
+  src: url("/static/fonts/GIP-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* GIP-BoldItalic */
+@font-face {
+  font-family: "GIP";
+  src: url("/static/fonts/GIP-BoldItalic.otf") format("opentype");
+  font-weight: 700;
+  font-style: italic;
+}
+
+/* GIP-ExtraBold */
+@font-face {
+  font-family: "GIP";
+  src: url("/static/fonts/GIP-ExtraBold.otf") format("opentype");
+  font-weight: 800;
+  font-style: normal;
+}
+
+/* GIP-ExtraBoldItalic */
+@font-face {
+  font-family: "GIP";
+  src: url("/static/fonts/GIP-ExtraBoldItalic.otf") format("opentype");
+  font-weight: 800;
+  font-style: italic;
+}
+
+/* GIP-Heavy */
+@font-face {
+  font-family: "GIP";
+  src: url("/static/fonts/GIP-Heavy.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+}
+
+/* GIP-HeavyItalic */
+@font-face {
+  font-family: "GIP";
+  src: url("/static/fonts/GIP-HeavyItalic.otf") format("opentype");
+  font-weight: 900;
+  font-style: italic;
+}
+
+/* GIP-Light */
+@font-face {
+  font-family: "GIP";
+  src: url("/static/fonts/GIP-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+/* GIP-LightItalic */
+@font-face {
+  font-family: "GIP";
+  src: url("/static/fonts/GIP-LightItalic.otf") format("opentype");
+  font-weight: 300;
+  font-style: italic;
+}
+
+/* GIP-Medium */
+@font-face {
+  font-family: "GIP";
+  src: url("/static/fonts/GIP-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* GIP-MediumItalic */
+@font-face {
+  font-family: "GIP";
+  src: url("/static/fonts/GIP-MediumItalic.otf") format("opentype");
+  font-weight: 500;
+  font-style: italic;
+}
+
+/* GIP-Regular */
+@font-face {
+  font-family: "GIP";
+  src: url("/static/fonts/GIP-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* GIP-RegularItalic */
+@font-face {
+  font-family: "GIP";
+  src: url("/static/fonts/GIP-RegularItalic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* GIP-SemiBold */
+@font-face {
+  font-family: "GIP";
+  src: url("/static/fonts/GIP-SemiBold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* GIP-SemiBoldItalic */
+@font-face {
+  font-family: "GIP";
+  src: url("/static/fonts/GIP-SemiBoldItalic.otf") format("opentype");
+  font-weight: 600;
+  font-style: italic;
+}
+
+/* GIP-Thin */
+@font-face {
+  font-family: "GIP";
+  src: url("/static/fonts/GIP-Thin.otf") format("opentype");
+  font-weight: 100;
+  font-style: normal;
+}
+
+/* GIP-ThinItalic */
+@font-face {
+  font-family: "GIP";
+  src: url("/static/fonts/GIP-ThinItalic.otf") format("opentype");
+  font-weight: 100;
+  font-style: italic;
+}
+
+/* GIP-UltraLight */
+@font-face {
+  font-family: "GIP";
+  src: url("/static/fonts/GIP-UltraLight.otf") format("opentype");
+  font-weight: 200;
+  font-style: normal;
+}
+
+/* GIP-UltraLightItalic */
+@font-face {
+  font-family: "GIP";
+  src: url("/static/fonts/GIP-UltraLightItalic.otf") format("opentype");
+  font-weight: 200;
+  font-style: italic;
+}
+.gip {
+  font-family: "GIP";
+}

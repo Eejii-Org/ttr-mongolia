@@ -1,44 +1,22 @@
-import NextLogo from "./NextLogo";
-import SupabaseLogo from "./SupabaseLogo";
+import { FC } from "react";
 
-export default function Header() {
+export const Header: FC = () => {
   return (
-    <div className="flex flex-col gap-16 items-center">
-      <div className="flex gap-8 justify-center items-center">
-        <a
-          href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <SupabaseLogo />
-        </a>
-        <span className="border-l rotate-45 h-6" />
-        <a href="https://nextjs.org/" target="_blank" rel="noreferrer">
-          <NextLogo />
-        </a>
+    <div className="py-3 px-6 flex flex-row justify-between items-center w-screen top-0 fixed z-50 bg-tertiary">
+      <div className=" font-semibold text-2xl text-secondary cursor-pointer">
+        TTR Mongolia
       </div>
-      <h1 className="sr-only">Supabase and Next.js Starter Template</h1>
-      <p className="text-3xl lg:text-4xl !leading-tight mx-auto max-w-xl text-center">
-        The fastest way to build apps with{" "}
-        <a
-          href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-          target="_blank"
-          className="font-bold hover:underline"
-          rel="noreferrer"
-        >
-          Supabase
-        </a>{" "}
-        and{" "}
-        <a
-          href="https://nextjs.org/"
-          target="_blank"
-          className="font-bold hover:underline"
-          rel="noreferrer"
-        >
-          Next.js
-        </a>
-      </p>
-      <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent my-8" />
+      <div className="flex flex-row gap-1">
+        <div className=" font-bold gip text-base text-lime-600 hover:bg-quaternary px-3 py-1 rounded cursor-pointer ripple">
+          Volunteering
+        </div>
+        <div className=" font-bold gip text-base text-secondary hover:bg-quaternary px-3 py-1 rounded cursor-pointer ripple">
+          Tours
+        </div>
+        <div className=" font-bold gip text-base text-secondary hover:bg-quaternary px-3 py-1 rounded cursor-pointer ripple">
+          Contact Us
+        </div>
+      </div>
     </div>
   );
-}
+};
