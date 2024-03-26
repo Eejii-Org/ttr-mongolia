@@ -2,19 +2,19 @@ import { FC } from "react";
 
 export const OurAgency: FC = () => {
   return (
-    <div className="relative mx-6 flex flex-col gap-4">
+    <div className="relative mx-3 md:mx-6 flex flex-col gap-4">
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-8  backdrop-blur-sm bg-white/70 rounded-3xl text-center flex flex-col gap-4"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 md:p-8  backdrop-blur-sm bg-white/70 rounded-3xl text-center flex flex-col gap-4"
         style={{
           maxWidth: "704px",
-          width: "100%",
+          width: "calc(100% - 32px)",
         }}
       >
-        <div className="font-bold text-2xl uppercase">
+        <div className="font-bold text-lg md:text-2xl uppercase">
           At our agency, every step you take is a step towards
           <span className="text-primary"> positive change</span>.
         </div>
-        <div className="text-xl font-medium">
+        <div className="text-base md:text-xl font-medium">
           With experienced guides leading the way, immerse yourself in
           <span className="text-primary"> unforgettable experiences</span> that
           not only enrich your soul but also{" "}

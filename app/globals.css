@@ -27,6 +27,21 @@
   }
 }
 
+@media screen and (max-height: 700px) {
+  .intro-section {
+    height: calc(100vh - 56px - 16px) !important;
+  }
+}
+.review-item {
+  min-width: 512px;
+}
+
+@media screen and (max-width: 767px) {
+  .review-item {
+    min-width: 324px;
+  }
+}
+
 .ripple {
   position: relative;
   overflow: hidden;

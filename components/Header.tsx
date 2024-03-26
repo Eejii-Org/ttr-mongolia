@@ -7,13 +7,13 @@ export const Header: FC = () => {
         TTR Mongolia
       </div>
       <div className="flex flex-row gap-1">
-        <div className=" font-bold gip text-base text-lime-600 hover:bg-quaternary px-3 py-1 rounded cursor-pointer ripple">
+        <div className=" font-bold gip text-base text-lime-600 hover:bg-quaternary px-3 py-1 rounded cursor-pointer ripple hidden md:flex">
           Volunteering
         </div>
-        <div className=" font-bold gip text-base text-secondary hover:bg-quaternary px-3 py-1 rounded cursor-pointer ripple">
+        <div className=" font-bold gip text-base text-secondary hover:bg-quaternary px-3 py-1 rounded cursor-pointer ripple hidden md:flex">
           Tours
         </div>
-        <div className=" font-bold gip text-base text-secondary hover:bg-quaternary px-3 py-1 rounded cursor-pointer ripple">
+        <div className=" font-bold gip text-base text-secondary hover:bg-quaternary px-3 py-1 rounded cursor-pointer ripple hidden md:flex">
           Contact Us
         </div>
       </div>

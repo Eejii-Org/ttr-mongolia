@@ -2,10 +2,14 @@ import { FC } from "react";
 
 export const Values: FC = () => {
   return (
-    <div className="flex flex-col items-center gap-6 py-8">
-      <div className="text-5xl font-semibold">Top values we offer</div>
-      <div className="text-2xl">We offer unforgettable travel in Mongolia</div>
-      <div className="flex flex-row">
+    <div className="flex flex-col items-center gap-6 py-4 md:py-8 px-3">
+      <div className="text-3xl md:text-5xl font-semibold">
+        Top values we offer
+      </div>
+      <div className="text-lg md:text-2xl">
+        We offer unforgettable travel in Mongolia
+      </div>
+      <div className="grid grid-cols-2 gap-3 md:gap-4 md:flex md:flex-row">
         {data.map((data, index) => (
           <Value {...data} key={index} />
         ))}
@@ -23,10 +27,12 @@ type ValueProps = {
 const Value: FC<ValueProps> = (props) => {
   const { icon, title, description } = props;
   return (
-    <div className="flex flex-col items-center gap-2 max-w-56">
-      <div className="p-4 bg-quaternary rounded-full">{icon}</div>
-      <div className="font-bold text-2xl text-center">{title}</div>
-      <div className="text-xl text-center">{description}</div>
+    <div className="flex flex-col items-center gap-2 max-w-56 bg-quinary rounded-2xl p-2 md:p-0 md:bg-transparent">
+      <div className="p-4 bg-tertiary md:bg-quaternary rounded-full">
+        {icon}
+      </div>
+      <div className="font-bold text-center text-lg md:text-2xl">{title}</div>
+      <div className="text-center text-base md:text-xl">{description}</div>
     </div>
   );
 };

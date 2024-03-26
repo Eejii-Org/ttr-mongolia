@@ -4,9 +4,9 @@ import Image from "next/image";
 
 export const TourCategories: FC = () => {
   return (
-    <div className="flex flex-col gap-6 mx-6">
-      <div className="text-5xl font-semibold">Choose your tour</div>
-      <div className="flex flex-row gap-4">
+    <div className="flex flex-col gap-6 mx-3 md:mx-6">
+      <div className="text-3xl md:text-5xl font-semibold">Choose your tour</div>
+      <div className="flex flex-col md:flex-row gap-4">
         <TourCategory />
         <TourCategory />
         <TourCategory />
@@ -16,7 +16,7 @@ export const TourCategories: FC = () => {
 };
 const TourCategory: FC = () => {
   return (
-    <div className="flex flex-1 h-80 bg-yellow-300 p-3 items-end rounded-3xl">
+    <div className="flex h-64 lg:h-80 bg-yellow-300 p-3 items-end rounded-3xl flex-auto md:flex-1">
       {/* <Image
         src={
           

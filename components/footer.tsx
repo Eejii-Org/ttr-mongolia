@@ -3,7 +3,7 @@ import { Facebook, Instagram } from "./icons";
 
 export const Footer = () => {
   return (
-    <div className="bg-quinary p-6 flex flex-col gap-2 m-6 rounded-3xl">
+    <div className="bg-quinary p-6 flex flex-col gap-2 m-3 md:m-6 rounded-3xl">
       <div className="flex flex-row justify-between">
         <div className="text-base">Contact Us</div>
         <div className="flex flex-row gap-4">
