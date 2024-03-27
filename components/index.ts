@@ -1,5 +1,5 @@
 export * from "./icons";
-export * from "./headerr";
+export * from "./header";
 export * from "./intro";
 export * from "./values";
 export * from "./tourcategories";
