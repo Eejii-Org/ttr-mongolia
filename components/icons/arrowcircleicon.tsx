@@ -6,8 +6,8 @@ type PropsType = {
   height?: number;
   direction?: "left" | "right";
   color?: string;
-  filled?: boolean;
-  hover?: boolean;
+  filled?: "false" | "true";
+  hover?: "false" | "true";
 };
 
 export const ArrowCircleIcon = (props: PropsType) => {
@@ -16,8 +16,8 @@ export const ArrowCircleIcon = (props: PropsType) => {
     height = 48,
     direction = "right",
     color = "white",
-    filled = false,
-    hover = true,
+    filled = "false",
+    hover = "true",
   } = props;
   const base = {
     right:
@@ -25,7 +25,7 @@ export const ArrowCircleIcon = (props: PropsType) => {
     left: "M24.71 17.79C24.8037 17.883 24.8781 17.9936 24.9289 18.1154C24.9797 18.2373 25.0058 18.368 25.0058 18.5C25.0058 18.632 24.9797 18.7627 24.9289 18.8846C24.8781 19.0064 24.8037 19.117 24.71 19.21L21.41 22.5H29C29.2652 22.5 29.5196 22.6054 29.7071 22.7929C29.8946 22.9804 30 23.2348 30 23.5C30 23.7652 29.8946 24.0196 29.7071 24.2071C29.5196 24.3946 29.2652 24.5 29 24.5H21.41L24.71 27.79C24.8983 27.9783 25.0041 28.2337 25.0041 28.5C25.0041 28.7663 24.8983 29.0217 24.71 29.21C24.5217 29.3983 24.2663 29.5041 24 29.5041C23.7337 29.5041 23.4783 29.3983 23.29 29.21L18.29 24.21C18.199 24.1149 18.1276 24.0027 18.08 23.88C18.0271 23.7603 17.9998 23.6309 17.9998 23.5C17.9998 23.3691 18.0271 23.2397 18.08 23.12C18.1276 22.9972 18.199 22.8851 18.29 22.79L23.29 17.79C23.383 17.6963 23.4936 17.6219 23.6154 17.5711C23.7373 17.5203 23.868 17.4942 24 17.4942C24.132 17.4942 24.2627 17.5203 24.3846 17.5711C24.5064 17.6219 24.617 17.6963 24.71 17.79Z",
   };
   const colors = useMemo(() => {
-    if (filled) {
+    if (filled == "true") {
       return {
         hoverFill: color == "white" ? "black" : "white",
         hoverColor: color,
@@ -49,7 +49,7 @@ export const ArrowCircleIcon = (props: PropsType) => {
       height={height}
       onMouseOver={() => setHovering(true)}
       onMouseOut={() => setHovering(false)}
-      fill={hovering && hover ? colors.hoverFill : colors.fill}
+      fill={hovering && hover == "true" ? colors.hoverFill : colors.fill}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
@@ -58,11 +58,13 @@ export const ArrowCircleIcon = (props: PropsType) => {
         cy="24"
         r="23.5"
         transform="matrix(0 -1 -1 0 48 48)"
-        stroke={hovering && hover ? colors.hoverBezelColor : colors.color}
+        stroke={
+          hovering && hover == "true" ? colors.hoverBezelColor : colors.color
+        }
       />
       <path
         d={base[direction]}
-        fill={hovering && hover ? colors.hoverColor : colors.color}
+        fill={hovering && hover == "true" ? colors.hoverColor : colors.color}
       />
     </svg>
   );

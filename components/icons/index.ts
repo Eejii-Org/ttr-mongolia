@@ -4,3 +4,7 @@ export * from "./hamburger";
 export * from "./scrollcorner";
 export * from "./facebook";
 export * from "./instagram";
+export * from "./searchicon";
+export * from "./priceicon";
+export * from "./dayicon";
+export * from "./nighticon";

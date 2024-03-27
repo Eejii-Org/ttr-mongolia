@@ -1,4 +1,5 @@
-import { createClient } from "@/utils/supabase/server";
+"use client";
+import { FC } from "react";
 import {
   CustomerSupport,
   Header,
@@ -9,7 +10,8 @@ import {
   Reviews,
   Footer,
 } from "@components";
-export default async function Index() {
+
+const Home: FC = () => {
   return (
     <div className="flex-1 w-full flex flex-col pt-14 gap-16">
       <Header />
@@ -22,4 +24,6 @@ export default async function Index() {
       <Footer />
     </div>
   );
-}
+};
+
+export default Home;

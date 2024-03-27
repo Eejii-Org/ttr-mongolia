@@ -1,5 +1,5 @@
 export * from "./icons";
-export * from "./header";
+export * from "./headerr";
 export * from "./intro";
 export * from "./values";
 export * from "./tourcategories";
@@ -7,3 +7,4 @@ export * from "./customersupport";
 export * from "./ouragency";
 export * from "./reviews";
 export * from "./footer";
+export * from "./tourcategoriesfilter";

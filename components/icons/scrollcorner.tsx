@@ -12,8 +12,8 @@ export const ScrollCorner = (props: PropsType) => {
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d={
           side == "left"
             ? "M16 16H0C8.83656 16 16 8.83656 16 0V16Z"
