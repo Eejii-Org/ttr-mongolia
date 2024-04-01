@@ -35,12 +35,12 @@ export const Reviews: FC = () => {
 };
 export const Review: FC<ReviewType> = ({ firstName, lastName, review }) => {
   return (
-    <div className="p-8 pt-16 bg-quinary relative flex flex-col gap-8 rounded-3xl review-item">
+    <div className="p-8 pt-16 bg-quinary relative flex flex-col gap-4 rounded-3xl review-item">
       <div className="absolute text-primary text-5xl top-6 left-6">"</div>
-      <div className="text-base md:text-2xl text-ellipsis h-64 overflow-scroll">
+      <div className="text-base md:text-lg text-ellipsis h-64 overflow-scroll">
         {review}
       </div>
-      <div className="text-xl md:text-2xl font-semibold">
+      <div className="text-lg md:text-xl font-semibold">
         {firstName + " " + lastName}
       </div>
     </div>

@@ -39,7 +39,7 @@ export const Intro = () => {
   }, [index, intro?.length]);
   return (
     <div
-      className="w-fill m-3 md:m-4 mt-0 relative rounded-3xl overflow-hidden flex items-center justify-center intro-section"
+      className="w-fill m-3 md:m-4 mt-0 md:mt-0 relative rounded-3xl overflow-hidden flex items-center justify-center intro-section"
       style={{
         height: "calc(80vh - 73px - 16px)",
       }}

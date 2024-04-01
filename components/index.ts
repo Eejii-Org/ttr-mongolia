@@ -8,3 +8,4 @@ export * from "./ouragency";
 export * from "./reviews";
 export * from "./footer";
 export * from "./tourcategoriesfilter";
+export * from "./tourplan";

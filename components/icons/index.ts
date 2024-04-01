@@ -8,3 +8,7 @@ export * from "./searchicon";
 export * from "./priceicon";
 export * from "./dayicon";
 export * from "./nighticon";
+export * from "./closeicon";
+export * from "./chevrondownicon";
+export * from "./arrowright";
+export * from "./saleicon";

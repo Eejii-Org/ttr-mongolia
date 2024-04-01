@@ -27,6 +27,10 @@
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 @media screen and (max-height: 700px) {
   .intro-section {
     height: calc(100vh - 56px - 16px) !important;
@@ -69,4 +73,14 @@
   transform: scale(0, 0);
   opacity: 0.2;
   transition: 0s;
+}
+
+.no-scroll-bar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scroll-bar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }

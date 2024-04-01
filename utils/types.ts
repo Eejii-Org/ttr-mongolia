@@ -1,8 +1,10 @@
 type TourType = {
+  id: number;
+  created_at: string;
   images: string[];
   title: string;
   overview: string;
-  prices: PriceType[]; // to know if it's on sale
+  prices: PriceType[]; // to know if it's on sale "First mvp bolhoor efficiencyg daraa gej uzen dates ee tusd ni table bolgohguigeer hiih"
   originalPrice: number;
   days: number;
   nights: number;
@@ -10,8 +12,8 @@ type TourType = {
   categories: string[];
   included: AssetType[];
   excluded: AssetType[];
-  // dates: TravelDate[]; will read later
-  itinerary: ItineraryType;
+  dates: TravelDate[]; // will read later
+  itinerary: ItineraryType[];
   reviews: ReviewType[];
 };
 
@@ -26,11 +28,11 @@ type ItineraryType = {
 };
 
 type TravelDate = {
-  date: Date;
+  date: string;
   price: number;
-  tourId: string;
-  title: string;
-  overview: string;
+  // tourId: string;
+  // title: string;
+  // overview: string;
   people: {
     firstName: string;
     lastName: string;
@@ -40,10 +42,11 @@ type TravelDate = {
     nationality: string;
   }[];
 };
+
 type ReviewType = {
   firstName: string;
   lastName: string;
-  date: Date;
+  date: string;
   review: string;
 };
 

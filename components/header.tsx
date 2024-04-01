@@ -1,11 +1,22 @@
 import Link from "next/link";
 import { FC } from "react";
 
-export const Header: FC = () => {
+type HeaderPropsType = {
+  transparent?: boolean;
+};
+
+export const Header: FC<HeaderPropsType> = ({ transparent = false }) => {
   return (
-    <div className="py-3 px-3 md:px-6  flex flex-row justify-between items-center w-screen top-0 fixed z-50 bg-tertiary">
+    <div
+      className={`py-3 px-3 md:px-6  flex flex-row justify-between items-center w-screen top-0 fixed z-40 
+      ${
+        transparent
+          ? "bg-black/10 text-tertiary"
+          : "bg-tertiary  text-secondary "
+      }`}
+    >
       <Link href="/">
-        <div className=" font-semibold text-2xl text-secondary cursor-pointer">
+        <div className="font-semibold text-2xl cursor-pointer">
           TTR Mongolia
         </div>
       </Link>
@@ -14,11 +25,11 @@ export const Header: FC = () => {
           Volunteering
         </div>
         <Link href="/tours">
-          <div className="font-bold gip text-base text-secondary hover:bg-quaternary px-3 py-1 rounded cursor-pointer ripple hidden md:flex">
+          <div className="font-bold gip text-base hover:bg-quaternary px-3 py-1 rounded cursor-pointer ripple hidden md:flex">
             Tours
           </div>
         </Link>
-        <div className="font-bold gip text-base text-secondary hover:bg-quaternary px-3 py-1 rounded cursor-pointer ripple hidden md:flex">
+        <div className="font-bold gip text-base hover:bg-quaternary px-3 py-1 rounded cursor-pointer ripple hidden md:flex">
           Contact Us
         </div>
       </div>
