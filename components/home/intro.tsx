@@ -1,7 +1,6 @@
 "use client";
 import { createClient } from "@/utils/supabase/client";
 import { ArrowCircleIcon, ArrowDown, ScrollCorner } from "@components";
-import { create } from "domain";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 export const Intro = () => {

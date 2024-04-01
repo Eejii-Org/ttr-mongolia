@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { ChevronDownIcon } from "./icons";
+import { ChevronDownIcon } from "../icons";
 
 type TourPlanType = {
   itinerary: ItineraryType[];
