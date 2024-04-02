@@ -1,12 +1,36 @@
-import { FC, useMemo } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { ArrowRight, SaleIcon } from "../icons";
+import { createClient } from "@/utils/supabase/client";
+import Link from "next/link";
 
 export const Availability = ({ tour }: { tour: TourType }) => {
+  const supabase = createClient();
+  const [loading, setLoading] = useState(false);
+  const [tourDates, setTourDates] = useState<TravelDate[]>([]);
+  useEffect(() => {
+    const getAvailableDates = async () => {
+      setLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from("availableTours")
+          .select("*")
+          .filter("tourId", "eq", tour.id);
+        if (error) {
+          throw error;
+        }
+        setTourDates(data);
+      } catch (error: any) {
+        console.error("Error fetching availableTours:", error.message);
+      }
+      setLoading(false);
+    };
+    getAvailableDates();
+  }, [tour]);
   return (
     <div className="flex flex-col gap-4">
       <div className="text-2xl md:text-4xl font-semibold">Availability</div>
       <div className="flex flex-col gap-4">
-        {tour.dates.map((tourDate, index) => (
+        {tourDates.map((tourDate, index) => (
           <AvailabilityItem
             {...tourDate}
             originalPrice={tour.originalPrice}
@@ -31,6 +55,7 @@ const AvailabilityItem: FC<AvailabilityItemPropsType> = ({
   originalPrice,
   days,
   nights,
+  id,
 }) => {
   const isOnSale = useMemo(() => {
     return price < originalPrice;
@@ -74,9 +99,17 @@ const AvailabilityItem: FC<AvailabilityItemPropsType> = ({
         </div>
       </div>
       <div className="flex items-center">
-        <button className="ripple py-3 px-8 bg-primary text-center font-bold text-secondary rounded-xl flex-1 md:flex-auto">
+        <Link
+          className="ripple py-3 px-8 bg-primary text-center font-bold text-secondary rounded-xl flex-1 md:flex-auto"
+          href={{
+            pathname: "/book",
+            query: {
+              availableTourId: id,
+            },
+          }}
+        >
           Book Now
-        </button>
+        </Link>
       </div>
     </div>
   );

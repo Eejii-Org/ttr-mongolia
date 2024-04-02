@@ -63,7 +63,6 @@ export const TourIntro = ({ tour }: { tour: TourType }) => {
           setIndex(
             Math.round(target.scrollLeft / ((window.innerWidth - 32) / 3 + 16))
           );
-          console.log(target.scrollLeft / ((window.innerWidth - 32) / 3 + 16));
         }}
         // ref={scrollRef}
       >

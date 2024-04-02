@@ -1,56 +1,50 @@
 import Link from "next/link";
-import { FC, useMemo } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { DayIcon, NightIcon, PriceIcon } from "../icons";
+import { createClient } from "@/utils/supabase/client";
 
 export const Tour: FC<TourType> = (props) => {
   const {
     images,
     title,
     overview,
-    prices,
     originalPrice,
     days,
     nights,
+    id,
     // minimumRequired: number;
     categories,
     included,
     excluded,
-    dates,
-    // dates: TravelDate[]; will read later
     // itinerary,
     // reviews,
   } = props;
-  // let originalPrice = 1200;
-  // let mockPrices: PriceType[] = [
-  //   {
-  //     tourDateId: "1",
-  //     date: "2024-03-10",
-  //     price: 1000,
-  //   },
-  //   {
-  //     tourDateId: "1",
-  //     date: "2024-03-01",
-  //     price: 800,
-  //   },
-  //   {
-  //     tourDateId: "1",
-  //     date: "2024-03-26",
-  //     price: 800,
-  //   },
-  // ];
-  const sale = useMemo(() => {
-    const currentDate = new Date();
-    const lowerPriceItems = dates.filter((priceItem) => {
-      const priceDate = new Date(priceItem.date);
-      return priceDate > currentDate && priceItem.price < originalPrice;
-    });
-    if (lowerPriceItems.length === 0) return null;
-    const sortedLowerPriceItems = lowerPriceItems
-      .map((priceItem) => ({ ...priceItem, date: new Date(priceItem.date) }))
-      .sort((a, b) => a.date.getTime() - b.date.getTime());
-    return sortedLowerPriceItems[0];
-  }, [prices]);
+  const supabase = createClient();
+  const [sale, setSale] = useState<TravelDate | null>(null);
+  useEffect(() => {
+    const getSale = async () => {
+      const { data, error } = await supabase
+        .from("availableTours")
+        .select("*")
+        .eq("id", id)
+        .gte("date", new Date().toISOString())
+        .lte("price", originalPrice)
+        .order("price")
+        .limit(1);
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+      if (data.length == 0) {
+        setSale(null);
+        return;
+      }
+      setSale(data?.[0]);
+    };
+    getSale();
+  }, [originalPrice, id]);
   return (
     <div className="flex flex-col md:flex-row gap-2 md:gap-8 cursor-default">
       <div className="relative md:w-1/4 md:max-w-80 h-48 md:h-auto">
@@ -67,7 +61,7 @@ export const Tour: FC<TourType> = (props) => {
         <Link href={"/tours/" + props.id}>
           {sale && (
             <div className="font-bold text-primary text-xl">
-              On Sale before {sale.date.toDateString()}
+              On Sale before {new Date(sale.date).toDateString()}
             </div>
           )}
           <div className="font-bold text-xl lg:text-3xl">{title}</div>

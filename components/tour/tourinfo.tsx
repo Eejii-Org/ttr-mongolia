@@ -1,5 +1,6 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DayIcon, NightIcon, PriceIcon } from "../icons";
+import { createClient } from "@/utils/supabase/client";
 
 export const TourInfo = ({
   tour,
@@ -8,25 +9,38 @@ export const TourInfo = ({
   tour: TourType;
   checkAvailableDate: () => void;
 }) => {
-  const sale = useMemo(() => {
-    if (!tour) return null;
-    const currentDate = new Date();
-    const lowerPriceItems = tour.dates.filter((priceItem) => {
-      const priceDate = new Date(priceItem.date);
-      return priceDate > currentDate && priceItem.price < tour.originalPrice;
-    });
-    if (lowerPriceItems.length === 0) return null;
-    const sortedLowerPriceItems = lowerPriceItems
-      .map((priceItem) => ({ ...priceItem, date: new Date(priceItem.date) }))
-      .sort((a, b) => a.date.getTime() - b.date.getTime());
-    return sortedLowerPriceItems[0];
+  const supabase = createClient();
+
+  const [sale, setSale] = useState<TravelDate | null>(null);
+  useEffect(() => {
+    const getSale = async () => {
+      const { data, error } = await supabase
+        .from("availableTours")
+        .select("*")
+        .eq("id", tour.id)
+        .gte("date", new Date().toISOString())
+        .lte("price", tour.originalPrice)
+        .order("price")
+        .limit(1);
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+      if (data.length == 0) {
+        setSale(null);
+        return;
+      }
+      setSale(data?.[0]);
+    };
+    if (tour) getSale();
   }, [tour]);
 
   return (
     <div className="flex sticky top-16 justify-center md:justify-normal flex-col gap-2">
       {sale && (
         <div className="font-bold text-primary md:text-xl">
-          On Sale before {sale.date.toDateString()}
+          On Sale before {new Date(sale.date).toDateString()}
         </div>
       )}
       <div className="flex flex-row md:flex-col gap-2">

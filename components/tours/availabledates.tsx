@@ -1,6 +1,7 @@
-import { Dispatch, SetStateAction, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import { ArrowCircleIcon, CloseIcon } from "../icons";
 import Link from "next/link";
+import { createClient } from "@/utils/supabase/client";
 
 interface TourDateType extends TravelDate {
   title: string;
@@ -20,24 +21,56 @@ export const AvailableDates = ({
   setOpen: Dispatch<SetStateAction<boolean>>;
   tours: TourType[];
 }) => {
+  const supabase = createClient();
   const [tableIndex, setTableIndex] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [availableDates, setAvailableDates] = useState<TravelDate[]>([]);
   const availableTours = useMemo(() => {
-    const a: TourDateType[] = [];
-    tours.forEach((tour) => {
-      a.push(
-        ...tour.dates.map((tourDate) => ({
-          ...tourDate,
-          title: tour.title,
-          overview: tour.overview,
-          days: tour.days,
-          nights: tour.nights,
-          originalPrice: tour.originalPrice,
-        }))
-      );
+    let obj: { [key: number]: TourType } = {};
+    tours.map((tour) => {
+      obj[tour.id] = tour;
     });
-    return a;
-  }, [tours]);
-  console.log(tableIndex);
+    return availableDates.map((availableDate) => ({
+      ...availableDate,
+      ...obj[availableDate.id],
+    }));
+  }, [tours, availableDates]);
+
+  useEffect(() => {
+    const getAvailableDates = async () => {
+      setLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from("availableTours")
+          .select("*");
+        if (error) {
+          throw error;
+        }
+        setAvailableDates(data);
+      } catch (error: any) {
+        console.error("Error fetching availableTours:", error.message);
+      }
+      setLoading(false);
+    };
+    getAvailableDates();
+  }, []);
+
+  // const availableTours = useMemo(() => {
+  //   const a: TourDateType[] = [];
+  //   tours.forEach((tour) => {
+  //     a.push(
+  //       ...tour.dates.map((tourDate) => ({
+  //         ...tourDate,
+  //         title: tour.title,
+  //         overview: tour.overview,
+  //         days: tour.days,
+  //         nights: tour.nights,
+  //         originalPrice: tour.originalPrice,
+  //       }))
+  //     );
+  //   });
+  //   return a;
+  // }, [tours]);
   return (
     <div
       className={`absolute z-50 top-0 bottom-0 w-screen h-screen overflow-scroll backdrop-blur-sm bg-black/50 items-center justify-center ${
@@ -101,12 +134,18 @@ export const AvailableDates = ({
                       ${availableTour.originalPrice}/ ${availableTour.price}
                     </td>
                     <td className="px-3 py-2">
-                      <button
+                      <Link
                         className="bg-primary px-4 py-2 whitespace-nowrap font-bold rounded-xl"
-                        onClick={() => console.log("book")}
+                        // onClick={() => console.log("book")}
+                        href={{
+                          pathname: "/book",
+                          query: {
+                            availableTourId: availableTour.id,
+                          },
+                        }}
                       >
                         Book Now
-                      </button>
+                      </Link>
                     </td>
                   </tr>
                 ))}
@@ -133,12 +172,17 @@ export const AvailableDates = ({
                         ${availableTour.originalPrice}/ ${availableTour.price}
                       </td>
                       <td className="px-3 py-2">
-                        <button
+                        <Link
                           className="bg-primary px-4 py-2 whitespace-nowrap font-bold rounded-xl"
-                          onClick={() => console.log("book")}
+                          href={{
+                            pathname: "/book",
+                            query: {
+                              availableTourId: availableTour.id,
+                            },
+                          }}
                         >
                           Book Now
-                        </button>
+                        </Link>
                       </td>
                     </tr>
                   ))}
