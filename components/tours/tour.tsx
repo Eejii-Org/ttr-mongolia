@@ -1,25 +1,11 @@
 import Link from "next/link";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Image from "next/image";
 import { DayIcon, NightIcon, PriceIcon } from "../icons";
 import { createClient } from "@/utils/supabase/client";
 
 export const Tour: FC<TourType> = (props) => {
-  const {
-    images,
-    title,
-    overview,
-    originalPrice,
-    days,
-    nights,
-    id,
-    // minimumRequired: number;
-    categories,
-    included,
-    excluded,
-    // itinerary,
-    // reviews,
-  } = props;
+  const { images, title, overview, originalPrice, days, nights, id } = props;
   const supabase = createClient();
   const [sale, setSale] = useState<TravelDate | null>(null);
   useEffect(() => {
@@ -104,12 +90,12 @@ export const Tour: FC<TourType> = (props) => {
           </div>
         </div>
         <div className="flex md:flex-col lg:flex-row gap-4">
-          <button className="ripple flex-1 py-2 md:py-3 bg-primary text-center font-bold text-tertiary rounded-xl">
+          {/* <button className="ripple flex-1 py-2 md:py-3 bg-primary text-center font-bold text-tertiary rounded-xl">
             Book Now
-          </button>
+          </button> */}
           <Link
             href={"/tours/" + props.id}
-            className="ripple flex-1 py-2 md:py-3 bg-quaternary text-center font-bold rounded-xl"
+            className="ripple w-full md:w-auto lg:w-1/2 py-2 md:py-3 bg-quaternary text-center font-bold rounded-xl"
           >
             Learn More
           </Link>

@@ -5,6 +5,8 @@ export * from "./icons";
 
 export * from "./header";
 export * from "./footer";
+export * from "./input";
 
 export * from "./customersupport";
 export * from "./reviews";
+export * from "./layout";

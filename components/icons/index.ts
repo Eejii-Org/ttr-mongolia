@@ -12,3 +12,5 @@ export * from "./closeicon";
 export * from "./chevrondownicon";
 export * from "./arrowright";
 export * from "./saleicon";
+export * from "./emailicon";
+export * from "./phoneicon";

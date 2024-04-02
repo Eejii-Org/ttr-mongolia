@@ -60,17 +60,46 @@ const AvailabilityItem: FC<AvailabilityItemPropsType> = ({
   const isOnSale = useMemo(() => {
     return price < originalPrice;
   }, [originalPrice, price]);
+  const dates = useMemo(() => {
+    const startingDate = new Date(date);
+    let endingDate = new Date(date);
+    endingDate.setDate(startingDate.getDate() + days);
+    return {
+      startingDate: {
+        day: startingDate.toLocaleString("default", { weekday: "short" }),
+        date:
+          startingDate.toLocaleString("default", { month: "long" }) +
+          " " +
+          startingDate.getDate() +
+          " " +
+          startingDate.getFullYear(),
+      },
+      endingDate: {
+        day: endingDate.toLocaleString("default", { weekday: "short" }),
+        date:
+          endingDate.toLocaleString("default", { month: "long" }) +
+          " " +
+          endingDate.getDate() +
+          " " +
+          endingDate.getFullYear(),
+      },
+    };
+  }, [date, days]);
   return (
     <div className="shadow-md p-4 flex flex-col md:flex-row flex-wrap lg:flex-row rounded border border-quinary gap-4 md:gap-8">
       <div className="flex flex-row gap-8 items-center">
         <div>
-          <div className="font-medium text-base text-[#c1c1c1]">Monday</div>
-          <div className="font-bold text-xl">July 1 2024</div>
+          <div className="font-medium text-base text-[#c1c1c1]">
+            {dates.startingDate.day}
+          </div>
+          <div className="font-bold text-xl">{dates.startingDate.date}</div>
         </div>
         <ArrowRight />
         <div>
-          <div className="font-medium text-base text-[#c1c1c1]">Monday</div>
-          <div className="font-bold text-xl">July 1 2024</div>
+          <div className="font-medium text-base text-[#c1c1c1]">
+            {dates.endingDate.day}
+          </div>
+          <div className="font-bold text-xl">{dates.endingDate.date}</div>
         </div>
       </div>
       <div className="flex flex-1 items-center justify-center flex-col">

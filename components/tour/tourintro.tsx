@@ -1,16 +1,23 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 
 export const TourIntro = ({ tour }: { tour: TourType }) => {
   const [index, setIndex] = useState(0);
-  // const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const images = useMemo<string[]>(() => {
     if (!tour || tour?.images?.length == 0) return [];
+
+    // scrollRef.current?.sc( );
     return tour?.images;
   }, [tour]);
+  useEffect(() => {
+    scrollRef.current?.scroll({
+      left: 16 + (window.innerWidth - 32) / 3,
+    });
+  }, []);
   return (
     <>
-      <div className="w-fill mt-0 relative overflow-hidden flex items-center justify-center intro-section h-[calc(512px)]">
+      <div className="w-fill mt-0 relative overflow-hidden flex items-center justify-center h-80 md:h-[calc(512px)]">
         <div className="z-40 gip text-white flex flex-col gap-4 text-center items-center justify-center">
           <div className="font-bold text-3xl md:text-4xl lg:text-7xl md:font-semibold">
             {tour?.title}
@@ -57,6 +64,7 @@ export const TourIntro = ({ tour }: { tour: TourType }) => {
       </div>
       <div
         className="flex flex-row gap-4 overflow-x-scroll snap-x overflow-y-hidden snap-mandatory no-scroll-bar"
+        ref={scrollRef}
         onScroll={(e) => {
           const target = e.target as HTMLDivElement;
           target.scrollWidth;
@@ -67,12 +75,12 @@ export const TourIntro = ({ tour }: { tour: TourType }) => {
         // ref={scrollRef}
       >
         <div
-          className={`min-w-[calc((100vw-32px)/3)] h-48 relative snap-end transition-all overflow-hidden`}
+          className={`min-w-[calc((100vw-32px)/3)] h-24 md:h-48 relative snap-end transition-all overflow-hidden`}
         ></div>
         {images?.map((image, i) => (
           <div
             key={i}
-            className={`min-w-[calc((100vw-32px)/3)] h-48 relative snap-end transition-all overflow-hidden rounded`}
+            className={`min-w-[calc((100vw-32px)/3)] h-24 md:h-48 relative snap-end transition-all overflow-hidden rounded`}
           >
             <div
               className={`bg-black/30 w-full h-full absolute top-0 left-0 z-10 ${
@@ -92,7 +100,7 @@ export const TourIntro = ({ tour }: { tour: TourType }) => {
           </div>
         ))}
         <div
-          className={`min-w-[calc((100vw-32px)/3)] h-48 relative snap-end transition-all overflow-hidden`}
+          className={`min-w-[calc((100vw-32px)/3)] h-24 md:h-48 relative snap-end transition-all overflow-hidden`}
         ></div>
       </div>
     </>

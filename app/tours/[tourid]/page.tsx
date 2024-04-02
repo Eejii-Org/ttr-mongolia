@@ -4,6 +4,7 @@ import {
   Footer,
   Header,
   Included,
+  MainLayout,
   NotIncluded,
   Overview,
   Reviews,
@@ -51,34 +52,30 @@ const TourPage = () => {
   }
 
   return (
-    <div className="flex-1 w-full flex flex-col  min-h-screen justify-between">
-      <div className="flex flex-col gap-16 pb-16">
-        <Header transparent={true} />
-        <div className="flex flex-col gap-4">
-          <TourIntro tour={tour} />
-          <div className=" w-screen px-3 xl:px-0 xl:w-auto xl:max-w-[calc(1280px)] mx-auto flex flex-col-reverse md:flex-row">
-            <div className="w-full md:w-2/3 flex flex-col gap-8">
-              <Overview tour={tour} />
-              <Included tour={tour} />
-              <NotIncluded tour={tour} />
-              <div className=" z-10">
-                <TourPlan itinerary={tour.itinerary} />
-              </div>
-              <div ref={scrollToElement} className="pt-24 -mt-24">
-                <Availability tour={tour} />
-              </div>
+    <MainLayout headerTransparent>
+      <div className="flex flex-col gap-4">
+        <TourIntro tour={tour} />
+        <div className=" w-screen px-3 xl:px-0 xl:max-w-[calc(1280px)] mx-auto flex flex-col-reverse md:flex-row">
+          <div className="w-full md:w-2/3 flex flex-col gap-8">
+            <Overview tour={tour} />
+            <Included tour={tour} />
+            <NotIncluded tour={tour} />
+            <div className=" z-10">
+              <TourPlan itinerary={tour.itinerary} />
             </div>
-            <div className="bg-white pb-4 md:p-0 md:bg-transparent w-full md:w-1/3 md:pl-8 md:relative">
-              <TourInfo tour={tour} checkAvailableDate={checkAvailableDate} />
+            <div ref={scrollToElement} className="pt-24 -mt-24">
+              <Availability tour={tour} />
             </div>
           </div>
-          <div className=" mt-32">
-            <Reviews />
+          <div className="bg-white pb-4 md:p-0 md:bg-transparent w-full md:w-1/3 md:pl-8 md:relative">
+            <TourInfo tour={tour} checkAvailableDate={checkAvailableDate} />
           </div>
         </div>
+        <div className=" mt-32">
+          <Reviews />
+        </div>
       </div>
-      <Footer />
-    </div>
+    </MainLayout>
   );
 };
 export default TourPage;

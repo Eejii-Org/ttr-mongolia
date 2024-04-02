@@ -121,7 +121,7 @@ export const AvailableDates = ({
                     </td>
                     <td className="flex-1 flex min-w-36 md:min-w-min py-2 px-3 font-semibold ">
                       <Link href={"a"} className=" flex-1">
-                        {availableTour.title} asdf asdf asdf
+                        {availableTour.title}
                       </Link>
                     </td>
                     <td className="flex-1 min-w-36 md:min-w-min px-3 py-2">

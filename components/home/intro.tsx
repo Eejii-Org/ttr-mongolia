@@ -43,18 +43,15 @@ export const Intro = () => {
         height: "calc(80vh - 73px - 16px)",
       }}
     >
-      <div className="z-40 gip text-white flex flex-col gap-4 text-center items-center  -mt-8">
+      <div className="z-20 gip text-white flex flex-col gap-4 text-center items-center  -mt-8">
         <div className="font-bold text-3xl md:text-4xl lg:text-7xl md:font-semibold">
           {intro?.[index]?.title}
         </div>
         <div className="font-normal text-xl text-center md:w-2/3">
           {intro?.[index]?.description}
         </div>
-        {/* <div className="ripple bg-white text-black py-3 px-8 gip rounded-full mt-6 cursor-pointer font-semibold">
-          Book Now
-        </div> */}
       </div>
-      <div className="absolute bottom-8 z-50 gip items-center text-white flex-col gap-1 md:left-8">
+      <div className="absolute bottom-8 z-20 gip items-center text-white flex-col gap-1 md:left-8">
         <div className="font-light text-base">Scroll Down</div>
         <div className="ripple text-black bg-white/30 py-3 px-8 gip rounded-full cursor-pointer backdrop-blur-sm">
           <ArrowDown />
