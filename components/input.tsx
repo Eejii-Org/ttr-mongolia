@@ -29,7 +29,7 @@ export const Input = ({
         value={value}
         pattern={pattern}
         onChange={onChange}
-        className="text-base text-secondary outline-none"
+        className="text-base text-secondary outline-none flex-1"
       />
     </div>
   );

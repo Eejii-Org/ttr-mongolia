@@ -48,6 +48,7 @@ const Booking = ({
     nationality: "",
     dateOfBirth: "",
     peopleCount: 1,
+    additionalInformation: "",
   });
 
   const updatePersonalDetail = (key: string, value: string) => {
@@ -129,7 +130,13 @@ const Booking = ({
       <div className="w-screen flex-1 px-3 pt-14 xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col gap-4 justify-center">
         <div className=" text-2xl font-semibold lg:text-4xl">{tour?.title}</div>
         <div className="flex flex-col md:flex-row gap-4 h-full">
-          <form className="flex flex-1 flex-col gap-4">
+          <form
+            className="flex flex-1 flex-col gap-4"
+            onSubmit={(e) => {
+              e.preventDefault();
+              book();
+            }}
+          >
             <div className="bg-quinary p-3 md:p-4 rounded-xl flex-1 flex flex-col gap-3">
               <div className="text-lg font-semibold lg:text-xl">
                 Personal Detail
@@ -201,15 +208,22 @@ const Booking = ({
                     required
                   />
                 </div>
+                <textarea
+                  placeholder="Additional Information"
+                  className=" min-h-32 p-4 border rounded-xl"
+                  value={personalDetail.additionalInformation}
+                  onChange={(e) => {
+                    updatePersonalDetail(
+                      "additionalInformation",
+                      e.target.value
+                    );
+                  }}
+                ></textarea>
               </div>
             </div>
             <button
               type="submit"
-              className="bg-primary px-4 py-3 width-full text-center text-secondary whitespace-nowrap font-bold rounded-xl"
-              onClick={(e) => {
-                e.preventDefault();
-                book();
-              }}
+              className="bg-primary px-4 py-3 width-full text-center text-secondary whitespace-nowrap font-bold rounded-xl ripple"
             >
               Book
             </button>

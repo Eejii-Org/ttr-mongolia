@@ -28,7 +28,7 @@ export const Availability = ({ tour }: { tour: TourType }) => {
   }, [tour]);
   return (
     <div className="flex flex-col gap-4">
-      <div className="text-2xl md:text-4xl font-semibold">Availability</div>
+      <div className="text-2xl md:text-4xl font-semibold">Available Tours</div>
       <div className="flex flex-col gap-4">
         {tourDates.map((tourDate, index) => (
           <AvailabilityItem
@@ -39,6 +39,17 @@ export const Availability = ({ tour }: { tour: TourType }) => {
             key={index}
           />
         ))}
+        <div className="flex flex-row justify-between items-start gap-4 items-center pt-2">
+          <div className="text-xl font-semibold">
+            Or you can request for a new tour
+          </div>
+          <Link
+            href=""
+            className="ripple py-3 px-8 bg-primary text-center font-bold text-secondary rounded-xl "
+          >
+            Request a New Tour
+          </Link>
+        </div>
       </div>
     </div>
   );
