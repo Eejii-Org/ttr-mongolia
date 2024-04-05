@@ -28,7 +28,7 @@ export const AvailableDates = ({
   const availableTours = useMemo(() => {
     let obj: { [key: number]: TourType } = {};
     tours.map((tour) => {
-      obj[tour.id] = tour;
+      if (tour.id) obj[tour.id] = tour;
     });
     return availableDates.map((availableDate) => ({
       ...availableDate,

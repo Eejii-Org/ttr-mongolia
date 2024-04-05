@@ -9,7 +9,10 @@ export const Intro = () => {
   useEffect(() => {
     const fetchIntro = async () => {
       try {
-        const { data, error } = await supabase.from("intro").select("*");
+        const { data, error } = await supabase
+          .from("intro")
+          .select("*")
+          .eq("status", "active");
         if (error) {
           throw error;
         }
@@ -114,7 +117,7 @@ export const Intro = () => {
           }}
         >
           <Image
-            src={item.image}
+            src={item.image || ""}
             fill
             alt={item.title}
             priority

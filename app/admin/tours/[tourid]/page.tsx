@@ -362,7 +362,7 @@ type TourPlanType = {
   labelName: string;
   descriptionName: string;
 };
-export const List: FC<TourPlanType> = (props) => {
+const List: FC<TourPlanType> = (props) => {
   const { setListData, listData, labelName, descriptionName } = props;
   const removeListData = (index: number) => {
     setListData([...listData.filter((_: any, ind: number) => ind != index)]);
