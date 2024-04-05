@@ -1,16 +1,28 @@
 "use client";
 import { createClient } from "@/utils/supabase/client";
-import { ArrowRight } from "@components";
+import { ArrowRight, TrashIcon } from "@components";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const AdminIntro = () => {
   // const [intro, setIntro] = useState<IntroType[]>([]);
   const supabase = createClient();
   const router = useRouter();
   const [intro, setIntro] = useState<IntroType[]>([]);
+  const deleteIntro = async (introId: number | undefined) => {
+    if (introId == undefined) return;
+    const { error } = await supabase.from("intro").delete().eq("id", introId);
+    if (error) {
+      toast.error("Error While Deleting");
+      console.error(error);
+      return;
+    }
+    setIntro([...intro.filter(({ id }) => id !== introId)]);
+    toast.success("Successfully Deleted");
+  };
   useEffect(() => {
     const fetchIntro = async () => {
       try {
@@ -39,6 +51,7 @@ const AdminIntro = () => {
       </div>
       <table className="border overflow-scroll w-full bg-white rounded-md">
         <tr>
+          <th className="text-left px-3 py-2 font-semibold md:text-lg max-w-12 border-b w-12"></th>
           <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b w-20">
             Status
           </th>
@@ -51,14 +64,21 @@ const AdminIntro = () => {
           <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
             Description
           </th>
-          {/* <th className="text-left px-3 py-2 font-semibold md:text-lg max-w-12 border-b w-12"></th> */}
+          <th className="text-left px-3 py-2 font-semibold md:text-lg max-w-12 border-b w-12"></th>
         </tr>
         {intro.map(({ title, description, image, status, id }, i) => (
           <tr
             className="hover:bg-black/5 table-row hover:bg-grey/50 cursor-pointer"
-            onClick={() => router.push(`/admin/intro/${id}`)}
             key={i}
           >
+            <td className="max-w-12 w-12">
+              <button
+                className="font-bold rounded-full ripple p-3"
+                onClick={() => deleteIntro(id)}
+              >
+                <TrashIcon />
+              </button>
+            </td>
             <td className="text-left px-3 py-2 font-semibold md:text-lg w-20">
               {status == "active" ? (
                 <div
@@ -81,6 +101,14 @@ const AdminIntro = () => {
             </td>
             <td className="py-2 px-3 font-semibold w-80">{title}</td>
             <td className="px-3 py-2">{description}</td>
+            <td className="max-w-12 w-12">
+              <Link
+                className="font-bold rounded-full ripple p-3"
+                href={`/admin/intro/${id}`}
+              >
+                <ArrowRight color="black" />
+              </Link>
+            </td>
           </tr>
         ))}
       </table>
