@@ -29,9 +29,11 @@ export const Header: FC<HeaderPropsType> = ({ transparent = false }) => {
             Tours
           </div>
         </Link>
-        <div className="font-bold gip text-base hover:bg-gray-600/20 px-3 py-1 rounded cursor-pointer ripple hidden md:flex">
-          Contact Us
-        </div>
+        <Link href="/contact">
+          <div className="font-bold gip text-base hover:bg-gray-600/20 px-3 py-1 rounded cursor-pointer ripple hidden md:flex">
+            Contact Us
+          </div>
+        </Link>
       </div>
     </div>
   );

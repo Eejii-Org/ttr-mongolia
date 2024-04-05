@@ -1,6 +1,6 @@
 type TourType = {
-  id: number;
-  created_at: string;
+  id?: number;
+  created_at?: string;
   images: string[];
   title: string;
   overview: string;
@@ -13,6 +13,7 @@ type TourType = {
   excluded: AssetType[];
   itinerary: ItineraryType[];
   reviews: ReviewType[];
+  status: "active" | "inactive";
 };
 
 type AssetType = {

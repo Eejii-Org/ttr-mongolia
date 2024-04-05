@@ -3,6 +3,7 @@ import { createClient } from "@/utils/supabase/client";
 import { Input } from "@components";
 import { User } from "@supabase/supabase-js";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const Auth = () => {
@@ -11,6 +12,7 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const signInWithEmail = async () => {
     setLoading(true);
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -18,6 +20,7 @@ const Auth = () => {
       password: password,
     });
     console.log(data, error);
+    router.push("/admin");
     setLoading(false);
   };
   const signOut = async () => {

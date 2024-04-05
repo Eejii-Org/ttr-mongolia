@@ -26,7 +26,5 @@ const Home: FC = () => {
     </MainLayout>
   );
 };
-{
-}
 
 export default Home;

@@ -24,7 +24,10 @@ const Tours = ({ searchParams }: { searchParams: { category: string } }) => {
     const fetchTours = async () => {
       setLoading(true);
       try {
-        const { data, error } = await supabase.from("tours").select("*");
+        const { data, error } = await supabase
+          .from("tours")
+          .select("*")
+          .eq("status", "active");
         if (error) {
           throw error;
         }

@@ -2,7 +2,6 @@
 import { EmailIcon, Input, MainLayout, PhoneIcon } from "@components";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const Contact = () => {
   const [contact, setContact] = useState({
@@ -47,7 +46,6 @@ const Contact = () => {
   };
   return (
     <MainLayout>
-      <ToastContainer />
       <div className="w-screen flex-1 px-3 pt-14 xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col gap-4 justify-center">
         <div className="flex flex-col md:flex-row gap-4 h-full">
           <div className="p-3 md:p-4 rounded-xl flex-1 flex flex-col gap-3 justify-between">

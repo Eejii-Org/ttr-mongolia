@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { PostgrestError } from "@supabase/supabase-js";
 
 type ToursPropsType = {
   selectedCategory: string;

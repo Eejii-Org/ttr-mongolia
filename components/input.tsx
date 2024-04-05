@@ -8,6 +8,7 @@ type InputType = {
   required?: boolean;
   type: HTMLInputTypeAttribute;
   pattern?: string | undefined;
+  min?: number | undefined;
 };
 
 export const Input = ({
@@ -18,6 +19,7 @@ export const Input = ({
   required = false,
   type,
   pattern = undefined,
+  min = undefined,
 }: InputType) => {
   return (
     <div className="px-4 py-3 border bg-tertiary flex flex-row gap-3 rounded-xl flex-1">
@@ -28,6 +30,7 @@ export const Input = ({
         required={required}
         value={value}
         pattern={pattern}
+        min={min}
         onChange={onChange}
         className="text-base text-secondary outline-none flex-1"
       />

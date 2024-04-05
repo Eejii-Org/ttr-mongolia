@@ -1,4 +1,4 @@
-export const ArrowRight = ({ color = "#C1C1C1" }: { color?: string }) => {
+export const ArrowLeft = ({ color = "#C1C1C1" }: { color?: string }) => {
   return (
     <svg
       width="24"
@@ -8,7 +8,7 @@ export const ArrowRight = ({ color = "#C1C1C1" }: { color?: string }) => {
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        d="M5 12H19M19 12L13 6M19 12L13 18"
+        d="M19 12H5M5 12L11 18M5 12L11 6"
         stroke={color}
         strokeWidth="2"
         strokeLinecap="round"
