@@ -52,9 +52,11 @@ type ReviewType = {
 };
 
 type IntroType = {
-  image: string;
+  id?: number;
+  image: string | null;
   title: string;
   description: string;
+  status: "active" | "inactive";
 };
 
 type CategoryType = {

@@ -16,6 +16,14 @@ export const AdminSidebar = () => {
         Dashboard
       </Link>
       <Link
+        href="/admin/intro"
+        className={`px-2 py-2 hover:bg-black/10 font-medium border-b text-primary ${
+          pathname == "/admin/intro" ? "text-primary" : "text-secondary"
+        }`}
+      >
+        Intro
+      </Link>
+      <Link
         href="/admin/tours"
         className={`px-2 py-2 hover:bg-black/10 font-medium border-b text-primary ${
           pathname.includes("/admin/tours") ? "text-primary" : "text-secondary"

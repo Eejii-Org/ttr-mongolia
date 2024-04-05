@@ -26,9 +26,11 @@ import {
 import { toast } from "react-toastify";
 import _ from "lodash";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 const Tour = () => {
   const supabase = createClient();
+  const router = useRouter();
   const [tour, setTour] = useState<TourType | null>(null);
   const [originalTour, setOriginalTour] = useState<TourType | null>(null);
   const [loading, setLoading] = useState(true);
@@ -44,7 +46,10 @@ const Tour = () => {
     const newTour = tour;
     if (isNew) {
       // new
-      const { error } = await supabase.from("tours").insert(newTour);
+      const { data, error } = await supabase
+        .from("tours")
+        .insert(newTour)
+        .select();
       if (error) {
         toast.error("Error");
         console.error(error);
@@ -54,6 +59,7 @@ const Tour = () => {
       setOriginalTour(newTour as TourType);
       toast.success("Successfully Saved");
       setSaveLoading(false);
+      router.push(`/admin/intro/${data[0].id}`);
       return;
     }
     const { error } = await supabase
@@ -579,7 +585,6 @@ const TourImages = ({
     const { data, error } = await supabase.storage
       .from("tourImages")
       .upload(fileName, file, {
-        cacheControl: "3600",
         upsert: false,
       });
     const { data: publicData } = supabase.storage

@@ -9,6 +9,7 @@
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
     "autoprefixer": "10.4.17",
+    "axios": "^1.6.8",
     "geist": "^1.2.1",
     "lodash": "^4.17.21",
     "next": "latest",

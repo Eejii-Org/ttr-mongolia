@@ -15,7 +15,7 @@ export const Intro = () => {
         }
         setIntro(data);
       } catch (error: any) {
-        console.error("Error fetching tour categories:", error.message);
+        console.error("Error fetching intro:", error.message);
       }
     };
 

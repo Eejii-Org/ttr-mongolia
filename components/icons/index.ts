@@ -21,3 +21,4 @@ export * from "./minusicon";
 export * from "./caretdownicon";
 export * from "./caretupicon";
 export * from "./plusicon";
+export * from "./reloadicon";
