@@ -71,16 +71,13 @@ const Booking = ({
         availableTourId,
       }
     );
-    const { data, error } = await supabase
-      .from("transactions")
-      .insert({
-        ...personalDetail,
-        transactionId: res.data.transactionId,
-        amount: "0.01",
-        availableTourId: availableTourId,
-        // amount: personalDetail.peopleCount * availableTour?.price,
-      })
-      .select();
+    const { error } = await supabase.from("transactions").insert({
+      ...personalDetail,
+      transactionId: res.data.transactionId,
+      amount: "0.01",
+      availableTourId: availableTourId,
+      // amount: personalDetail.peopleCount * availableTour?.price,
+    });
     if (error) {
       console.error(error);
       setError(error.message);

@@ -18,7 +18,7 @@ export const TourIntro = ({ tour }: { tour: TourType }) => {
   return (
     <>
       <div className="w-fill mt-0 relative overflow-hidden flex items-center justify-center h-80 md:h-[calc(512px)]">
-        <div className="z-40 gip text-white flex flex-col gap-4 text-center items-center justify-center">
+        <div className="z-30 gip text-white flex flex-col gap-4 text-center items-center justify-center">
           <div className="font-bold text-3xl md:text-4xl lg:text-7xl md:font-semibold">
             {tour?.title}
           </div>

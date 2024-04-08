@@ -8,12 +8,8 @@ type HeaderPropsType = {
 export const Header: FC<HeaderPropsType> = ({ transparent = false }) => {
   return (
     <div
-      className={`py-3 px-3 md:px-6  flex flex-row justify-between items-center w-screen top-0 fixed z-40 
-      ${
-        transparent
-          ? "bg-black/10 text-tertiary"
-          : "bg-tertiary  text-secondary "
-      }`}
+      className={`py-3 px-3 md:px-6  flex flex-row justify-between items-center w-screen top-0 fixed z-40 transition-all
+      ${transparent ? "text-tertiary" : "bg-tertiary  text-secondary "}`}
     >
       <Link href="/">
         <div className="font-semibold text-2xl cursor-pointer">
