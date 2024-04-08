@@ -45,18 +45,18 @@ type transactionDetailType = {
 const PaymentResult = () => {
   const router = useRouter();
   const params = useParams();
-  const { transactionId } = params;
+  const { transactionid } = params;
   const [transactionDetail, setTransactionDetail] =
     useState<transactionDetailType | null>(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const getStatus = async () => {
       setLoading(true);
-      console.log(transactionId);
+      console.log(transactionid);
       const res = await axios.post(
         "https://ttr-mongolia.vercel.app/api/check-transaction",
         {
-          transactionId: transactionId,
+          transactionId: transactionid,
         }
       );
       console.log(res);
@@ -64,7 +64,7 @@ const PaymentResult = () => {
       setLoading(false);
     };
     getStatus();
-  }, [transactionId]);
+  }, [transactionid]);
   return (
     <MainLayout>
       <div className="flex flex-1 pt-14 items-center justify-center">
