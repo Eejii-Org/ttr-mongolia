@@ -1,7 +1,7 @@
 "use client";
 import { MainLayout } from "@components";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type transactionDetailType = {
@@ -42,13 +42,10 @@ type transactionDetailType = {
   };
 };
 
-const PaymentResult = ({
-  searchParams,
-}: {
-  searchParams: { transactionId: string };
-}) => {
+const PaymentResult = () => {
   const router = useRouter();
-  const { transactionId } = searchParams;
+  const params = useParams();
+  const { transactionId } = params;
   const [transactionDetail, setTransactionDetail] =
     useState<transactionDetailType | null>(null);
   const [loading, setLoading] = useState(true);
