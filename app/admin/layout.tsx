@@ -21,7 +21,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         } = await supabase.auth.getSession();
         if (error) throw error;
         if (session?.user) {
-          console.log("we have user");
           setIsAuthenticated(true);
           setLoading(false);
           return;

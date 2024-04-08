@@ -19,13 +19,12 @@ const Auth = () => {
       email: email,
       password: password,
     });
-    console.log(data, error);
     router.push("/admin");
     setLoading(false);
   };
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
-    console.log(error);
+    console.error(error);
   };
   useEffect(() => {
     const getUser = async () => {
@@ -37,7 +36,6 @@ const Auth = () => {
         if (error) throw error;
         if (session?.user) {
           setUser(session?.user);
-          console.log(session.user.email);
           console.log("we have user");
           return;
         }

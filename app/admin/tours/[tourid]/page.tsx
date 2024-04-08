@@ -14,7 +14,7 @@ import {
   PriceIcon,
 } from "@components";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import {
   Dispatch,
   FC,
@@ -26,7 +26,6 @@ import {
 import { toast } from "react-toastify";
 import _ from "lodash";
 import Image from "next/image";
-import { useRouter } from "next/router";
 
 const Tour = () => {
   const supabase = createClient();

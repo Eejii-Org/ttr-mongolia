@@ -10,6 +10,7 @@ import {
   MainLayout,
   PhoneIcon,
 } from "@components";
+import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEventHandler, useEffect, useMemo, useState } from "react";
@@ -36,7 +37,8 @@ const Booking = ({
   const [availableTour, setAvailableTour] = useState<AvailableTourType | null>(
     null
   );
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const supabase = createClient();
   const router = useRouter();
   const { availableTourId } = searchParams;
@@ -54,15 +56,47 @@ const Booking = ({
   const updatePersonalDetail = (key: string, value: string) => {
     setPersonalDetail({ ...personalDetail, [key]: value });
   };
-
-  const book = () => {
-    console.log("book", personalDetail);
+  const [bookLoading, setBookLoading] = useState(false);
+  const book = async () => {
+    if (!availableTour || !availableTour.price) {
+      setError("Tour Not Found");
+      return;
+    }
+    setBookLoading(true);
+    const res = await axios.post(
+      "https://ttr-mongolia.vercel.app/api/request-invoice",
+      {
+        // amount: personalDetail.peopleCount * availableTour?.price,
+        amount: "0.01",
+        availableTourId,
+      }
+    );
+    const { data, error } = await supabase
+      .from("transactions")
+      .insert({
+        ...personalDetail,
+        transactionId: res.data.transactionId,
+        amount: "0.01",
+        availableTourId: availableTourId,
+        // amount: personalDetail.peopleCount * availableTour?.price,
+      })
+      .select();
+    if (error) {
+      console.error(error);
+      setError(error.message);
+      return;
+    }
+    setBookLoading(false);
+    router.push(`/book/payment?invoice=${res.data.invoice}`);
   };
 
   useEffect(() => {
     const getTour = async () => {
-      if (!availableTourId) {
-        router.push("/");
+      if (availableTourId == "" || availableTour) {
+        // router.push("/");
+        setError("Tour Not Found");
+        setLoading(false);
+        return;
       }
       setLoading(true);
       const { data, error } = await supabase
@@ -71,12 +105,14 @@ const Booking = ({
         .eq("id", availableTourId);
       if (error) {
         console.error(error);
+        setError(error.message);
         setLoading(false);
         return;
       }
       if (data.length == 0) {
         setTour(null);
         setLoading(false);
+        setError("Tour Not Found");
         return;
       }
       const { data: tourData, error: err } = await supabase
@@ -85,12 +121,14 @@ const Booking = ({
         .eq("id", data[0].tourId);
       if (err) {
         console.error(err);
+        setError(err.message);
         setLoading(false);
         return;
       }
       if (tourData.length == 0) {
         setAvailableTour(null);
         setLoading(false);
+        setError("Tour Not Found");
         return;
       }
       setTour(tourData[0]);
@@ -125,18 +163,47 @@ const Booking = ({
       },
     };
   }, [availableTour]);
+
+  if (error) {
+    return (
+      <MainLayout>
+        <div className="w-screen flex-1 px-3 pt-14 xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col items-center gap-4 justify-center">
+          <div className="flex flex-col gap-4">
+            <div className="text-2xl font-semibold lg:text-4xl">{error}</div>
+            <button
+              onClick={() => router.back()}
+              className="bg-primary px-4 py-3 width-full text-center text-secondary whitespace-nowrap font-bold rounded-xl ripple w-full"
+            >
+              Go Back
+            </button>
+          </div>
+        </div>
+      </MainLayout>
+    );
+  }
+
+  if (loading || !availableTour || !tour) {
+    return (
+      <MainLayout>
+        <div className="w-screen flex-1 px-3 pt-14 xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col gap-4 justify-center">
+          Loading
+        </div>
+      </MainLayout>
+    );
+  }
+
   return (
     <MainLayout>
       <div className="w-screen flex-1 px-3 pt-14 xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col gap-4 justify-center">
         <div className=" text-2xl font-semibold lg:text-4xl">{tour?.title}</div>
-        <div className="flex flex-col md:flex-row gap-4 h-full">
-          <form
-            className="flex flex-1 flex-col gap-4"
-            onSubmit={(e) => {
-              e.preventDefault();
-              book();
-            }}
-          >
+        <form
+          className="flex flex-1 flex-col gap-4"
+          onSubmit={(e) => {
+            e.preventDefault();
+            book();
+          }}
+        >
+          <div className="flex flex-col md:flex-row gap-4 h-full">
             <div className="bg-quinary p-3 md:p-4 rounded-xl flex-1 flex flex-col gap-3">
               <div className="text-lg font-semibold lg:text-xl">
                 Personal Detail
@@ -221,51 +288,52 @@ const Booking = ({
                 ></textarea>
               </div>
             </div>
-            <button
-              type="submit"
-              className="bg-primary px-4 py-3 width-full text-center text-secondary whitespace-nowrap font-bold rounded-xl ripple"
-            >
-              Book
-            </button>
-          </form>
-          <div className="flex-1 flex flex-col gap-4">
-            <div className=" bg-quinary p-3 md:p-4 rounded-xl flex flex-col gap-2">
-              <div className="text-lg font-semibold lg:text-xl">
-                Designated Date
-              </div>
-              <div className="flex flex-col items-center">
-                <div className="flex flex-row gap-8 justify-between items-center w-full">
-                  <div>
-                    <div className="font-medium text-base text-[#c1c1c1]">
-                      {dates?.startingDate.day}
+            <div className="flex-1 flex flex-col gap-4">
+              <div className=" bg-quinary p-3 md:p-4 rounded-xl flex flex-col gap-2">
+                <div className="text-lg font-semibold lg:text-xl">
+                  Designated Date
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="flex flex-row gap-8 justify-between items-center w-full">
+                    <div>
+                      <div className="font-medium text-base text-[#c1c1c1]">
+                        {dates?.startingDate.day}
+                      </div>
+                      <div className="font-bold text-xl">
+                        {dates?.startingDate.date}
+                      </div>
                     </div>
-                    <div className="font-bold text-xl">
-                      {dates?.startingDate.date}
+                    <ArrowRight />
+                    <div>
+                      <div className="font-medium text-base text-[#c1c1c1]">
+                        {dates?.endingDate.day}
+                      </div>
+                      <div className="font-bold text-xl">
+                        {dates?.endingDate.date}
+                      </div>
                     </div>
                   </div>
-                  <ArrowRight />
-                  <div>
-                    <div className="font-medium text-base text-[#c1c1c1]">
-                      {dates?.endingDate.day}
-                    </div>
-                    <div className="font-bold text-xl">
-                      {dates?.endingDate.date}
-                    </div>
+                  <div className="font-medium text-[#c1c1c1]">
+                    {tour?.days} days / {tour?.nights} nights
                   </div>
                 </div>
-                <div className="font-medium text-[#c1c1c1]">
-                  {tour?.days} days / {tour?.nights} nights
+              </div>
+              <div className=" bg-quinary p-3 md:p-4 rounded-xl flex flex-col gap-2">
+                <div className="text-lg font-semibold lg:text-xl">Price</div>
+                <div className="text-base font-semibold lg:text-xl text-center">
+                  {personalDetail.peopleCount} * ${availableTour?.price} = $
+                  {personalDetail.peopleCount * availableTour?.price}
                 </div>
               </div>
-            </div>
-            <div className="bg-quinary p-4 rounded-xl flex flex-col gap-2 flex-1">
-              <iframe
-                src={`https://ecommerce.golomtbank.com/payment/en/invoice`}
-                className="flex-1"
-              />
+              <button
+                type="submit"
+                className="bg-primary px-4 py-3 width-full text-center text-secondary whitespace-nowrap font-bold rounded-xl ripple"
+              >
+                {bookLoading ? "Loading" : "Book"}
+              </button>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </MainLayout>
   );

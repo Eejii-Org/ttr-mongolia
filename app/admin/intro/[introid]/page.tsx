@@ -264,7 +264,6 @@ const IntroImages = ({
     return name ? name : null;
   }, [intro]);
   const uploadImage = async (file: File) => {
-    console.log(imageName, file);
     setLoading(true);
     if (imageName) {
       const { data, error } = await supabase.storage

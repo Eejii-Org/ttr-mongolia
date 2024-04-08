@@ -9,7 +9,7 @@ export const AdminHeader = () => {
   const router = useRouter();
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
-    console.log(error);
+    console.error(error);
     router.push("/auth");
   };
   return (
