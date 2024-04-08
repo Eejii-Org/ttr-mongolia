@@ -16,7 +16,7 @@ export async function POST(request: Request) {
   const body = await request.json();
   const info = await transporter.sendMail({
     from: `"TTR Mongolia Website Contact" <${process.env.CONTACT_EMAIL}>`, // sender address
-    to: "enhuush0704@gmail.com", // list of receivers
+    to: "info@ttrmongolia.com", // list of receivers
     subject: `Contact ${body?.email}`, // Subject line
     text:
       "Name: " +
