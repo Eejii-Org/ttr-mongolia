@@ -61,13 +61,13 @@ export const Intro = () => {
         </div>
       </div>
       <div className="absolute bottom-0 w-full justify-center z-10 gip hidden text-white gap-2 md:flex">
-        <div className="relative gap-6 flex flex-row items-center bg-white p-4 rounded-t-2xl">
-          <div className="absolute bottom-0 -left-4">
+        <div className="relative gap-6 flex flex-row items-center  p-4 rounded-t-2xl">
+          {/* <div className="absolute bottom-0 -left-4">
             <ScrollCorner side="left" />
           </div>
           <div className="absolute bottom-0 -right-4">
             <ScrollCorner side="right" />
-          </div>
+          </div> */}
           <div
             className="ripple cursor-pointer rounded-full"
             onClick={() => carouselClick("left")}

@@ -60,9 +60,9 @@ type IntroType = {
 };
 
 type CategoryType = {
-  id: number;
+  id?: number;
   name: string;
-  image: string;
+  image: string | null;
 };
 
 type PriceType = {
