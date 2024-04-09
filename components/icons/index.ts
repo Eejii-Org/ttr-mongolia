@@ -23,3 +23,5 @@ export * from "./caretupicon";
 export * from "./plusicon";
 export * from "./reloadicon";
 export * from "./trashicon";
+export * from "./chevronrighticon";
+export * from "./chevronlefticon";

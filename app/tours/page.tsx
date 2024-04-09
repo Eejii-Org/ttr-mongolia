@@ -55,7 +55,7 @@ const Tours = ({ searchParams }: { searchParams: { category: string } }) => {
       <div className="flex flex-col gap-8 pt-14 mx-3 md:mx-6">
         <div className="flex flex-col gap-4 md:gap-8">
           <div className="flex flex-col gap-4 md:flex-row justify-between md:items-center">
-            <div className="text-3xl md:text-5xl font-semibold">
+            <div className="text-2xl md:text-4xl font-semibold">
               Our Tour Packages
             </div>
             <button

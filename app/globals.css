@@ -34,7 +34,7 @@ html {
 
 @media screen and (max-height: 800px) {
   .intro-section {
-    height: calc(100vh - 56px - 16px) !important;
+    height: calc(100vh - 16px - 56px) !important;
   }
 }
 .review-item {

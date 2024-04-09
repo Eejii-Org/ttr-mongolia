@@ -15,12 +15,15 @@ import {
 const Home: FC = () => {
   return (
     <MainLayout headerTransparent>
-      <div className="flex-1 w-full flex flex-col gap-16">
+      <div className="flex-1 w-full flex flex-col gap-12">
         <Intro />
-        <Values />
-        <TourCategories />
-        <CustomerSupport />
-        <OurAgency />
+        <div className="container mx-auto flex flex-col gap-12">
+          <Values />
+          <TourCategories />
+          <CustomerSupport />
+          <OurAgency />
+        </div>
+
         <Reviews />
       </div>
     </MainLayout>

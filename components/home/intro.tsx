@@ -1,6 +1,12 @@
 "use client";
 import { createClient } from "@/utils/supabase/client";
-import { ArrowCircleIcon, ArrowDown, ScrollCorner } from "@components";
+import {
+  ArrowCircleIcon,
+  ArrowDown,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ScrollCorner,
+} from "@components";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 export const Intro = () => {
@@ -54,20 +60,39 @@ export const Intro = () => {
           {intro?.[index]?.description}
         </div>
       </div>
-      <div className="absolute bottom-8 z-20 gip items-center text-white flex-col gap-1 md:left-8">
+      {/* <div className="absolute bottom-8 z-20 gip items-center text-white flex-col gap-1 md:left-8">
         <div className="font-light text-base">Scroll Down</div>
         <div className="ripple text-black bg-white/30 py-3 px-8 gip rounded-full cursor-pointer backdrop-blur-sm">
           <ArrowDown />
         </div>
-      </div>
-      <div className="absolute bottom-0 w-full justify-center z-10 gip hidden text-white gap-2 md:flex">
-        <div className="relative gap-6 flex flex-row items-center  p-4 rounded-t-2xl">
-          {/* <div className="absolute bottom-0 -left-4">
+      </div> */}
+      <div className="absolute bottom-6 w-full justify-end z-10 pr-6 gip text-white gap-2 flex">
+        <div className="container relative">
+          <div className="absolute right-0 bottom-0 w-[152px] items-center bg-white text-black flex flex-row justify-between rounded-lg">
+            <button
+              className="p-3 ripple"
+              onClick={() => carouselClick("left")}
+            >
+              <ChevronLeftIcon />
+            </button>
+            <div className="font-medium">
+              {index + 1} / {intro.length}
+            </div>
+            <button
+              className="p-3 ripple"
+              onClick={() => carouselClick("right")}
+            >
+              <ChevronRightIcon />
+            </button>
+          </div>
+        </div>
+        {/* <div className="relative gap-6 flex flex-row items-center  p-4 rounded-t-2xl">
+          <div className="absolute bottom-0 -left-4">
             <ScrollCorner side="left" />
           </div>
           <div className="absolute bottom-0 -right-4">
             <ScrollCorner side="right" />
-          </div> */}
+          </div>
           <div
             className="ripple cursor-pointer rounded-full"
             onClick={() => carouselClick("left")}
@@ -103,7 +128,7 @@ export const Intro = () => {
               filled="true"
             />
           </div>
-        </div>
+        </div> */}
       </div>
       {intro?.map((item, i) => (
         <div

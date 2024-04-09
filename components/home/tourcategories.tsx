@@ -30,7 +30,7 @@ export const TourCategories: FC = () => {
   return (
     <div className="flex flex-col gap-6 mx-3 md:mx-6">
       <div className="flex flex-row justify-between items-end">
-        <div className="text-3xl md:text-5xl font-semibold">
+        <div className="text-2xl md:text-4xl font-semibold">
           Choose your tour
         </div>
         <Link href="/tours">
@@ -59,21 +59,18 @@ const TourCategory: FC<CategoryType> = (props) => {
       }}
       className="flex-auto md:flex-1"
     >
-      <div className="flex h-56 lg:h-80 bg-yellow-300 p-3 items-end rounded-3xl relative ">
+      <div className="flex h-56 lg:h-72 bg-yellow-300 p-3 items-end relative ">
         <Image
           src={image || ""}
           fill
           alt={name}
           priority
           // unoptimized={true}
-          className={`object-cover select-none rounded-3xl`}
+          className={`object-cover select-none`}
         />
-        <div className="flex p-3 items-center justify-between w-full bg-black rounded-2xl backdrop-blur-lg bg-black/30">
-          <div className="text-xl md:text-2xl font-bold text-tertiary">
+        <div className="flex p-3 items-center justify-center w-full bg-white z-0">
+          <div className="text-lg md:text-xl font-bold text-secondary">
             {name}
-          </div>
-          <div>
-            <ArrowCircleIcon color="black" filled="true" />
           </div>
         </div>
       </div>

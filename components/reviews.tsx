@@ -22,7 +22,7 @@ export const Reviews: FC = () => {
   }, []);
   return (
     <div className="flex flex-col gap-6">
-      <div className="mx-3 md:mx-6 text-3xl md:text-5xl font-semibold">
+      <div className="mx-3 md:mx-6 text-2xl md:text-4xl font-semibold">
         What our travelers say about us
       </div>
       <div className="flex flex-row gap-4 overflow-x-scroll w-full pl-3 md:pl-6">
