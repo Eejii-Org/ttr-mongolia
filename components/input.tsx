@@ -32,7 +32,7 @@ export const Input = ({
         pattern={pattern}
         min={min}
         onChange={onChange}
-        className="text-base text-secondary outline-none flex-1"
+        className="text-base text-secondary outline-none flex-1 w-full"
       />
     </div>
   );

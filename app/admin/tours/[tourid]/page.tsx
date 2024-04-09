@@ -735,10 +735,4 @@ const TourImage = ({
   );
 };
 
-// title, days, nights, originalPrice, status
-// categories
-// overview
-// included excluded itinerary
-// images
-
 export default Tour;

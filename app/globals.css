@@ -29,6 +29,7 @@
 
 html {
   scroll-behavior: smooth;
+  height: 100vh;
 }
 
 @media screen and (max-height: 800px) {

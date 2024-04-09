@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FC } from "react";
 
 export const CustomerSupport: FC = () => {
@@ -15,9 +16,13 @@ export const CustomerSupport: FC = () => {
           24/7.
         </div>
       </div>
-      <div className="ripple bg-primary text-tertiary py-3 px-16 gip rounded-full mt-6 cursor-pointer font-semibold">
+
+      <Link
+        href="/contact"
+        className="ripple bg-primary text-tertiary py-3 px-16 gip rounded-full mt-6 cursor-pointer font-semibold"
+      >
         Contact Now
-      </div>
+      </Link>
     </div>
   );
 };

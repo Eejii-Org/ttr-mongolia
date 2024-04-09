@@ -5,7 +5,9 @@ export const Footer = () => {
   return (
     <div className="bg-quinary p-6 flex flex-col gap-2 m-3 md:m-6 rounded-3xl">
       <div className="flex flex-row justify-between">
-        <div className="text-base">Contact Us</div>
+        <Link href="/contact">
+          <div className="text-base">Contact Us</div>
+        </Link>
         <div className="flex flex-row gap-4">
           <Link href="https://www.facebook.com/GoNomadic">
             <div className="rounded-full p-2 bg-secondary">

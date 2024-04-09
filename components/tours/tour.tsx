@@ -51,8 +51,8 @@ export const Tour: FC<TourType> = (props) => {
             </div>
           )}
           <div className="font-bold text-xl lg:text-3xl">{title}</div>
-          <div className="text-base lg:text-xl">
-            {overview.split(" ").slice(0, 50).join(" ")}...
+          <div className="text-sm md:text-base">
+            {overview.split(" ").slice(0, 60).join(" ")}...
           </div>
         </Link>
       </div>

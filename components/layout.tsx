@@ -27,7 +27,6 @@ export const MainLayout = ({
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-  console.log(scrolled);
   return (
     <div className="flex-1 w-full flex flex-col min-h-screen justify-between">
       <ToastContainer />

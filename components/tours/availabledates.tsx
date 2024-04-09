@@ -42,7 +42,8 @@ export const AvailableDates = ({
       try {
         const { data, error } = await supabase
           .from("availableTours")
-          .select("*");
+          .select("*")
+          .gte("date", new Date().toISOString());
         if (error) {
           throw error;
         }

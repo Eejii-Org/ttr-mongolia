@@ -29,12 +29,12 @@ export const TourCategories: FC = () => {
   }, []);
   return (
     <div className="flex flex-col gap-6 mx-3 md:mx-6">
-      <div className="flex flex-row justify-between items-center">
+      <div className="flex flex-row justify-between items-end">
         <div className="text-3xl md:text-5xl font-semibold">
           Choose your tour
         </div>
         <Link href="/tours">
-          <div className="text-base text-gray-400 font-medium md:text-xl">
+          <div className="text-base text-gray-400 font-medium md:text-lg">
             View More
           </div>
         </Link>
