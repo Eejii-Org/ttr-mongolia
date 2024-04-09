@@ -61,7 +61,7 @@ const TourCategory: FC<CategoryType> = (props) => {
     >
       <div className="flex h-56 lg:h-80 bg-yellow-300 p-3 items-end rounded-3xl relative ">
         <Image
-          src={image}
+          src={image || ""}
           fill
           alt={name}
           priority

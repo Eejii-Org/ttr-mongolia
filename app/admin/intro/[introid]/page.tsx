@@ -30,28 +30,26 @@ import { toast } from "react-toastify";
 import _ from "lodash";
 import Image from "next/image";
 
-const Category = () => {
+const Intro = () => {
   const supabase = createClient();
   const router = useRouter();
-  const [category, setCategory] = useState<CategoryType | null>(null);
-  const [originalCategory, setOriginalCategory] = useState<CategoryType | null>(
-    null
-  );
+  const [intro, setIntro] = useState<IntroType | null>(null);
+  const [originalIntro, setOriginalIntro] = useState<IntroType | null>(null);
   const [loading, setLoading] = useState(true);
   const [saveLoading, setSaveLoading] = useState(false);
   const params = useParams();
-  const { categoryid } = params;
+  const { introid } = params;
   const [isNew, setIsNew] = useState(false);
   const [isNotFound, setIsNotFound] = useState(false);
 
   const save = async () => {
     setSaveLoading(true);
-    const newCategory = category;
+    const newIntro = intro;
     if (isNew) {
       // new
       const { data, error } = await supabase
-        .from("tourCategories")
-        .insert(newCategory)
+        .from("intro")
+        .insert(newIntro)
         .select();
       if (error) {
         toast.error("Error");
@@ -59,16 +57,16 @@ const Category = () => {
         setSaveLoading(false);
         return;
       }
-      setOriginalCategory(newCategory as CategoryType);
+      setOriginalIntro(newIntro as IntroType);
       toast.success("Successfully Saved");
       setSaveLoading(false);
-      router.push(`/admin/categories/${data[0].id}`);
+      router.push(`/admin/intro/${data[0].id}`);
       return;
     }
     const { error } = await supabase
-      .from("tourCategories")
-      .update(newCategory)
-      .eq("id", category?.id);
+      .from("intro")
+      .update(newIntro)
+      .eq("id", originalIntro?.id);
 
     if (error) {
       toast.error("Error");
@@ -76,40 +74,41 @@ const Category = () => {
       setSaveLoading(false);
       return;
     }
-    setOriginalCategory({
-      ...originalCategory,
-      ...(newCategory as CategoryType),
-    });
+    setOriginalIntro({ ...originalIntro, ...(newIntro as IntroType) });
     toast.success("Successfully Saved");
     setSaveLoading(false);
   };
   const isChanged = useMemo(() => {
-    if (category == null) return false;
-    if (originalCategory == null) return true;
-    return !_.isEqual(originalCategory, category);
-  }, [originalCategory, category]);
+    if (intro == null) return false;
+    if (originalIntro == null) return true;
+    return !_.isEqual(originalIntro, intro);
+  }, [originalIntro, intro]);
   const leave = async () => {
-    // const imageName = category?.image?.split("/").pop();
+    // const imageName = intro?.image?.split("/").pop();
     // if (!imageName) {
-    //   router.push("/admin/categories");
+    //   router.push("/admin/intro");
     //   return;
     // }
     // const { data, error } = await supabase.storage
-    //   .from("images")
+    //   .from("introImages")
     //   .remove([imageName]);
-    router.push("/admin/categories");
+    router.push("/admin/intro");
     return;
   };
   useEffect(() => {
-    const fetchCategory = async () => {
-      if (categoryid == "new") {
-        setCategory({
+    const fetchIntro = async () => {
+      if (introid == "new") {
+        setIntro({
           image: null,
-          name: "",
+          title: "",
+          description: "",
+          status: "active",
         });
-        setOriginalCategory({
+        setOriginalIntro({
           image: null,
-          name: "",
+          title: "",
+          description: "",
+          status: "active",
         });
         setIsNew(true);
         setLoading(false);
@@ -117,9 +116,9 @@ const Category = () => {
       }
       try {
         const { data, error } = await supabase
-          .from("tourCategories")
+          .from("intro")
           .select("*")
-          .eq("id", categoryid);
+          .eq("id", introid);
 
         if (error) {
           throw error;
@@ -129,15 +128,15 @@ const Category = () => {
           setLoading(false);
           return;
         }
-        setOriginalCategory(data[0] as CategoryType);
-        setCategory(data[0] as CategoryType);
+        setOriginalIntro(data[0] as IntroType);
+        setIntro(data[0] as IntroType);
       } catch (error: any) {
         console.error("Error fetching tour categories:", error.message);
       }
       setLoading(false);
     };
-    fetchCategory();
-  }, [categoryid]);
+    fetchIntro();
+  }, [introid]);
 
   if (loading) {
     return <div>Loading</div>;
@@ -153,17 +152,17 @@ const Category = () => {
           <ArrowLeft color="black" />
         </button>
         <div className="text-2xl md:text-4xl font-semibold">
-          {isNotFound ? "Tour not found" : category?.name}
+          {isNotFound ? "Tour not found" : intro?.title}
         </div>
       </div>
-      {category && (
+      {intro && (
         <>
           <div className="border overflow-scroll h-full w-full bg-white rounded-md flex-1 flex flex-col relative">
             <div className="flex-1 p-4">
               <Detail
-                category={category}
-                originalCategory={originalCategory}
-                setCategory={setCategory}
+                intro={intro}
+                originalIntro={originalIntro}
+                setIntro={setIntro}
               />
             </div>
             <div className="p-4 flex items-end justify-end bg-white border-t">
@@ -187,61 +186,88 @@ const Category = () => {
 };
 
 const Detail = ({
-  category,
-  originalCategory,
-  setCategory,
+  intro,
+  originalIntro,
+  setIntro,
 }: {
-  category: CategoryType;
-  originalCategory: CategoryType | null;
-  setCategory: Dispatch<SetStateAction<CategoryType | null>>;
+  intro: IntroType;
+  originalIntro: IntroType | null;
+  setIntro: Dispatch<SetStateAction<IntroType | null>>;
 }) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-row gap-8">
         <div className="min-w-80">
-          <label className="pl-2 font-medium">Category Name:</label>
+          <label className="pl-2 font-medium">Intro Title:</label>
           <Input
             type="text"
             placeholder="Gobi Tour"
-            value={category.name}
-            onChange={(e) => setCategory({ ...category, name: e.target.value })}
+            value={intro.title}
+            onChange={(e) => setIntro({ ...intro, title: e.target.value })}
           />
         </div>
+        <div className="max-w-80 flex flex-col">
+          <label className="pl-2 font-medium">Status:</label>
+          <select
+            value={intro.status}
+            className="px-4 py-3 border bg-tertiary rounded-xl"
+            onChange={(e) =>
+              setIntro({
+                ...intro,
+                status: e.target.value == "active" ? "active" : "inactive",
+              })
+            }
+          >
+            <option value="active">active</option>
+            <option value="inactive">inactive</option>
+          </select>
+        </div>
+      </div>
+      <div className="flex flex-col">
+        <label className="pl-2 font-medium">Description:</label>
+        <textarea
+          placeholder="Overview"
+          className=" min-h-48 w-full p-4 border rounded-xl"
+          value={intro.description}
+          onChange={(e) => {
+            setIntro({ ...intro, description: e.target.value });
+          }}
+        ></textarea>
       </div>
       <div>
         <label className="pl-2 font-medium">Images:</label>
-        <CategoryImage
-          category={category}
-          originalCategory={originalCategory}
-          setCategory={setCategory}
+        <IntroImages
+          intro={intro}
+          originalIntro={originalIntro}
+          setIntro={setIntro}
         />
       </div>
     </div>
   );
 };
 
-const CategoryImage = ({
-  category,
-  originalCategory,
-  setCategory,
+const IntroImages = ({
+  intro,
+  originalIntro,
+  setIntro,
 }: {
-  category: CategoryType;
-  originalCategory: CategoryType | null;
-  setCategory: Dispatch<SetStateAction<CategoryType | null>>;
+  intro: IntroType;
+  originalIntro: IntroType | null;
+  setIntro: Dispatch<SetStateAction<IntroType | null>>;
 }) => {
   const supabase = createClient();
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const inputRef = useRef(null);
   const imageName = useMemo(() => {
-    const name = category.image?.split("/").pop();
+    const name = intro.image?.split("/").pop();
     return name ? name : null;
-  }, [category]);
+  }, [intro]);
   const uploadImage = async (file: File) => {
     setLoading(true);
     if (imageName) {
       const { data, error } = await supabase.storage
-        .from("images")
+        .from("introImages")
         .remove([imageName]);
       if (error) {
         toast.error("Error Updating Image");
@@ -254,13 +280,12 @@ const CategoryImage = ({
     const fileType = file.type.split("/").pop();
     const fileName = `${uniqueId}.${fileType}`;
     const { data, error } = await supabase.storage
-      .from("images")
+      .from("introImages")
       .upload(fileName, file, {
         upsert: false,
-        cacheControl: "300",
       });
     const { data: publicData } = supabase.storage
-      .from("images")
+      .from("introImages")
       .getPublicUrl(fileName);
     if (error) {
       toast.error("Error Uploading Image");
@@ -295,7 +320,7 @@ const CategoryImage = ({
 
     // }
     toast.success("Successfully Uploaded an Image");
-    setCategory({ ...category, image: publicData.publicUrl });
+    setIntro({ ...intro, image: publicData.publicUrl });
     setImageFile(null);
     setLoading(false);
   };
@@ -303,11 +328,9 @@ const CategoryImage = ({
     <div className="flex flex-row flex-wrap gap-4">
       <div className=" w-[300px] h-[200px] relative">
         <Image
-          src={
-            imageFile ? URL.createObjectURL(imageFile) : category.image || ""
-          }
+          src={imageFile ? URL.createObjectURL(imageFile) : intro.image || ""}
           fill
-          alt={category.name}
+          alt={intro.title}
         />
         {loading ? (
           <div className="z-20 absolute top-0 left-0 w-full h-full flex items-center justify-center bg-white/20 backdrop-blur">
@@ -323,7 +346,7 @@ const CategoryImage = ({
                 }
               }}
             >
-              {category.image ? (
+              {intro.image ? (
                 <ReloadIcon width={24} height={24} color="black" />
               ) : (
                 <PlusIcon width={24} height={24} color="black" />
@@ -355,4 +378,4 @@ const CategoryImage = ({
   );
 };
 
-export default Category;
+export default Intro;
