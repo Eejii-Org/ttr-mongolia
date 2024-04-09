@@ -68,7 +68,7 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
     setPersonalDetail({ ...personalDetail, [key]: value });
   };
 
-  const [requestLoaindg, setRequestLoading] = useState(false);
+  const [requestLoading, setRequestLoading] = useState(false);
   const requestNewTour = async () => {
     setRequestLoading(true);
 
@@ -160,7 +160,7 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
           }}
         >
           <div className="flex flex-col md:flex-row gap-4 h-full">
-            <div className="bg-quinary p-3 md:p-4 rounded-xl flex-1 flex flex-col gap-3">
+            <div className="bg-quinary p-3 md:p-4 flex-1 flex flex-col gap-3">
               <div className="text-lg font-semibold lg:text-xl">
                 Personal Detail
               </div>
@@ -233,7 +233,7 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
                 </div>
                 <textarea
                   placeholder="Additional Information"
-                  className=" min-h-32 p-4 border rounded-xl"
+                  className=" min-h-32 p-4 border"
                   value={personalDetail.additionalInformation}
                   onChange={(e) => {
                     updatePersonalDetail(
@@ -245,7 +245,7 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
               </div>
             </div>
             <div className="flex-1 flex flex-col gap-4">
-              <div className=" bg-quinary p-3 md:p-4 rounded-xl flex flex-col gap-2">
+              <div className=" bg-quinary p-3 md:p-4 flex flex-col gap-2">
                 <div className="text-lg font-semibold lg:text-xl">
                   Choose Tour
                 </div>
@@ -253,7 +253,7 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
                   <select
                     name="tours"
                     required
-                    className={`text-base px-4 py-3 w-full rounded-xl outline-none border ${
+                    className={`text-base px-4 py-3 w-full outline-none border ${
                       selectedTour ? "text-secondary" : "text-[#c1c1c1]"
                     }`}
                     onChange={(e) => setSelectedTour(Number(e.target.value))}
@@ -284,7 +284,7 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
                   </div>
                 </div>
               </div>
-              <div className=" bg-quinary p-3 md:p-4 rounded-xl flex flex-col gap-2">
+              <div className=" bg-quinary p-3 md:p-4 flex flex-col gap-2">
                 <div className="text-lg font-semibold lg:text-xl">
                   Tour Starting Date
                 </div>
@@ -295,7 +295,7 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
                     onChange={(e) => setTourDate(e.target.value)}
                     type={"date"}
                     min={new Date().toISOString().split("T")[0]}
-                    className="text-base px-4 py-3 w-full rounded-xl outline-none border "
+                    className="text-base px-4 py-3 w-full outline-none border "
                   />
                 </div>
               </div>
@@ -317,9 +317,9 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
               </div> */}
               <button
                 type="submit"
-                className="bg-primary px-4 py-3 width-full text-center text-secondary whitespace-nowrap font-bold rounded-xl ripple"
+                className="bg-primary px-4 py-3 width-full text-center text-secondary whitespace-nowrap font-bold ripple"
               >
-                {requestLoaindg ? "Loading" : "Request A New Departure"}
+                {requestLoading ? "Loading" : "Request A New Departure"}
               </button>
             </div>
           </div>
@@ -344,7 +344,7 @@ const SelectNationality = ({
       <select
         name="nationality"
         required
-        className={`text-base px-4 py-3 w-full rounded-xl outline-none border ${
+        className={`text-base px-4 py-3 w-full outline-none border ${
           value == "" ? "text-[#c1c1c1]" : "text-secondary"
         }`}
         onChange={(e) => onChange(e.target.value)}
@@ -383,7 +383,7 @@ const SelectBirthday = ({
         required
         onChange={onChange}
         type={"date"}
-        className="text-base px-4 py-3 w-full rounded-xl outline-none border "
+        className="text-base px-4 py-3 w-full outline-none border "
       />
     </div>
   );

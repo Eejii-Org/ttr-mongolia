@@ -136,7 +136,7 @@ export const AvailableDates = ({
                     </td>
                     <td className="px-3 py-2">
                       <Link
-                        className="bg-primary px-4 py-2 whitespace-nowrap font-bold rounded-xl"
+                        className="bg-primary px-4 py-2 whitespace-nowrap font-bold"
                         // onClick={() => console.log("book")}
                         href={{
                           pathname: "/book",
@@ -174,7 +174,7 @@ export const AvailableDates = ({
                       </td>
                       <td className="px-3 py-2">
                         <Link
-                          className="bg-primary px-4 py-2 whitespace-nowrap font-bold rounded-xl"
+                          className="bg-primary px-4 py-2 whitespace-nowrap font-bold"
                           href={{
                             pathname: "/book",
                             query: {

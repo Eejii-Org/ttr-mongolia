@@ -49,7 +49,7 @@ export const Intro = () => {
     <div
       className="w-fill relative overflow-hidden flex items-center justify-center intro-section"
       style={{
-        height: "calc(80vh - 73px)",
+        height: "calc(80vh)",
       }}
     >
       <div className="z-20 gip text-white flex flex-col gap-4 text-center items-center  -mt-8">
@@ -66,7 +66,7 @@ export const Intro = () => {
           <ArrowDown />
         </div>
       </div> */}
-      <div className="absolute bottom-6 w-full justify-end z-10 pr-6 gip text-white gap-2 flex">
+      <div className="absolute bottom-6 w-full justify-end z-20 pr-6 gip text-white gap-2 flex">
         <div className="container relative">
           <div className="absolute right-0 bottom-0 w-[152px] items-center bg-white text-black flex flex-row justify-between rounded-lg">
             <button
@@ -130,6 +130,13 @@ export const Intro = () => {
           </div>
         </div> */}
       </div>
+      <div
+        className="absolute z-10 w-full h-full"
+        style={{
+          background:
+            "linear-gradient(0deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 25%), linear-gradient(0deg, rgba(0,0,0,0) 75%, rgba(0,0,0,0.2) 100%)",
+        }}
+      ></div>
       {intro?.map((item, i) => (
         <div
           key={i}
@@ -147,7 +154,7 @@ export const Intro = () => {
             alt={item.title}
             priority
             // unoptimized={true}
-            className={`object-cover select-none ${
+            className={`object-cover select-none${
               i == index ? "introImageAnimation" : ""
             }`}
           />

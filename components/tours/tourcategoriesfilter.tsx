@@ -32,7 +32,7 @@ export const TourCategoriesFilter = ({
   return (
     <div className="flex flex-row gap-4 overflow-scroll w-full">
       <div
-        className={`ripple px-4 py-2 rounded-xl whitespace-nowrap cursor-pointer ${
+        className={`ripple px-4 py-2 rounded-sm whitespace-nowrap cursor-pointer ${
           "All" == selectedCategory
             ? "bg-primary text-tertiary"
             : "bg-quaternary"
@@ -43,7 +43,7 @@ export const TourCategoriesFilter = ({
       </div>
       {tourCategories?.map((category, index) => (
         <div
-          className={`ripple px-4 py-2 rounded-xl whitespace-nowrap cursor-pointer ${
+          className={`ripple px-4 py-2 rounded-sm whitespace-nowrap cursor-pointer ${
             category.name == selectedCategory
               ? "bg-primary text-tertiary"
               : "bg-quaternary"

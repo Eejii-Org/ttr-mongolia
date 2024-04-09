@@ -101,9 +101,9 @@ const AdminIntro = () => {
             </td>
             <td className="py-2 px-3 font-semibold w-80">{title}</td>
             <td className="px-3 py-2">{description}</td>
-            <td className="max-w-12 w-12">
+            <td className="">
               <Link
-                className="font-bold rounded-full ripple p-3"
+                className="font-bold rounded-full p-3 max-w-12 max-h-12"
                 href={`/admin/intro/${id}`}
               >
                 <ArrowRight color="black" />

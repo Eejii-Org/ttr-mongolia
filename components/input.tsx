@@ -22,7 +22,7 @@ export const Input = ({
   min = undefined,
 }: InputType) => {
   return (
-    <div className="px-4 py-3 border bg-tertiary flex flex-row gap-3 rounded-xl flex-1">
+    <div className="px-4 py-3 border bg-tertiary flex flex-row gap-3 flex-1">
       {icon && icon}
       <input
         type={type}

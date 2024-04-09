@@ -61,7 +61,7 @@ const Tours = ({ searchParams }: { searchParams: { category: string } }) => {
             <button
               data-modal-target="default-modal"
               data-modal-toggle="default-modal"
-              className="cursor-pointer ripple bg-primary px-4 py-3 flex-row text-tertiary  rounded-2xl hidden md:flex"
+              className="cursor-pointer ripple bg-primary px-4 py-3 rounded-sm flex-row text-tertiary hidden md:flex"
               onClick={() => {
                 if (!scheduledOpened) {
                   document.body.style.cssText = `overflow: hidden`;

@@ -35,12 +35,7 @@ export const Tour: FC<TourType> = (props) => {
     <div className="flex flex-col md:flex-row gap-2 md:gap-8 cursor-default">
       <div className="relative md:w-1/4 md:max-w-80 h-48 md:h-auto">
         <Link href={"/tours/" + props.id}>
-          <Image
-            src={images[0]}
-            alt={title}
-            className="rounded-3xl object-cover"
-            fill
-          />
+          <Image src={images[0]} alt={title} className="object-cover" fill />
         </Link>
       </div>
       <div className="flex flex-1 flex-col gap-1">
@@ -95,7 +90,7 @@ export const Tour: FC<TourType> = (props) => {
           </button> */}
           <Link
             href={"/tours/" + props.id}
-            className="ripple w-full md:w-auto lg:w-1/2 py-2 md:py-3 bg-quaternary text-center font-bold rounded-xl"
+            className="ripple w-full md:w-auto lg:w-1/2 py-2 md:py-3 bg-quaternary text-center font-bold rounded-sm"
           >
             Learn More
           </Link>

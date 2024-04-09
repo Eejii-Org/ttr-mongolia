@@ -169,7 +169,7 @@ const Booking = ({
             <div className="text-2xl font-semibold lg:text-4xl">{error}</div>
             <button
               onClick={() => router.back()}
-              className="bg-primary px-4 py-3 width-full text-center text-secondary whitespace-nowrap font-bold rounded-xl ripple w-full"
+              className="bg-primary px-4 py-3 width-full text-center text-secondary whitespace-nowrap font-bold ripple w-full"
             >
               Go Back
             </button>
@@ -201,7 +201,7 @@ const Booking = ({
           }}
         >
           <div className="flex flex-col md:flex-row gap-4 h-full">
-            <div className="bg-quinary p-3 md:p-4 rounded-xl flex-1 flex flex-col gap-3">
+            <div className="bg-quinary p-3 md:p-4 flex-1 flex flex-col gap-3">
               <div className="text-lg font-semibold lg:text-xl">
                 Personal Detail
               </div>
@@ -274,7 +274,7 @@ const Booking = ({
                 </div>
                 <textarea
                   placeholder="Additional Information"
-                  className=" min-h-32 p-4 border rounded-xl"
+                  className=" min-h-32 p-4 border"
                   value={personalDetail.additionalInformation}
                   onChange={(e) => {
                     updatePersonalDetail(
@@ -286,7 +286,7 @@ const Booking = ({
               </div>
             </div>
             <div className="flex-1 flex flex-col gap-4">
-              <div className=" bg-quinary p-3 md:p-4 rounded-xl flex flex-col gap-2">
+              <div className=" bg-quinary p-3 md:p-4 flex flex-col gap-2">
                 <div className="text-lg font-semibold lg:text-xl">
                   Designated Date
                 </div>
@@ -315,7 +315,7 @@ const Booking = ({
                   </div>
                 </div>
               </div>
-              <div className=" bg-quinary p-3 md:p-4 rounded-xl flex flex-col gap-2">
+              <div className=" bg-quinary p-3 md:p-4 flex flex-col gap-2">
                 <div className="text-lg font-semibold lg:text-xl">Price</div>
                 <div className="text-base font-semibold lg:text-xl text-center">
                   {personalDetail.peopleCount} * ${availableTour?.price} = $
@@ -324,7 +324,7 @@ const Booking = ({
               </div>
               <button
                 type="submit"
-                className="bg-primary px-4 py-3 width-full text-center text-secondary whitespace-nowrap font-bold rounded-xl ripple"
+                className="bg-primary px-4 py-3 width-full text-center text-secondary whitespace-nowrap font-bold ripple"
               >
                 {bookLoading ? "Loading" : "Book"}
               </button>
@@ -351,7 +351,7 @@ const SelectNationality = ({
       <select
         name="nationality"
         required
-        className={`text-base px-4 py-3 w-full rounded-xl outline-none border ${
+        className={`text-base px-4 py-3 w-full outline-none border ${
           value == "" ? "text-[#c1c1c1]" : "text-secondary"
         }`}
         onChange={(e) => onChange(e.target.value)}
@@ -390,7 +390,7 @@ const SelectBirthday = ({
         required
         onChange={onChange}
         type={"date"}
-        className="text-base px-4 py-3 w-full rounded-xl outline-none border "
+        className="text-base px-4 py-3 w-full outline-none border "
       />
     </div>
   );

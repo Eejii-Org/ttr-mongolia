@@ -77,7 +77,7 @@ export const TourInfo = ({
       </div>
 
       <button
-        className="md:max-w-60 mt-5 ripple flex-1 py-3 bg-primary text-center font-bold text-secondary rounded-xl"
+        className="md:max-w-60 mt-5 ripple flex-1 py-3 bg-primary text-center font-bold text-secondary"
         onClick={checkAvailableDate}
       >
         Check Availability

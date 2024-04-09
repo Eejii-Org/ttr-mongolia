@@ -44,7 +44,9 @@ export const AdminSidebar = () => {
       <Link
         href="/admin/categories"
         className={`px-2 py-2 hover:bg-black/10 font-medium border-b ${
-          pathname == "/admin/categories" ? "text-primary" : "text-secondary"
+          pathname.includes("/admin/categories")
+            ? "text-primary"
+            : "text-secondary"
         }`}
       >
         Categories
