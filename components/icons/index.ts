@@ -25,3 +25,4 @@ export * from "./reloadicon";
 export * from "./trashicon";
 export * from "./chevronrighticon";
 export * from "./chevronlefticon";
+export * from "./starsicon";

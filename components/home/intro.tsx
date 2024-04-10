@@ -49,7 +49,7 @@ export const Intro = () => {
     <div
       className="w-fill relative overflow-hidden flex items-center justify-center intro-section"
       style={{
-        height: "calc(80vh)",
+        height: "calc(80vh - 56px)",
       }}
     >
       <div className="z-20 gip text-white flex flex-col gap-4 text-center items-center  -mt-8">
@@ -134,7 +134,7 @@ export const Intro = () => {
         className="absolute z-10 w-full h-full"
         style={{
           background:
-            "linear-gradient(0deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 25%), linear-gradient(0deg, rgba(0,0,0,0) 75%, rgba(0,0,0,0.2) 100%)",
+            "linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 25%), linear-gradient(0deg, rgba(0,0,0,0) 75%, rgba(0,0,0,0.4) 100%)",
         }}
       ></div>
       {intro?.map((item, i) => (

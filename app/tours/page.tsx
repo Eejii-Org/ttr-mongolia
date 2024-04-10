@@ -52,7 +52,7 @@ const Tours = ({ searchParams }: { searchParams: { category: string } }) => {
         setOpen={setScheduledOpened}
         tours={tours}
       />
-      <div className="flex flex-col gap-8 pt-14 mx-3 md:mx-6">
+      <div className="flex flex-col gap-8 pt-14 px-3 md:p-0 md:mx-auto container">
         <div className="flex flex-col gap-4 md:gap-8">
           <div className="flex flex-col gap-4 md:flex-row justify-between md:items-center">
             <div className="text-2xl md:text-4xl font-semibold">

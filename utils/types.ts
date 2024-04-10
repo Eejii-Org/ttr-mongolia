@@ -45,10 +45,13 @@ type TravelDate = {
 };
 
 type ReviewType = {
+  id?: number;
   firstName: string;
   lastName: string;
   date: string;
   review: string;
+  rating: number;
+  images: string[];
 };
 
 type IntroType = {

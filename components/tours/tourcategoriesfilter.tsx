@@ -30,7 +30,7 @@ export const TourCategoriesFilter = ({
     fetchTourCategories();
   }, []);
   return (
-    <div className="flex flex-row gap-4 overflow-scroll w-full">
+    <div className="flex flex-row gap-4 overflow-scroll no-scroll-bar w-full">
       <div
         className={`ripple px-4 py-2 rounded-sm whitespace-nowrap cursor-pointer ${
           "All" == selectedCategory

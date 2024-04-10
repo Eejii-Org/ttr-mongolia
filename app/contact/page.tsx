@@ -121,7 +121,7 @@ const Contact = () => {
               />
               <textarea
                 placeholder="How can we help?"
-                className=" min-h-32 p-4 border rounded-xl"
+                className=" min-h-32 p-4 border"
                 value={contact.description}
                 onChange={(e) => {
                   updateContact("description", e.target.value);
@@ -129,7 +129,7 @@ const Contact = () => {
               ></textarea>
               <button
                 type="submit"
-                className="bg-primary px-4 py-3 width-full text-center items-center flex justify-center text-secondary whitespace-nowrap font-bold rounded-xl ripple"
+                className="bg-primary px-4 py-3 width-full text-center items-center flex justify-center text-secondary whitespace-nowrap font-bold ripple rounded"
               >
                 {loading ? <span className="loader h-6 w-6"></span> : "Submit"}
               </button>

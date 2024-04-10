@@ -68,7 +68,7 @@ const TourCategory: FC<CategoryType> = (props) => {
           // unoptimized={true}
           className={`object-cover select-none`}
         />
-        <div className="flex p-3 items-center justify-center w-full bg-white z-0">
+        <div className="flex p-3 items-center justify-center w-full bg-white z-0 ripple">
           <div className="text-lg md:text-xl font-bold text-secondary">
             {name}
           </div>
