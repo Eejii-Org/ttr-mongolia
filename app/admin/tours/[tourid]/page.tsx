@@ -178,7 +178,7 @@ const Tour = () => {
             <div className="p-4 flex items-end justify-end bg-white border-t">
               <button
                 disabled={!isChanged}
-                className={`px-12 py-2 font-semibold rounded-xl hover:bg-opacity-50 ${
+                className={`px-12 py-2 font-semibold hover:bg-opacity-50 ${
                   isChanged
                     ? "bg-primary text-tertiary ripple"
                     : "bg-quinary text-secondary"
@@ -302,7 +302,7 @@ const Detail = ({
         <label className="pl-2 font-medium">Overview:</label>
         <textarea
           placeholder="Overview"
-          className=" min-h-48 w-full p-4 border rounded-xl"
+          className=" min-h-48 w-full p-4 border"
           value={tour.overview}
           onChange={(e) => {
             setTour({ ...tour, overview: e.target.value });
@@ -418,7 +418,7 @@ const List: FC<TourPlanType> = (props) => {
       </div>
       <div className="flex justify-end">
         <button
-          className="px-3 py-2 rounded-xl bg-quinary ripple font-medium"
+          className="px-3 py-2 bg-quinary ripple font-medium"
           onClick={addListData}
         >
           Add Row
@@ -451,8 +451,8 @@ const ListItem = ({
   return (
     <div
       className={`border ${index == 0 ? "" : "border-t-0"} ${
-        index == 0 ? "rounded-tl-3xl rounded-tr-3xl" : ""
-      } ${index == listLength - 1 ? "rounded-bl-3xl rounded-br-3xl" : ""}`}
+        index == 0 ? "rounded-tl rounded-tr" : ""
+      } ${index == listLength - 1 ? "rounded-bl rounded-br" : ""}`}
     >
       <div
         className={`text-lg md:text-xl p-3 gap-4 flex flex-row justify-between items-center ${
@@ -543,7 +543,7 @@ const SelectTourCategories = ({
     <div className="flex flex-row gap-4 overflow-scroll w-full">
       {tourCategories?.map((category, index) => (
         <div
-          className={`ripple px-4 py-2 rounded-full whitespace-nowrap cursor-pointer ${
+          className={`ripple px-4 py-2 rounded whitespace-nowrap cursor-pointer ${
             selectedCategories.includes(category.name)
               ? "bg-primary text-tertiary"
               : "bg-quaternary"

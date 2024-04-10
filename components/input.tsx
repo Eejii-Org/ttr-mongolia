@@ -9,6 +9,7 @@ type InputType = {
   type: HTMLInputTypeAttribute;
   pattern?: string | undefined;
   min?: number | undefined;
+  max?: number | undefined;
 };
 
 export const Input = ({
@@ -20,6 +21,7 @@ export const Input = ({
   type,
   pattern = undefined,
   min = undefined,
+  max = undefined,
 }: InputType) => {
   return (
     <div className="px-4 py-3 border bg-tertiary flex flex-row gap-3 flex-1">
@@ -31,6 +33,7 @@ export const Input = ({
         value={value}
         pattern={pattern}
         min={min}
+        max={max}
         onChange={onChange}
         className="text-base text-secondary outline-none flex-1 w-full"
       />

@@ -15,7 +15,6 @@ export const MainLayout = ({
   const [scrolled, setIsScrolled] = useState(false);
   useEffect(() => {
     const handleScroll = () => {
-      console.log(window.scrollY);
       if (window.scrollY == 0) {
         setIsScrolled(false);
       } else {

@@ -1,16 +1,25 @@
 "use client";
-import { ExpandIcon } from "@/components/icons/expandicon";
 import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
-import { Modal } from "../modal";
-import { ArrowRight } from "@components";
+import { ArrowRight, TrashIcon } from "@components";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 const AdminTours = () => {
   const [loading, setLoading] = useState(false);
   const supabase = createClient();
-  const [open, setOpen] = useState(false);
   const [tours, setTours] = useState<TourType[]>([]);
+  const deleteTour = async (tourId?: number) => {
+    if (tourId == undefined) return;
+    const { error } = await supabase.from("tours").delete().eq("id", tourId);
+    if (error) {
+      toast.error("Error While Deleting");
+      console.error(error);
+      return;
+    }
+    setTours([...tours.filter(({ id }) => id !== tourId)]);
+    toast.success("Successfully Deleted A Tour");
+  };
   useEffect(() => {
     const fetchTours = async () => {
       setLoading(true);
@@ -29,9 +38,6 @@ const AdminTours = () => {
   }, []);
   return (
     <div className="flex-1 flex flex-col">
-      <Modal open={open} setOpen={setOpen}>
-        Hello
-      </Modal>
       <div className="flex-1 p-4">
         <div className="flex flex-row justify-between pb-4">
           <div className="text-2xl md:text-4xl font-semibold">Tours</div>
@@ -44,6 +50,7 @@ const AdminTours = () => {
         </div>
         <table className="border overflow-scroll w-full bg-white rounded-md">
           <tr>
+            <td className="max-w-12 w-12 border-b"></td>
             <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
               Status
             </th>
@@ -64,6 +71,14 @@ const AdminTours = () => {
           </tr>
           {tours.map((tour, i) => (
             <tr className="hover:bg-black/5 table-row" key={i}>
+              <td className="max-w-12 w-12">
+                <button
+                  className="font-bold rounded-full ripple p-3"
+                  onClick={() => deleteTour(tour.id)}
+                >
+                  <TrashIcon />
+                </button>
+              </td>
               <td className="text-left px-3 py-2 font-semibold md:text-lg">
                 {tour.status == "active" ? (
                   <div

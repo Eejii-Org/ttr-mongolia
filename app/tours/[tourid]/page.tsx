@@ -55,7 +55,7 @@ const TourPage = () => {
     <MainLayout headerTransparent>
       <div className="flex flex-col gap-4">
         <TourIntro tour={tour} />
-        <div className=" w-screen px-3 xl:px-0 xl:max-w-[calc(1280px)] mx-auto flex flex-col-reverse md:flex-row">
+        <div className=" w-screen px-3 xl:px-0 container mx-auto flex flex-col-reverse md:flex-row">
           <div className="w-full md:w-2/3 flex flex-col gap-8">
             <Overview tour={tour} />
             <Included tour={tour} />

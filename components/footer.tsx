@@ -3,9 +3,9 @@ import { Facebook, Instagram } from "./icons";
 
 export const Footer = () => {
   return (
-    <div className="bg-quinary p-6 flex flex-col gap-2">
-      <div className="container mx-auto">
-        <div className="flex flex-row justify-between">
+    <div className="bg-quinary p-6">
+      <div className="container mx-auto flex flex-col gap-2">
+        <div className="flex flex-row justify-between items-center">
           <Link href="/contact">
             <div className="text-base">Contact Us</div>
           </Link>

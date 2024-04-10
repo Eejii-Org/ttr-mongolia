@@ -52,7 +52,7 @@ const Tours = ({ searchParams }: { searchParams: { category: string } }) => {
         setOpen={setScheduledOpened}
         tours={tours}
       />
-      <div className="flex flex-col gap-8 pt-14 px-3 md:p-0 md:mx-auto container">
+      <div className="flex flex-col gap-8 px-3 md:p-0 pt-14 md:pt-14 md:mx-auto container">
         <div className="flex flex-col gap-4 md:gap-8">
           <div className="flex flex-col gap-4 md:flex-row justify-between md:items-center">
             <div className="text-2xl md:text-4xl font-semibold">
@@ -61,7 +61,7 @@ const Tours = ({ searchParams }: { searchParams: { category: string } }) => {
             <button
               data-modal-target="default-modal"
               data-modal-toggle="default-modal"
-              className="cursor-pointer ripple bg-primary px-4 py-3 rounded-sm flex-row text-tertiary hidden md:flex"
+              className="cursor-pointer ripple bg-primary px-4 py-3 rounded-sm flex-row text-tertiary md:flex"
               onClick={() => {
                 if (!scheduledOpened) {
                   document.body.style.cssText = `overflow: hidden`;

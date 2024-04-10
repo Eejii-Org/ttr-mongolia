@@ -46,8 +46,8 @@ const Contact = () => {
   };
   return (
     <MainLayout>
-      <div className="w-screen flex-1 px-3 pt-14 xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col gap-4 justify-center">
-        <div className="flex flex-col md:flex-row gap-4 h-full">
+      <div className="w-screen flex-1 px-3 pt-14 container mx-auto flex flex-col gap-4 justify-center">
+        <div className="flex flex-col-reverse md:flex-row gap-4 h-full">
           <div className="p-3 md:p-4 rounded-xl flex-1 flex flex-col gap-3 justify-between">
             <div className="text-2xl font-semibold lg:text-4xl">Contact Us</div>
             <div className="text-base lg:text-lg">

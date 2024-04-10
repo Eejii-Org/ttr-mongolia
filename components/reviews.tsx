@@ -1,12 +1,12 @@
 import { createClient } from "@/utils/supabase/client";
-import { FC, useEffect, useMemo, useState } from "react";
-import { StarsIcon } from "./icons";
+import { FC, use, useEffect, useMemo, useState } from "react";
+import { CloseIcon, StarsIcon } from "./icons";
 import Image from "next/image";
 
 export const Reviews: FC = () => {
   const supabase = createClient();
   const [reviews, setReviews] = useState<ReviewType[]>([]);
-
+  const [openedImageUrl, setOpenedImageUrl] = useState<string | null>(null);
   useEffect(() => {
     const fetchReviews = async () => {
       try {
@@ -26,6 +26,12 @@ export const Reviews: FC = () => {
 
     fetchReviews();
   }, []);
+  const openImage = (imageUrl: string) => {
+    setOpenedImageUrl(imageUrl);
+  };
+  const closeImage = () => {
+    setOpenedImageUrl(null);
+  };
   return (
     <div className="flex flex-col gap-6">
       <div className="mx-3 md:mx-6 text-2xl md:text-4xl font-semibold">
@@ -33,19 +39,30 @@ export const Reviews: FC = () => {
       </div>
       <div className="flex flex-row gap-4 overflow-x-scroll no-scroll-bar w-full pl-3 pr-3 md:pl-6 md:pr-6">
         {reviews.map((review, index) => (
-          <Review {...review} key={index} />
+          <Review {...review} openImage={openImage} key={index} />
         ))}
       </div>
+      <Modal
+        open={openedImageUrl ? true : false}
+        close={closeImage}
+        image={openedImageUrl}
+      />
     </div>
   );
 };
-export const Review: FC<ReviewType> = ({
+
+interface ReviewItemType extends ReviewType {
+  openImage: (imageUrl: string) => void;
+}
+
+export const Review: FC<ReviewItemType> = ({
   firstName,
   lastName,
   date,
   review,
   rating,
   images,
+  openImage,
 }) => {
   const dateText = useMemo(() => {
     const dt = new Date(date);
@@ -62,8 +79,12 @@ export const Review: FC<ReviewType> = ({
     <div className="p-4 bg-quinary relative flex flex-row gap-4 review-item">
       {images.length != 0 && (
         <div className="min-w-24 flex flex-col gap-3">
-          {images.map((image, index) => (
-            <div className="flex flex-1 relative" key={index}>
+          {images.slice(0, 3).map((image, index) => (
+            <div
+              onClick={() => openImage(image)}
+              className="flex flex-1 relative cursor-pointer"
+              key={index}
+            >
               <Image
                 src={image}
                 alt={firstName + " " + lastName + index}
@@ -103,6 +124,38 @@ export const Review: FC<ReviewType> = ({
           {review}
         </div>
         <div className="font-semibold text-[#6D6D6D] text-end">{dateText}</div>
+      </div>
+    </div>
+  );
+};
+
+const Modal = ({
+  open,
+  close,
+  image,
+}: {
+  open: boolean;
+  close: () => void;
+  image: string | null;
+}) => {
+  useEffect(() => {
+    if (open) {
+      document.body.style.cssText = `overflow: hidden`;
+    } else {
+      document.body.style.cssText = `overflow: auto`;
+    }
+  }, [open]);
+  return (
+    <div
+      className={`fixed z-50 top-0 bottom-0 w-screen h-screen overflow-scroll backdrop-blur-sm bg-black/50 items-center justify-center ${
+        open ? "flex" : "hidden"
+      }`}
+    >
+      <button className="absolute top-8 right-8" onClick={close}>
+        <CloseIcon />
+      </button>
+      <div className="w-[calc(100vw-32px)] md:container relative h-3/4 bg-white/75 lg:rounded-3xl">
+        <Image src={image || ""} objectFit="cover" fill alt={"modalimage"} />
       </div>
     </div>
   );
