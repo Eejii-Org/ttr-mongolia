@@ -32,6 +32,10 @@ html {
   height: 100vh;
 }
 
+.intro-section {
+  height: calc(90vh - 16px - 56px) !important;
+}
+
 @media screen and (max-height: 800px) {
   .intro-section {
     height: calc(100vh - 16px - 56px) !important;

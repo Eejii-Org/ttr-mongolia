@@ -46,12 +46,7 @@ export const Intro = () => {
     return () => clearInterval(interval);
   }, [index, intro?.length]);
   return (
-    <div
-      className="w-fill relative overflow-hidden flex items-center justify-center intro-section"
-      style={{
-        height: "calc(80vh - 56px)",
-      }}
-    >
+    <div className="w-fill relative overflow-hidden flex items-center justify-center intro-section">
       <div className="z-20 gip text-white flex flex-col gap-4 text-center items-center  -mt-8">
         <div className="font-bold text-3xl md:text-4xl lg:text-7xl md:font-semibold">
           {intro?.[index]?.title}
