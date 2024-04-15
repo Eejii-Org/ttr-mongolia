@@ -378,16 +378,16 @@ const List: FC<TourPlanType> = (props) => {
     ]);
   };
   const moveList = (index: number, direction: "up" | "down") => {
-    let list = listData;
+    let list = [...listData];
     if (direction == "up") {
       if (index == 0) return;
       [list[index - 1], list[index]] = [list[index], list[index - 1]];
-      setListData(list);
+      setListData([...list]);
       return;
     }
     if (index == listData.length - 1) return;
     [list[index], list[index + 1]] = [list[index + 1], list[index]];
-    setListData(list);
+    setListData([...list]);
   };
   return (
     <div className="flex flex-col gap-4">

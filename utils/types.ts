@@ -62,6 +62,7 @@ type IntroType = {
   title: string;
   description: string;
   status: "active" | "inactive";
+  order: number;
 };
 
 type CategoryType = {

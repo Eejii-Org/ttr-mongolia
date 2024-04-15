@@ -103,12 +103,14 @@ const Intro = () => {
           title: "",
           description: "",
           status: "active",
+          order: 0,
         });
         setOriginalIntro({
           image: null,
           title: "",
           description: "",
           status: "active",
+          order: 0,
         });
         setIsNew(true);
         setLoading(false);

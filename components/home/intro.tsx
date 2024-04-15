@@ -18,7 +18,8 @@ export const Intro = () => {
         const { data, error } = await supabase
           .from("intro")
           .select("*")
-          .eq("status", "active");
+          .eq("status", "active")
+          .order("order", { ascending: true });
         if (error) {
           throw error;
         }

@@ -1,17 +1,20 @@
 "use client";
 import { createClient } from "@/utils/supabase/client";
-import { ArrowRight, TrashIcon } from "@components";
+import { ArrowRight, CaretDownIcon, CaretUpIcon, TrashIcon } from "@components";
+import _ from "lodash";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 
 const AdminIntro = () => {
-  // const [intro, setIntro] = useState<IntroType[]>([]);
   const supabase = createClient();
-  const router = useRouter();
   const [intro, setIntro] = useState<IntroType[]>([]);
+  const [newIntro, setNewIntro] = useState<IntroType[]>([]);
+  const isSame = useMemo(() => {
+    return _.isEqual(intro, newIntro);
+  }, [newIntro, intro]);
   const deleteIntro = async (
     introId: number | undefined,
     image: string | null
@@ -36,16 +39,56 @@ const AdminIntro = () => {
         }
       }
     }
+    setNewIntro([...intro.filter(({ id }) => id !== introId)]);
     setIntro([...intro.filter(({ id }) => id !== introId)]);
     toast.success("Successfully Deleted");
   };
+  const moveList = (index: number, direction: "up" | "down") => {
+    let list = [...newIntro];
+    if (direction == "up") {
+      if (index == 0) return;
+      [list[index - 1], list[index]] = [list[index], list[index - 1]];
+      setNewIntro([...list]);
+      return;
+    }
+    if (index == newIntro.length - 1) return;
+    [list[index], list[index + 1]] = [list[index + 1], list[index]];
+    setNewIntro([...list]);
+  };
+  const orderSave = async () => {
+    const differentIntros: {
+      id: number;
+      order: number;
+    }[] = [];
+    newIntro.forEach((introItem, index) => {
+      if (!_.isEqual(introItem, intro[index])) {
+        differentIntros.push({ id: introItem.id || 0, order: index });
+      }
+    });
+
+    const { data, error } = await supabase
+      .from("intro")
+      .upsert([...differentIntros]);
+    if (error) {
+      console.error(error);
+      toast.error(error.message);
+      return;
+    }
+    setIntro([...newIntro]);
+    toast.success("Successfully updated order");
+  };
+
   useEffect(() => {
     const fetchIntro = async () => {
       try {
-        const { data, error } = await supabase.from("intro").select("*");
+        const { data, error } = await supabase
+          .from("intro")
+          .select("*")
+          .order("order", { ascending: true });
         if (error) {
           throw error;
         }
+        setNewIntro(data);
         setIntro(data);
       } catch (error: any) {
         console.error("Error fetching tour intro:", error.message);
@@ -65,8 +108,22 @@ const AdminIntro = () => {
           Add Intro
         </Link>
       </div>
+      <div className="fixed bottom-6 right-6 z-50">
+        <button
+          onClick={() => orderSave()}
+          className={`cursor-pointer ripple  px-8 py-2 flex-row text-lg rounded hidden md:flex ${
+            isSame
+              ? "bg-quaternary cursor-default"
+              : "bg-primary text-tertiary pointer"
+          }`}
+          disabled={isSame}
+        >
+          Save
+        </button>
+      </div>
       <table className="border overflow-scroll w-full bg-white rounded-md">
         <tr>
+          <th className="text-left px-3 py-2 font-semibold md:text-lg max-w-12 border-b w-12"></th>
           <th className="text-left px-3 py-2 font-semibold md:text-lg max-w-12 border-b w-12"></th>
           <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b w-20">
             Status
@@ -82,7 +139,7 @@ const AdminIntro = () => {
           </th>
           <th className="text-left px-3 py-2 font-semibold md:text-lg max-w-12 border-b w-12"></th>
         </tr>
-        {intro.map(({ title, description, image, status, id }, i) => (
+        {newIntro.map(({ title, description, image, status, id }, i) => (
           <tr
             className="hover:bg-black/5 table-row hover:bg-grey/50 cursor-pointer"
             key={i}
@@ -93,6 +150,21 @@ const AdminIntro = () => {
                 onClick={() => deleteIntro(id, image)}
               >
                 <TrashIcon />
+              </button>
+            </td>
+            <td className="max-w-12 w-12">
+              <button
+                className={`${i == 0 ? "opacity-50" : "ripple"}`}
+                disabled={i == 0}
+                onClick={() => moveList(i, "up")}
+              >
+                <CaretUpIcon color="black" />
+              </button>
+              <button
+                className={`${i == intro.length - 1 ? "opacity-50" : "ripple"}`}
+                onClick={() => moveList(i, "down")}
+              >
+                <CaretDownIcon color="black" />
               </button>
             </td>
             <td className="text-left px-3 py-2 font-semibold md:text-lg w-20">
