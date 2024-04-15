@@ -31,6 +31,7 @@ type TravelDate = {
   date: string;
   price: number;
   status: "active" | "inactive";
+  tourId: number;
   // tourId: string;
   // title: string;
   // overview: string;

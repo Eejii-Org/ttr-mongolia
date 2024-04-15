@@ -172,7 +172,7 @@ const Tour = () => {
                   setTour={setTour}
                 />
               ) : (
-                <ScheduledTours tourId={tourid as string} />
+                <ScheduledTours tourId={Number(tourid)} />
               )}
             </div>
             {selectedTab == "detail" && (
@@ -737,7 +737,7 @@ const TourImage = ({
   );
 };
 
-const ScheduledTours = ({ tourId }: { tourId: string }) => {
+const ScheduledTours = ({ tourId }: { tourId: number }) => {
   const supabase = createClient();
   const [availableTours, setAvailableTours] = useState<TravelDate[]>([]);
   const addDeparture = () => {
@@ -751,6 +751,7 @@ const ScheduledTours = ({ tourId }: { tourId: string }) => {
         date: todayString,
         price: 1000,
         status: "active",
+        tourId: tourId,
       },
       ...availableTours,
     ]);

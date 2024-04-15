@@ -32,7 +32,8 @@ export const AvailableDates = ({
     });
     return availableDates.map((availableDate) => ({
       ...availableDate,
-      ...obj[availableDate?.id || 0],
+      ...obj[availableDate.tourId || 0],
+      availableTourId: availableDate.id,
     }));
   }, [tours, availableDates]);
 
@@ -43,6 +44,7 @@ export const AvailableDates = ({
         const { data, error } = await supabase
           .from("availableTours")
           .select("*")
+          .eq("status", "active")
           .gte("date", new Date().toISOString());
         if (error) {
           throw error;
@@ -115,13 +117,16 @@ export const AvailableDates = ({
                     Booking
                   </th>
                 </tr>
-                {availableTours.map((availableTour, i) => (
+                {/* {availableTours.map((availableTour, i) => (
                   <tr className="hover:bg-black/5 flex md:hidden" key={i}>
                     <td className="px-3 flex items-center min-w-10">
                       {tableIndex * 8 + i + 1}
                     </td>
                     <td className="flex-1 flex min-w-36 md:min-w-min py-2 px-3 font-semibold ">
-                      <Link href={"a"} className=" flex-1">
+                      <Link
+                        href={`/tours/${availableTour.tourId}`}
+                        className=" flex-1"
+                      >
                         {availableTour.title}
                       </Link>
                     </td>
@@ -140,7 +145,7 @@ export const AvailableDates = ({
                         href={{
                           pathname: "/book",
                           query: {
-                            availableTourId: availableTour.id,
+                            availableTourId: availableTour.availableTourId,
                           },
                         }}
                       >
@@ -148,7 +153,7 @@ export const AvailableDates = ({
                       </Link>
                     </td>
                   </tr>
-                ))}
+                ))} */}
                 {availableTours
                   .slice(tableIndex * 8, (tableIndex + 1) * 8)
                   .map((availableTour, i) => (
@@ -157,8 +162,11 @@ export const AvailableDates = ({
                         {tableIndex * 8 + i + 1}
                       </td>
                       <td className="flex-1 flex min-w-36 md:min-w-min py-2 px-3 font-semibold ">
-                        <Link href={"a"} className=" flex-1">
-                          {availableTour.title} asdf asdf asdf
+                        <Link
+                          href={`/tours/${availableTour.tourId}`}
+                          className=" flex-1"
+                        >
+                          {availableTour.title}
                         </Link>
                       </td>
                       <td className="flex-1 min-w-36 md:min-w-min px-3 py-2">
@@ -177,7 +185,7 @@ export const AvailableDates = ({
                           href={{
                             pathname: "/book",
                             query: {
-                              availableTourId: availableTour.id,
+                              availableTourId: availableTour.availableTourId,
                             },
                           }}
                         >

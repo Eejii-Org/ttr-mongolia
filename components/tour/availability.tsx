@@ -14,7 +14,8 @@ export const Availability = ({ tour }: { tour: TourType }) => {
         const { data, error } = await supabase
           .from("availableTours")
           .select("*")
-          .filter("tourId", "eq", tour.id)
+          .eq("tourId", tour.id)
+          .eq("status", "active")
           .gte("date", new Date().toISOString());
         if (error) {
           throw error;
