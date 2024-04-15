@@ -14,7 +14,8 @@ export const Availability = ({ tour }: { tour: TourType }) => {
         const { data, error } = await supabase
           .from("availableTours")
           .select("*")
-          .filter("tourId", "eq", tour.id);
+          .filter("tourId", "eq", tour.id)
+          .gte("date", new Date().toISOString());
         if (error) {
           throw error;
         }
@@ -30,6 +31,12 @@ export const Availability = ({ tour }: { tour: TourType }) => {
     <div className="flex flex-col gap-4">
       <div className="text-2xl md:text-4xl font-semibold">Available Tours</div>
       <div className="flex flex-col gap-4">
+        {tourDates.length == 0 && (
+          <div>
+            There are currently no scheduled departures but you can request a
+            new departure date.
+          </div>
+        )}
         {tourDates.map((tourDate, index) => (
           <AvailabilityItem
             {...tourDate}

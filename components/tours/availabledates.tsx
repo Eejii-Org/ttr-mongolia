@@ -32,7 +32,7 @@ export const AvailableDates = ({
     });
     return availableDates.map((availableDate) => ({
       ...availableDate,
-      ...obj[availableDate.id],
+      ...obj[availableDate?.id || 0],
     }));
   }, [tours, availableDates]);
 
@@ -137,7 +137,6 @@ export const AvailableDates = ({
                     <td className="px-3 py-2">
                       <Link
                         className="bg-primary px-4 py-2 whitespace-nowrap font-bold"
-                        // onClick={() => console.log("book")}
                         href={{
                           pathname: "/book",
                           query: {

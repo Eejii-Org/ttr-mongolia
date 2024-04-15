@@ -1,18 +1,6 @@
 "use client";
 import { createClient } from "@/utils/supabase/client";
-import {
-  ArrowLeft,
-  CaretDownIcon,
-  CaretUpIcon,
-  ChevronDownIcon,
-  CloseIcon,
-  DayIcon,
-  Input,
-  MinusIcon,
-  NightIcon,
-  PlusIcon,
-  PriceIcon,
-} from "@components";
+import { ArrowLeft, CloseIcon, Input, PlusIcon } from "@components";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import {
@@ -38,7 +26,6 @@ const Review = () => {
   const { reviewid } = params;
   const [isNew, setIsNew] = useState(false);
   const [isNotFound, setIsNotFound] = useState(false);
-  const [selectedTab, setSelectedTab] = useState("detail");
 
   const save = async () => {
     setSaveLoading(true);
@@ -149,18 +136,13 @@ const Review = () => {
       </div>
       {review && (
         <>
-          <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
           <div className="border overflow-scroll h-full w-full bg-white rounded-md flex-1 flex flex-col relative">
             <div className="flex-1 p-4">
-              {selectedTab == "detail" ? (
-                <Detail
-                  review={review}
-                  originalReview={originalReview}
-                  setReview={setReview}
-                />
-              ) : (
-                <>Reviews</>
-              )}
+              <Detail
+                review={review}
+                originalReview={originalReview}
+                setReview={setReview}
+              />
             </div>
             <div className="p-4 flex items-end justify-end bg-white border-t">
               <button
@@ -372,23 +354,25 @@ const ReviewImages = ({
           )}
         </div>
       )}
-      <div className="w-[300px] h-[200px] relative bg-quinary flex items-center justify-center gap-1 flex-col">
-        <input
-          type="file"
-          onChange={(e) => {
-            if (!e.target.files || e.target.files?.length == 0) return;
-            setImageFile(e.target.files[0]);
-            uploadImage(e.target.files[0]);
-          }}
-          accept="image/*"
-          className="w-[300px] h-[200px] absolute left-0 top-0 opacity-0"
-        />
+      {review?.images.length < 3 && (
+        <div className="w-[300px] h-[200px] relative bg-quinary flex items-center justify-center gap-1 flex-col">
+          <input
+            type="file"
+            onChange={(e) => {
+              if (!e.target.files || e.target.files?.length == 0) return;
+              setImageFile(e.target.files[0]);
+              uploadImage(e.target.files[0]);
+            }}
+            accept="image/*"
+            className="w-[300px] h-[200px] absolute left-0 top-0 opacity-0"
+          />
 
-        <div className="p-2 bg-white rounded-full">
-          <PlusIcon color="black" width={32} height={32} />
+          <div className="p-2 bg-white rounded-full">
+            <PlusIcon color="black" width={32} height={32} />
+          </div>
+          <div>Add Image</div>
         </div>
-        <div>Add Image</div>
-      </div>
+      )}
     </div>
   );
 };

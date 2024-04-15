@@ -12,13 +12,29 @@ const AdminIntro = () => {
   const supabase = createClient();
   const router = useRouter();
   const [intro, setIntro] = useState<IntroType[]>([]);
-  const deleteIntro = async (introId: number | undefined) => {
+  const deleteIntro = async (
+    introId: number | undefined,
+    image: string | null
+  ) => {
     if (introId == undefined) return;
     const { error } = await supabase.from("intro").delete().eq("id", introId);
     if (error) {
       toast.error("Error While Deleting");
       console.error(error);
       return;
+    }
+    if (image) {
+      const name = image?.split("/").pop();
+      if (name) {
+        const { error: err } = await supabase.storage
+          .from("introImages")
+          .remove([name]);
+        if (err) {
+          toast.error("Error While Deleting");
+          console.error(err);
+          return;
+        }
+      }
     }
     setIntro([...intro.filter(({ id }) => id !== introId)]);
     toast.success("Successfully Deleted");
@@ -74,7 +90,7 @@ const AdminIntro = () => {
             <td className="max-w-12 w-12">
               <button
                 className="font-bold rounded-full ripple p-3"
-                onClick={() => deleteIntro(id)}
+                onClick={() => deleteIntro(id, image)}
               >
                 <TrashIcon />
               </button>
@@ -101,13 +117,15 @@ const AdminIntro = () => {
             </td>
             <td className="py-2 px-3 font-semibold w-80">{title}</td>
             <td className="px-3 py-2">{description}</td>
-            <td className="">
-              <Link
-                className="font-bold rounded-full p-3 max-w-12 max-h-12"
-                href={`/admin/intro/${id}`}
-              >
-                <ArrowRight color="black" />
-              </Link>
+            <td className="max-w-12 w-12">
+              <div className="flex items-center justify-center">
+                <Link
+                  className="font-bold rounded-full ripple p-3 max-w-12 max-h-12"
+                  href={`/admin/intro/${id}`}
+                >
+                  <ArrowRight color="black" />
+                </Link>
+              </div>
             </td>
           </tr>
         ))}

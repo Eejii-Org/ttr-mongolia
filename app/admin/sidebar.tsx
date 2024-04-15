@@ -18,7 +18,7 @@ export const AdminSidebar = () => {
       <Link
         href="/admin/intro"
         className={`px-2 py-2 hover:bg-black/10 font-medium border-b text-primary ${
-          pathname == "/admin/intro" ? "text-primary" : "text-secondary"
+          pathname.includes("/admin/intro") ? "text-primary" : "text-secondary"
         }`}
       >
         Intro
@@ -26,25 +26,25 @@ export const AdminSidebar = () => {
       <Link
         href="/admin/tours"
         className={`px-2 py-2 hover:bg-black/10 font-medium border-b text-primary ${
-          pathname.includes("/admin/tours") ? "text-primary" : "text-secondary"
+          pathname.includes("admin/tours") ? "text-primary" : "text-secondary"
         }`}
       >
         Tours
       </Link>
       <Link
-        href="/admin/scheduledtours"
-        className={`px-2 py-2 hover:bg-black/10 font-medium border-b ${
-          pathname.includes("/admin/scheduledtours")
+        href="/admin/departurerequests"
+        className={`px-2 py-2 hover:bg-black/10 font-medium border-b text-primary ${
+          pathname.includes("admin/departurerequests")
             ? "text-primary"
             : "text-secondary"
         }`}
       >
-        ScheduledTours
+        Departure Requests
       </Link>
       <Link
         href="/admin/categories"
         className={`px-2 py-2 hover:bg-black/10 font-medium border-b ${
-          pathname.includes("/admin/categories")
+          pathname.includes("admin/categories")
             ? "text-primary"
             : "text-secondary"
         }`}
@@ -53,11 +53,21 @@ export const AdminSidebar = () => {
       </Link>
       <Link
         href="/admin/reviews"
-        className={`px-2 py-2 hover:bg-black/10 font-medium ${
-          pathname == "/admin/reviews" ? "text-primary" : "text-secondary"
+        className={`px-2 py-2 hover:bg-black/10 font-medium border-b ${
+          pathname.includes("admin/reviews") ? "text-primary" : "text-secondary"
         }`}
       >
         Reviews
+      </Link>
+      <Link
+        href="/admin/transactions"
+        className={`px-2 py-2 hover:bg-black/10 font-medium ${
+          pathname.includes("admin/transactions")
+            ? "text-primary"
+            : "text-secondary"
+        }`}
+      >
+        Transactions
       </Link>
     </div>
   );

@@ -105,3 +105,11 @@ html {
     transform: rotate(360deg);
   }
 }
+
+input[type="text"]:disabled {
+  background-color: white;
+}
+
+textarea:disabled {
+  background-color: white;
+}

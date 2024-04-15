@@ -11,3 +11,4 @@ export * from "./input";
 export * from "./customersupport";
 export * from "./reviews";
 export * from "./layout";
+export * from "./modal";

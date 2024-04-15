@@ -50,7 +50,7 @@ const AdminTours = () => {
         </div>
         <table className="border overflow-scroll w-full bg-white rounded-md">
           <tr>
-            <td className="max-w-12 w-12 border-b"></td>
+            {/* <td className="max-w-12 w-12 border-b"></td> */}
             <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
               Status
             </th>
@@ -71,14 +71,14 @@ const AdminTours = () => {
           </tr>
           {tours.map((tour, i) => (
             <tr className="hover:bg-black/5 table-row" key={i}>
-              <td className="max-w-12 w-12">
+              {/* <td className="max-w-12 w-12">
                 <button
                   className="font-bold rounded-full ripple p-3"
                   onClick={() => deleteTour(tour.id)}
                 >
                   <TrashIcon />
                 </button>
-              </td>
+              </td> */}
               <td className="text-left px-3 py-2 font-semibold md:text-lg">
                 {tour.status == "active" ? (
                   <div

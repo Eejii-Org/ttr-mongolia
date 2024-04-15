@@ -9,14 +9,30 @@ import { toast } from "react-toastify";
 
 const AdminCategories = () => {
   const supabase = createClient();
-  const router = useRouter();
   const [categories, setCategories] = useState<CategoryType[]>([]);
-  const deleteCategory = async (categoryId: number | undefined) => {
+  const deleteCategory = async (
+    categoryId: number | undefined,
+    image: string | null
+  ) => {
     if (categoryId == undefined) return;
     const { error } = await supabase
       .from("tourCategories")
       .delete()
       .eq("id", categoryId);
+    if (image) {
+      const name = image?.split("/").pop();
+      if (name) {
+        const { error: err } = await supabase.storage
+          .from("images")
+          .remove([name]);
+        if (err) {
+          toast.error("Error While Deleting");
+          console.error(err);
+          return;
+        }
+      }
+    }
+
     if (error) {
       toast.error("Error While Deleting");
       console.error(error);
@@ -72,7 +88,7 @@ const AdminCategories = () => {
             <td className="max-w-12 w-12">
               <button
                 className="font-bold rounded-full ripple p-3"
-                onClick={() => deleteCategory(id)}
+                onClick={() => deleteCategory(id, image)}
               >
                 <TrashIcon />
               </button>
@@ -83,13 +99,15 @@ const AdminCategories = () => {
               </div>
             </td>
             <td className="py-2 px-3 font-semibold w-80">{name}</td>
-            <td className="max-w-12 w-12">
-              <Link
-                className="font-bold rounded-full ripple p-3"
-                href={`/admin/categories/${id}`}
-              >
-                <ArrowRight color="black" />
-              </Link>
+            <td className="max-w-12 w-12 h-full">
+              <div className="flex items-center justify-center">
+                <Link
+                  className="font-bold rounded-full ripple p-3"
+                  href={`/admin/categories/${id}`}
+                >
+                  <ArrowRight color="black" />
+                </Link>
+              </div>
             </td>
           </tr>
         ))}

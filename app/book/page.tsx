@@ -74,9 +74,9 @@ const Booking = ({
     const { error } = await supabase.from("transactions").insert({
       ...personalDetail,
       transactionId: res.data.transactionId,
-      amount: "0.01",
       availableTourId: availableTourId,
       // amount: personalDetail.peopleCount * availableTour?.price,
+      amount: "0.01",
     });
     if (error) {
       console.error(error);

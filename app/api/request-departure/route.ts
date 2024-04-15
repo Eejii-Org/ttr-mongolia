@@ -31,7 +31,6 @@ export async function POST(request: Request) {
       message: "Bad Request",
     });
   }
-  console.log(body, "server body");
   const {
     firstName,
     lastName,
@@ -58,10 +57,10 @@ export async function POST(request: Request) {
       additionalInformation,
       tourId,
       startingDate,
+      status: "Pending",
     })
     .select()
     .single();
-  console.log(data, "server data");
   if (error) {
     return Response.json(error);
   }

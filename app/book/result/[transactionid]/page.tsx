@@ -52,14 +52,12 @@ const PaymentResult = () => {
   useEffect(() => {
     const getStatus = async () => {
       setLoading(true);
-      console.log(transactionid);
       const res = await axios.post(
         "https://ttr-mongolia.vercel.app/api/check-transaction",
         {
           transactionId: transactionid,
         }
       );
-      console.log(res);
       setTransactionDetail(res.data);
       setLoading(false);
     };

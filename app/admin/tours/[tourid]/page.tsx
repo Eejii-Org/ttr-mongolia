@@ -172,22 +172,24 @@ const Tour = () => {
                   setTour={setTour}
                 />
               ) : (
-                <>Reviews</>
+                <ScheduledTours tourId={tourid as string} />
               )}
             </div>
-            <div className="p-4 flex items-end justify-end bg-white border-t">
-              <button
-                disabled={!isChanged}
-                className={`px-12 py-2 font-semibold hover:bg-opacity-50 ${
-                  isChanged
-                    ? "bg-primary text-tertiary ripple"
-                    : "bg-quinary text-secondary"
-                }`}
-                onClick={save}
-              >
-                Save
-              </button>
-            </div>
+            {selectedTab == "detail" && (
+              <div className="p-4 flex items-end justify-end bg-white border-t">
+                <button
+                  disabled={!isChanged}
+                  className={`px-12 py-2 font-semibold hover:bg-opacity-50 ${
+                    isChanged
+                      ? "bg-primary text-tertiary ripple"
+                      : "bg-quinary text-secondary"
+                  }`}
+                  onClick={save}
+                >
+                  Save
+                </button>
+              </div>
+            )}
           </div>
         </>
       )}
@@ -202,7 +204,7 @@ const Tabs = ({
   selectedTab: string;
   setSelectedTab: Dispatch<SetStateAction<string>>;
 }) => {
-  const tabs = ["detail", "reviews"];
+  const tabs = ["detail", "schedules"];
   return (
     <div className="flex flex-row">
       {tabs.map((tab, index) => (
@@ -731,6 +733,229 @@ const TourImage = ({
           </button>
         </div>
       )}
+    </div>
+  );
+};
+
+const ScheduledTours = ({ tourId }: { tourId: string }) => {
+  const supabase = createClient();
+  const [availableTours, setAvailableTours] = useState<TravelDate[]>([]);
+  const addDeparture = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0"); // Adding 1 because getMonth() returns zero-based month
+    const day = String(today.getDate()).padStart(2, "0");
+    const todayString = `${year}-${month}-${day}`;
+    setAvailableTours([
+      {
+        date: todayString,
+        price: 1000,
+        status: "active",
+      },
+      ...availableTours,
+    ]);
+  };
+  const saveDeparture = async (departure: TravelDate) => {
+    if (departure.id) {
+      const { error } = await supabase
+        .from("availableTours")
+        .update({
+          ...departure,
+        })
+        .eq("id", departure?.id);
+      if (error) {
+        console.error(error);
+        toast.error(error.message);
+        return;
+      }
+      setAvailableTours(
+        availableTours.map((availableTour) =>
+          availableTour.id == departure.id ? departure : availableTour
+        )
+      );
+      toast.success("Successfully saved departure");
+      return;
+    }
+    const { data, error } = await supabase
+      .from("availableTours")
+      .insert({
+        ...departure,
+        tourId: tourId,
+      })
+      .select();
+    if (error) {
+      console.error(error);
+      toast.error(error.message);
+      return;
+    }
+    let newAvailableTours = availableTours;
+    newAvailableTours.shift();
+    setAvailableTours([data[0], ...newAvailableTours]);
+    toast.success("Successfully saved departure");
+  };
+  const updateDeparture = async (departure: TravelDate) => {
+    const { error } = await supabase
+      .from("availableTours")
+      .update({
+        status: departure?.status == "active" ? "inactive" : "active",
+      })
+      .eq("id", departure?.id);
+    if (error) {
+      console.error(error);
+      toast.error(error.message);
+      return;
+    }
+    setAvailableTours(
+      availableTours.map((availableTour) =>
+        availableTour.id == departure.id
+          ? {
+              ...departure,
+              status: departure?.status == "active" ? "inactive" : "active",
+            }
+          : availableTour
+      )
+    );
+    toast.success("Successfully updated departure");
+  };
+  useEffect(() => {
+    const getAvailableTours = async () => {
+      if (!tourId) return;
+      const { data, error } = await supabase
+        .from("availableTours")
+        .select("*")
+        .eq("tourId", tourId)
+        .order("date", { ascending: true });
+      if (error) {
+        console.error(error.message);
+        return;
+      }
+      setAvailableTours(data);
+    };
+    getAvailableTours();
+  }, [tourId]);
+  return (
+    <div>
+      <div className="flex justify-between mb-4">
+        <div className="text-lg md:text-2xl font-semibold">
+          Scheduled Departures
+        </div>
+        <button
+          className="px-3 py-2 bg-quinary ripple font-medium"
+          onClick={addDeparture}
+        >
+          Add Departure
+        </button>
+      </div>
+      {availableTours.map((departure, index) => (
+        <ScheduledTour
+          departure={departure}
+          index={index}
+          scheduleLength={availableTours.length}
+          saveDeparture={saveDeparture}
+          updateDeparture={updateDeparture}
+          key={index}
+        />
+      ))}
+    </div>
+  );
+};
+
+interface ScheduledTourType {
+  index: number;
+  departure: TravelDate;
+  scheduleLength: number;
+  saveDeparture: (departure: TravelDate) => Promise<void>;
+  updateDeparture: (departure: TravelDate) => Promise<void>;
+}
+
+const ScheduledTour = ({
+  departure,
+  index,
+  scheduleLength,
+  saveDeparture,
+  updateDeparture,
+}: ScheduledTourType) => {
+  const [loading, setLoading] = useState(false);
+  const [saveLoading, setSaveLoading] = useState(false);
+  const [dep, setDep] = useState<TravelDate | null>();
+  const updateable = useMemo<boolean>(() => {
+    // dep?.id == null
+    //   ? loading
+    //   : (dep?.price == departure.price && dep?.date == dep.date) ||
+    return loading;
+  }, [dep, departure, loading]);
+  const update = async () => {
+    if (!dep) return;
+    setLoading(true);
+    await updateDeparture(dep);
+    setLoading(false);
+  };
+  const save = async () => {
+    if (!dep) return;
+    setSaveLoading(true);
+    await saveDeparture(dep);
+    setSaveLoading(false);
+  };
+
+  useEffect(() => {
+    setDep(departure);
+  }, [departure]);
+
+  if (!dep) return <></>;
+  return (
+    <div
+      className={`border ${index == 0 ? "" : "border-t-0"} ${
+        index == 0 ? "rounded-tl rounded-tr" : ""
+      } ${index == scheduleLength - 1 ? "rounded-bl rounded-br" : ""}`}
+    >
+      <div
+        className={`text-lg md:text-xl p-3 gap-4 flex flex-row justify-between items-center`}
+      >
+        {dep.status == "active" ? (
+          <div
+            className={`border border-green-500 bg-green-500/10 w-min px-3 py-1 text-sm rounded text-green-500`}
+          >
+            Active
+          </div>
+        ) : (
+          <div
+            className={`border border-red-500 bg-red-500/10 w-min px-3 py-1 text-sm rounded text-red-500`}
+          >
+            InActive
+          </div>
+        )}
+        <Input
+          value={dep.date}
+          type="date"
+          disabled={dep.id != null}
+          placeholder="Departure Date"
+          onChange={(e) => setDep({ ...dep, date: e.target.value })}
+        />
+        <Input
+          value={dep.price}
+          type="number"
+          placeholder="Price"
+          onChange={(e) => setDep({ ...dep, price: Number(e.target.value) })}
+        />
+        <button
+          className={`px-3 py-2 min-w-32 bg-quinary ripple text-lg font-medium`}
+          onClick={update}
+          disabled={loading || updateable}
+        >
+          {loading ? "Loading" : dep.status == "active" ? "Hold" : "Resume"}
+        </button>
+        <button
+          className={`px-3 py-2 min-w-32  text-lg font-medium ${
+            dep.price === departure.price || saveLoading
+              ? "bg-quinary text-white border-primary ripple"
+              : "bg-primary text-white"
+          }`}
+          onClick={save}
+          disabled={saveLoading || dep.price === departure.price}
+        >
+          {saveLoading ? "Loading" : "Save"}
+        </button>
+      </div>
     </div>
   );
 };

@@ -27,21 +27,22 @@ type ItineraryType = {
 };
 
 type TravelDate = {
-  id: number;
+  id?: number;
   date: string;
   price: number;
+  status: "active" | "inactive";
   // tourId: string;
   // title: string;
   // overview: string;
-  transactions: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phoneNumber: string;
-    nationality: string;
-    peopleCount: number;
-    transactionId: string;
-  }[];
+  // transactions: {
+  //   firstName: string;
+  //   lastName: string;
+  //   email: string;
+  //   phoneNumber: string;
+  //   nationality: string;
+  //   peopleCount: number;
+  //   transactionId: string;
+  // }[];
 };
 
 type ReviewType = {
@@ -72,4 +73,37 @@ type PriceType = {
   tourDateId: string;
   date: string;
   price: number;
+};
+
+type TransactionType = {
+  id?: number;
+  created_at: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  nationality: string;
+  dateOfBirth: string;
+  peopleCount: string;
+  additionalInformation: string;
+  amount: string;
+  transactionDetail: any;
+  transactionId: string;
+  availableTourId: string;
+};
+
+type DepartureRequestType = {
+  id?: number;
+  created_at: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  nationality: string;
+  dateOfBirth: string;
+  peopleCount: string;
+  additionalInformation: string;
+  tourId: string;
+  startingDate: string;
+  status: "Pending" | "Denied" | "Approved";
 };
