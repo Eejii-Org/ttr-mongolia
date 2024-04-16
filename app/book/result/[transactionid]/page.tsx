@@ -65,7 +65,7 @@ const PaymentResult = () => {
   }, [transactionid]);
   return (
     <MainLayout>
-      <div className="flex flex-1 pt-14 items-center justify-center">
+      <div className="flex flex-1 pt-16 md:pt-14  items-center justify-center">
         {loading ? (
           <div>Loading</div>
         ) : (

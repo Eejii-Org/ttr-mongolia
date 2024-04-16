@@ -27,3 +27,4 @@ export * from "./chevronrighticon";
 export * from "./chevronlefticon";
 export * from "./starsicon";
 export * from "./labelicon";
+export * from "./hamburger";

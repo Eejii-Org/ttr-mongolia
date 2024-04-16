@@ -1,4 +1,4 @@
-export const Hamburger = () => {
+export const Hamburger = ({ color = "black" }: { color: string }) => {
   return (
     <svg
       width="24"
@@ -9,7 +9,7 @@ export const Hamburger = () => {
     >
       <path
         d="M4 8.5H20M4 16.5H20"
-        stroke="black"
+        stroke={color}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"

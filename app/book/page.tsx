@@ -164,7 +164,7 @@ const Booking = ({
   if (error) {
     return (
       <MainLayout>
-        <div className="w-screen flex-1 px-3 pt-14 xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col items-center gap-4 justify-center">
+        <div className="w-screen flex-1 px-3 pt-16 md:pt-14 xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col items-center gap-4 justify-center">
           <div className="flex flex-col gap-4">
             <div className="text-2xl font-semibold lg:text-4xl">{error}</div>
             <button
@@ -182,7 +182,7 @@ const Booking = ({
   if (loading || !availableTour || !tour) {
     return (
       <MainLayout>
-        <div className="w-screen flex-1 px-3 pt-14 xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col gap-4 justify-center">
+        <div className="w-screen flex-1 px-3 pt-16 md:pt-14 xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col gap-4 justify-center">
           Loading
         </div>
       </MainLayout>
@@ -191,7 +191,7 @@ const Booking = ({
 
   return (
     <MainLayout>
-      <div className="w-screen flex-1 px-3 pt-14 xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col gap-4 justify-center">
+      <div className="w-screen flex-1 px-3 pt-16 md:pt-14 xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col gap-4 justify-center">
         <div className=" text-2xl font-semibold lg:text-4xl">{tour?.title}</div>
         <form
           className="flex flex-1 flex-col gap-4"

@@ -34,13 +34,13 @@ const Volunteering = () => {
   }, []);
   return (
     <MainLayout>
-      <div className="flex-1 pt-14 flex flex-col gap-12">
+      <div className="flex-1 pt-16 md:pt-14 flex flex-col gap-12">
         <AboutIntro />
         <div className="container mx-auto flex flex-col gap-4 justify-center px-8">
           <div className="text-2xl md:text-4xl font-semibold">
             Administrative Staff
           </div>
-          <div className="flex flex-row flex-wrap">
+          <div className="flex flex-row flex-wrap gap-6">
             {administrativeStaffs.map((member, index) => (
               <div
                 className="w-64 flex flex-col shadow rounded-lg overflow-hidden"
@@ -69,7 +69,7 @@ const Volunteering = () => {
         {guides.length !== 0 && (
           <div className="container mx-auto flex flex-col gap-4 justify-center px-8">
             <div className="text-2xl md:text-4xl font-semibold">Guides</div>
-            <div className="flex flex-row flex-wrap">
+            <div className="flex flex-row flex-wrap gap-6">
               {guides.map((member, index) => (
                 <div
                   className="w-64 flex flex-col shadow rounded-lg overflow-hidden"
@@ -99,7 +99,7 @@ const Volunteering = () => {
         {drivers.length !== 0 && (
           <div className="container mx-auto flex flex-col gap-4 justify-center px-8">
             <div className="text-2xl md:text-4xl font-semibold">Drivers</div>
-            <div className="flex flex-row flex-wrap">
+            <div className="flex flex-row flex-wrap gap-6">
               {drivers.map((member, index) => (
                 <div
                   className="w-64 flex flex-col shadow rounded-lg overflow-hidden"
