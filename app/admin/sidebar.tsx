@@ -61,13 +61,21 @@ export const AdminSidebar = () => {
       </Link>
       <Link
         href="/admin/transactions"
-        className={`px-2 py-2 hover:bg-black/10 font-medium ${
+        className={`px-2 py-2 hover:bg-black/10 font-medium border-b ${
           pathname.includes("admin/transactions")
             ? "text-primary"
             : "text-secondary"
         }`}
       >
         Transactions
+      </Link>
+      <Link
+        href="/admin/members"
+        className={`px-2 py-2 hover:bg-black/10 font-medium ${
+          pathname.includes("admin/members") ? "text-primary" : "text-secondary"
+        }`}
+      >
+        Members
       </Link>
     </div>
   );

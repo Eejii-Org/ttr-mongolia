@@ -82,7 +82,6 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
           tourTitle: selectedTourData?.title,
         }
       );
-      console.log(res);
     } catch (err: any) {
       console.error(err);
       toast.error(err.message);

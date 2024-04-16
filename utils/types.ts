@@ -109,3 +109,13 @@ type DepartureRequestType = {
   startingDate: string;
   status: "Pending" | "Denied" | "Approved";
 };
+
+type MemberType = {
+  id?: number;
+  firstName: string;
+  lastName: string;
+  image: string | null;
+  position: string;
+  positionType: string;
+  order: number;
+};

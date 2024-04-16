@@ -9,7 +9,6 @@ export const OurAgency: FC = () => {
   useEffect(() => {
     const getPictures = async () => {
       const list = await supabase.storage.from("ourAgencyImages").list();
-      console.log(list);
       if (!list.data) {
         return;
       }
@@ -17,7 +16,6 @@ export const OurAgency: FC = () => {
         return supabase.storage.from("ourAgencyImages").getPublicUrl(file.name);
       });
       const images = await Promise.all(publicUrls);
-      console.log(images);
       setPictures(images.map((image) => image.data.publicUrl));
     };
     getPictures();

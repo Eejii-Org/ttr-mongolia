@@ -32,6 +32,11 @@ export const Header: FC<HeaderPropsType> = ({ transparent = false }) => {
             Contact Us
           </div>
         </Link>
+        <Link href="/about">
+          <div className="font-bold gip text-base hover:bg-gray-600/20 px-3 py-1 rounded cursor-pointer ripple hidden md:flex">
+            About Us
+          </div>
+        </Link>
       </div>
     </div>
   );

@@ -48,7 +48,6 @@ const Review = () => {
       router.push(`/admin/reviews/${data[0].id}`);
       return;
     }
-    console.log(newReview);
     const { error } = await supabase
       .from("reviews")
       .update(newReview)

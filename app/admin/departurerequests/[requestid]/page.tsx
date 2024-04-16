@@ -102,7 +102,6 @@ const DepartureRequest = () => {
           .eq("id", requestid)
           .select()
           .single();
-        console.log(data);
         if (error) {
           setLoading(false);
 
@@ -115,7 +114,6 @@ const DepartureRequest = () => {
         if (er) {
           throw er;
         }
-        console.log(tourData);
         if (tourData.length == 0) {
           setIsNotFound(true);
           setLoading(false);
