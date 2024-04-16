@@ -1,6 +1,7 @@
 export * from "./home";
 export * from "./tour";
 export * from "./tours";
+export * from "./volunteering";
 
 export * from "./icons";
 

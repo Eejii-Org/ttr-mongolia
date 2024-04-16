@@ -17,9 +17,11 @@ export const Header: FC<HeaderPropsType> = ({ transparent = false }) => {
         </div>
       </Link>
       <div className="flex flex-row gap-1">
-        <div className="font-bold gip text-base text-lime-600 hover:bg-gray-600/20 px-3 py-1 rounded cursor-pointer ripple hidden md:flex">
-          Volunteering
-        </div>
+        <Link href="/volunteering">
+          <div className="font-bold gip text-base text-lime-600 hover:bg-gray-600/20 px-3 py-1 rounded cursor-pointer ripple hidden md:flex">
+            Volunteering
+          </div>
+        </Link>
         <Link href="/tours">
           <div className="font-bold gip text-base hover:bg-gray-600/20 px-3 py-1 rounded cursor-pointer ripple hidden md:flex">
             Tours
