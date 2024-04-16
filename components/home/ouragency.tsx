@@ -1,10 +1,32 @@
-import { FC } from "react";
+"use client";
+import { createClient } from "@/utils/supabase/client";
+import Image from "next/image";
+import { FC, useEffect, useState } from "react";
 
 export const OurAgency: FC = () => {
+  const supabase = createClient();
+  const [pictures, setPictures] = useState<string[]>([]);
+  useEffect(() => {
+    const getPictures = async () => {
+      const list = await supabase.storage.from("ourAgencyImages").list();
+      console.log(list);
+      if (!list.data) {
+        return;
+      }
+      const publicUrls = list.data.map((file) => {
+        return supabase.storage.from("ourAgencyImages").getPublicUrl(file.name);
+      });
+      const images = await Promise.all(publicUrls);
+      console.log(images);
+      setPictures(images.map((image) => image.data.publicUrl));
+    };
+    getPictures();
+  }, []);
+
   return (
     <div className="relative mx-3 md:mx-6 flex flex-col gap-4">
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 md:p-8  backdrop-blur-sm bg-white/70 rounded-3xl text-center flex flex-col gap-4"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 md:p-8  backdrop-blur-sm bg-white/70 rounded-3xl text-center flex flex-col gap-4 z-10"
         style={{
           maxWidth: "704px",
           width: "calc(100% - 32px)",
@@ -31,12 +53,48 @@ export const OurAgency: FC = () => {
         </div>
       </div>
       <div className="flex flex-row gap-4">
-        <div className="h-72 bg-quinary flex-1 rounded-3xl"></div>
-        <div className="h-72 bg-quinary flex-1 rounded-3xl"></div>
+        <div className="h-72 bg-quinary flex-1 rounded-3xl relative overflow-hidden">
+          {pictures[0] && (
+            <Image
+              src={pictures[0]}
+              fill
+              alt="ourAgencyPicture0"
+              className="object-cover"
+            />
+          )}
+        </div>
+        <div className="h-72 bg-quinary flex-1 rounded-3xl relative overflow-hidden">
+          {pictures[1] && (
+            <Image
+              src={pictures[1]}
+              fill
+              alt="ourAgencyPicture1"
+              className="object-cover"
+            />
+          )}
+        </div>
       </div>
       <div className="flex flex-row  gap-4">
-        <div className="h-72 bg-quinary flex-1 rounded-3xl"></div>
-        <div className="h-72 bg-quinary flex-1 rounded-3xl"></div>
+        <div className="h-72 bg-quinary flex-1 rounded-3xl relative overflow-hidden">
+          {pictures[2] && (
+            <Image
+              src={pictures[2]}
+              fill
+              alt="ourAgencyPicture2"
+              className="object-cover"
+            />
+          )}
+        </div>
+        <div className="h-72 bg-quinary flex-1 rounded-3xl relative overflow-hidden">
+          {pictures[2] && (
+            <Image
+              src={pictures[3]}
+              fill
+              alt="ourAgencyPicture3"
+              className="object-cover"
+            />
+          )}
+        </div>
       </div>
     </div>
   );
