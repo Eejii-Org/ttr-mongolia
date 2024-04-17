@@ -9,7 +9,7 @@ export const VolunteeringIntro = () => {
             <span className="text-[#2CB742]">#</span> Let's Help <br />
             Each other
           </div>
-          <div className="pr-8">
+          <div className="pr-8 text-base md:text-lg">
             Come visit and discover the wonders of Mongolia by joining now our
             new VolunTour program for the summer 2024. Explore our vast and
             untouched country and be ready to be amazed by breathtaking
@@ -24,7 +24,7 @@ export const VolunteeringIntro = () => {
           Explore Volunteering
         </Link>
 
-        <div className="flex flex-row gap-6">
+        <div className="flex flex-row gap-6 pl-0 text-center md:pl-16">
           <div className="flex flex-col items-center">
             <div className="font-semibold text-3xl">15+</div>
             <div className="text-[#6D6D6D] font-semibold">Projects Done</div>

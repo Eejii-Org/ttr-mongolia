@@ -36,7 +36,7 @@ const Volunteering = () => {
     <MainLayout>
       <div className="flex-1 pt-16 md:pt-14 flex flex-col gap-12">
         <AboutIntro />
-        <div className="container mx-auto flex flex-col gap-4 justify-center px-8">
+        <div className="container mx-auto flex flex-col gap-4 justify-center px-8 items-center">
           <div className="text-2xl md:text-4xl font-semibold">
             Administrative Staff
           </div>
@@ -67,7 +67,7 @@ const Volunteering = () => {
           </div>
         </div>
         {guides.length !== 0 && (
-          <div className="container mx-auto flex flex-col gap-4 justify-center px-8">
+          <div className="container mx-auto flex flex-col gap-4 justify-center px-8 items-center">
             <div className="text-2xl md:text-4xl font-semibold">Guides</div>
             <div className="flex flex-row flex-wrap gap-6">
               {guides.map((member, index) => (
@@ -97,7 +97,7 @@ const Volunteering = () => {
           </div>
         )}
         {drivers.length !== 0 && (
-          <div className="container mx-auto flex flex-col gap-4 justify-center px-8">
+          <div className="container mx-auto flex flex-col gap-4 justify-center px-8 items-center">
             <div className="text-2xl md:text-4xl font-semibold">Drivers</div>
             <div className="flex flex-row flex-wrap gap-6">
               {drivers.map((member, index) => (

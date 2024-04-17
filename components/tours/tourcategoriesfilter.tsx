@@ -11,9 +11,11 @@ export const TourCategoriesFilter = ({
   setSelectedCategory,
 }: ToursPropsType) => {
   const supabase = createClient();
+  const [loading, setLoading] = useState(true);
   const [tourCategories, setTourCategories] = useState<CategoryType[]>([]);
   useEffect(() => {
     const fetchTourCategories = async () => {
+      setLoading(true);
       try {
         const { data, error } = await supabase
           .from("tourCategories")
@@ -22,17 +24,22 @@ export const TourCategoriesFilter = ({
           throw error;
         }
         setTourCategories(data);
+        setLoading(false);
       } catch (error: any) {
         console.error("Error fetching tour categories:", error.message);
+        setLoading(false);
       }
     };
 
     fetchTourCategories();
   }, []);
+  if (loading) {
+    return <></>;
+  }
   return (
     <div className="flex flex-row gap-4 overflow-scroll no-scroll-bar w-full">
       <div
-        className={`ripple px-4 py-2 rounded-sm whitespace-nowrap cursor-pointer ${
+        className={`ripple px-4 py-2 rounded whitespace-nowrap cursor-pointer ${
           "All" == selectedCategory
             ? "bg-primary text-tertiary"
             : "bg-quaternary"
@@ -43,7 +50,7 @@ export const TourCategoriesFilter = ({
       </div>
       {tourCategories?.map((category, index) => (
         <div
-          className={`ripple px-4 py-2 rounded-sm whitespace-nowrap cursor-pointer ${
+          className={`ripple px-4 py-2 rounded whitespace-nowrap cursor-pointer ${
             category.name == selectedCategory
               ? "bg-primary text-tertiary"
               : "bg-quaternary"

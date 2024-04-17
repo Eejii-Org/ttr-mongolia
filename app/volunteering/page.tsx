@@ -48,7 +48,7 @@ const Volunteering = () => {
             alt="eejii"
           />
         </div>
-        <div className="flex flex-col md:flex-row container gap-6 mx-auto px-8 md:px-24 items-center">
+        <div className="flex flex-col md:flex-row container gap-6 mx-auto just px-8 md:px-24 items-center">
           <div className="flex-1 flex-col gap-4 hidden md:flex">
             <div className="flex flex-row gap-4">
               <div className="h-72 bg-quinary flex-1 rounded-lg relative overflow-hidden">
@@ -100,7 +100,7 @@ const Volunteering = () => {
               <LabelIcon />
               <div className="text-3xl font-semibold">About</div>
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col text-base md:text-lg gap-2">
               <p>
                 Embark on an extraordinary journey with us, forged in
                 partnership with the esteemed NGO EEJII. Our project is a fusion

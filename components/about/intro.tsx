@@ -7,7 +7,7 @@ export const AboutIntro = () => {
           <div className="text-3xl md:text-6xl font-bold uppercase leading-tight">
             <span className="text-primary">#</span> About Us
           </div>
-          <div className="pr-8 flex flex-col gap-2">
+          <div className="pr-8 flex flex-col text-base md:text-lg gap-2">
             <p>
               We are an experienced and dynamic tour operating company devoted
               to providing travelers with the highest quality of trips in

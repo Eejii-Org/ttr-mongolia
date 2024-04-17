@@ -33,7 +33,7 @@ export const Tour: FC<TourType> = (props) => {
   }, [originalPrice, id]);
   return (
     <div className="flex flex-col md:flex-row gap-2 md:gap-8 cursor-default">
-      <div className="relative md:w-1/4 md:max-w-80 h-48 md:h-auto">
+      <div className="relative md:w-1/4 md:max-w-80 h-48 md:h-auto rounded overflow-hidden">
         <Link href={"/tours/" + props.id}>
           <Image src={images[0]} alt={title} className="object-cover" fill />
         </Link>
@@ -77,12 +77,12 @@ export const Tour: FC<TourType> = (props) => {
               <span className="font-bold">{days}</span> days
             </div>
           </div>
-          <div className="flex flex-row gap-2 items-center">
+          {/* <div className="flex flex-row gap-2 items-center">
             <NightIcon />
             <div className="text-base lg:text-xl">
               <span className="font-bold">{nights}</span> nights
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="flex md:flex-col lg:flex-row gap-4">
           {/* <button className="ripple flex-1 py-2 md:py-3 bg-primary text-center font-bold text-tertiary rounded-xl">
@@ -90,7 +90,7 @@ export const Tour: FC<TourType> = (props) => {
           </button> */}
           <Link
             href={"/tours/" + props.id}
-            className="ripple w-full md:w-auto lg:w-1/2 py-2 md:py-3 bg-quaternary text-center font-bold rounded-sm"
+            className="ripple w-full md:w-auto lg:w-1/2 py-2 md:py-3 bg-quaternary text-center font-bold rounded"
           >
             Learn More
           </Link>

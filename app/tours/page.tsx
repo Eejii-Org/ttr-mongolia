@@ -14,7 +14,7 @@ const Tours = ({ searchParams }: { searchParams: { category: string } }) => {
   const supabase = createClient();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [tours, setTours] = useState<TourType[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [scheduledOpened, setScheduledOpened] = useState(false);
   const selectedTours = useMemo(() => {
     if (selectedCategory == "All") return tours;
@@ -41,6 +41,7 @@ const Tours = ({ searchParams }: { searchParams: { category: string } }) => {
   }, []);
   useEffect(() => {
     if (searchParams?.category) {
+      console.log(searchParams?.category);
       setSelectedCategory(searchParams.category);
     }
   }, [searchParams]);
@@ -61,7 +62,7 @@ const Tours = ({ searchParams }: { searchParams: { category: string } }) => {
             <button
               data-modal-target="default-modal"
               data-modal-toggle="default-modal"
-              className="cursor-pointer ripple bg-primary px-4 py-3 rounded-sm flex-row text-tertiary md:flex"
+              className="cursor-pointer ripple bg-primary px-4 py-3 rounded flex-row text-tertiary md:flex"
               onClick={() => {
                 if (!scheduledOpened) {
                   document.body.style.cssText = `overflow: hidden`;
@@ -74,7 +75,6 @@ const Tours = ({ searchParams }: { searchParams: { category: string } }) => {
               Check Available Tour Schedules
             </button>
           </div>
-
           <TourCategoriesFilter
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
