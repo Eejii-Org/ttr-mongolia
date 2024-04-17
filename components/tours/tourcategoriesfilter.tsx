@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
+import { useSearchParams } from "next/navigation";
 
 type ToursPropsType = {
   selectedCategory: string;
@@ -10,6 +11,8 @@ export const TourCategoriesFilter = ({
   selectedCategory,
   setSelectedCategory,
 }: ToursPropsType) => {
+  const searchParams = useSearchParams();
+  const searchCategory = searchParams.get("category");
   const supabase = createClient();
   const [loading, setLoading] = useState(true);
   const [tourCategories, setTourCategories] = useState<CategoryType[]>([]);
@@ -33,6 +36,11 @@ export const TourCategoriesFilter = ({
 
     fetchTourCategories();
   }, []);
+  useEffect(() => {
+    if (searchCategory) {
+      setSelectedCategory(searchCategory);
+    }
+  }, [searchCategory]);
   if (loading) {
     return <></>;
   }

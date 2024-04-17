@@ -1,16 +1,18 @@
 "use client";
 import {
   AvailableDates,
-  Footer,
-  Header,
   MainLayout,
   Tour,
   TourCategoriesFilter,
 } from "@components";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, Suspense } from "react";
 import { createClient } from "@/utils/supabase/client";
 
-const Tours = ({ searchParams }: { searchParams: { category: string } }) => {
+const SearchBarFallback = () => {
+  return <>SearchBar</>;
+};
+
+const Tours = () => {
   const supabase = createClient();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [tours, setTours] = useState<TourType[]>([]);
@@ -39,12 +41,6 @@ const Tours = ({ searchParams }: { searchParams: { category: string } }) => {
     };
     fetchTours();
   }, []);
-  useEffect(() => {
-    if (searchParams?.category) {
-      console.log(searchParams?.category);
-      setSelectedCategory(searchParams.category);
-    }
-  }, [searchParams]);
 
   return (
     <MainLayout>
@@ -75,10 +71,12 @@ const Tours = ({ searchParams }: { searchParams: { category: string } }) => {
               Check Available Tour Schedules
             </button>
           </div>
-          <TourCategoriesFilter
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-          />
+          <Suspense fallback={<SearchBarFallback />}>
+            <TourCategoriesFilter
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+            />
+          </Suspense>
         </div>
         {loading ? (
           <div>Loading...</div>
