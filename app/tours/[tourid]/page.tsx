@@ -58,8 +58,14 @@ const TourPage = () => {
         <div className=" w-screen px-3 xl:px-0 container mx-auto flex flex-col-reverse md:flex-row">
           <div className="w-full md:w-2/3 flex flex-col gap-12">
             <Overview tour={tour} />
-            <Included tour={tour} />
-            <NotIncluded tour={tour} />
+            <div className="flex flex-col gap-12 lg:flex-row lg:gap-4">
+              <div className="flex-1">
+                <Included tour={tour} />
+              </div>
+              <div className="flex-1">
+                <NotIncluded tour={tour} />
+              </div>
+            </div>
             <div className=" z-10">
               <TourPlan itinerary={tour.itinerary} />
             </div>
