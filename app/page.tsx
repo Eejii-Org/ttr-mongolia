@@ -20,7 +20,9 @@ const Home: FC = () => {
         <div className="container mx-auto flex flex-col gap-24">
           <Values />
           <TourCategories />
-          <CustomerSupport />
+        </div>
+        <CustomerSupport />
+        <div className="container mx-auto flex flex-col gap-24">
           <OurAgency />
         </div>
 

@@ -54,8 +54,9 @@ const data: ValueProps[] = [
         />
       </svg>
     ),
-    title: "Volunteer",
-    description: "10% of all profit will be donated",
+    title: "Travelling team",
+    description:
+      "We have a team of drivers with the best navigation skills, and multilingual guides with a vast knowledge of the country.",
   },
   {
     icon: (

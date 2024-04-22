@@ -77,7 +77,7 @@ const TourPage = () => {
             <TourInfo tour={tour} checkAvailableDate={checkAvailableDate} />
           </div>
         </div>
-        <div className=" mt-32">
+        <div className="mt-32">
           <Reviews />
         </div>
       </div>

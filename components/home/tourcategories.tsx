@@ -39,7 +39,7 @@ export const TourCategories: FC = () => {
           </div>
         </Link>
       </div>
-      <div className="flex flex-col md:flex-row gap-4">
+      <div className="flex flex-col lg:flex-row gap-4">
         {categories.map((category, index) => (
           <TourCategory {...category} key={index} />
         ))}
@@ -59,7 +59,7 @@ const TourCategory: FC<CategoryType> = (props) => {
       }}
       className="flex-auto md:flex-1"
     >
-      <div className="flex h-56 lg:h-72 bg-yellow-300 p-3 items-end relative rounded-[32px] overflow-hidden">
+      <div className="flex h-56 md:h-80 lg:h-72 bg-yellow-300 p-3 items-end relative rounded-[32px] overflow-hidden">
         <Image
           src={image || ""}
           fill
