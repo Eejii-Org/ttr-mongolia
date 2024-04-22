@@ -102,31 +102,27 @@ const Volunteering = () => {
             </div>
             <div className="flex flex-col text-base md:text-lg gap-2">
               <p>
-                Embark on an extraordinary journey with us, forged in
-                partnership with the esteemed NGO EEJII. Our project is a fusion
-                of travel and altruism, offering you an immersive experience
-                where you'll not only immerse yourself in the vibrant tapestry
-                of nomadic culture but also actively contribute to local causes
-                that matter.
+                Embark on an extraordinary journey with us, in partnership with
+                the NGO EEJII we have created our new Voluntour Program. Our
+                project is a fusion of travel and altruism, offering you an
+                immersive experience into the nomadic culture while also
+                actively making you contribute to local causes that matter.
               </p>
               <p>
                 From lending your support at the Mazaalai Wildlife Care Center
-                to sharing your knowledge with young monks through English
-                lessons, and rallying behind initiatives like the "a Billion
-                trees" campaign led by the Shambala 2056 team – there are
-                countless ways for you to leave a lasting impact.
-              </p>
-              <p>
-                By joining our journey, you're not just signing up for an
-                adventure; you're becoming a part of something bigger. Every
-                tour profit you contribute goes directly to the EEJII NGO,
-                fueling their ongoing efforts to initiate projects and organize
-                charity events that uplift communities in need.
+                to teaching English to young monks at Amarbayasgalant Monastery,
+                and rallying behind initiatives like the "a Billion trees"
+                campaign led by the Shambala 2056 team – there are countless
+                ways for you to leave a lasting impact. By joining our journey,
+                you're not just signing up for an adventure; you're becoming a
+                part of something bigger. Every tour profit you contribute goes
+                directly to the EEJII NGO, supporting their ongoing projects and
+                charity events.
               </p>
               <p>
                 Join us as we embark on a transformative voyage, where every
                 step you take leaves a positive footprint on the world around
-                you.
+                you
               </p>
             </div>
           </div>
