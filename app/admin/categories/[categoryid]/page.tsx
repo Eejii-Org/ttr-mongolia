@@ -65,6 +65,9 @@ const Category = () => {
       router.push(`/admin/categories/${data[0].id}`);
       return;
     }
+    // const { error } = await supabase.from('tours').update({
+
+    // })
     const { error } = await supabase
       .from("tourCategories")
       .update(newCategory)

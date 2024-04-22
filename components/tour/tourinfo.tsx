@@ -12,6 +12,7 @@ export const TourInfo = ({
   const supabase = createClient();
 
   const [sale, setSale] = useState<TravelDate | null>(null);
+  const [saleCount, setSaleCount] = useState(0);
   useEffect(() => {
     const getSale = async () => {
       const { data, error } = await supabase
@@ -20,9 +21,7 @@ export const TourInfo = ({
         .eq("tourId", tour.id)
         .gte("date", new Date().toISOString())
         .lte("price", tour.originalPrice)
-        .order("price")
-        .limit(1);
-
+        .order("price");
       if (error) {
         console.error(error);
         return;
@@ -31,6 +30,7 @@ export const TourInfo = ({
         setSale(null);
         return;
       }
+      setSaleCount(data?.length);
       setSale(data?.[0]);
     };
     if (tour) getSale();
@@ -39,8 +39,8 @@ export const TourInfo = ({
   return (
     <div className="flex sticky top-16 justify-center md:justify-normal flex-col gap-2">
       {sale && (
-        <div className="font-bold text-primary md:text-xl">
-          On Sale as low as
+        <div className="font-bold text-primary text-xl">
+          {saleCount} Departure{saleCount == 1 ? "" : "s"} On Sale
         </div>
       )}
       <div className="flex flex-row md:flex-col gap-2">
@@ -68,12 +68,12 @@ export const TourInfo = ({
             <span className="font-bold">{tour.days}</span> days
           </div>
         </div>
-        <div className="flex flex-row gap-2 items-center">
+        {/* <div className="flex flex-row gap-2 items-center">
           <NightIcon />
           <div className="text-base lg:text-xl">
             <span className="font-bold">{tour.nights}</span> nights
           </div>
-        </div>
+        </div> */}
       </div>
 
       <button

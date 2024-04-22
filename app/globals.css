@@ -33,7 +33,7 @@ html {
 }
 
 .intro-section {
-  height: calc(80vh - 16px - 56px) !important;
+  height: calc(100vh - 16px - 56px) !important;
 }
 
 @media screen and (max-height: 800px) {
@@ -116,4 +116,12 @@ input[type="text"]:disabled {
 
 textarea:disabled {
   background-color: white;
+}
+
+.tour-item-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

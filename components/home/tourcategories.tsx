@@ -59,7 +59,7 @@ const TourCategory: FC<CategoryType> = (props) => {
       }}
       className="flex-auto md:flex-1"
     >
-      <div className="flex h-56 lg:h-72 bg-yellow-300 p-3 items-end relative ">
+      <div className="flex h-56 lg:h-72 bg-yellow-300 p-3 items-end relative rounded-[32px] overflow-hidden">
         <Image
           src={image || ""}
           fill
@@ -68,10 +68,11 @@ const TourCategory: FC<CategoryType> = (props) => {
           // unoptimized={true}
           className={`object-cover select-none`}
         />
-        <div className="flex p-3 items-center justify-center w-full bg-white z-0 ripple">
-          <div className="text-lg md:text-xl font-bold text-secondary">
+        <div className="flex p-3 justify-between items-center w-full bg-black/20 backdrop-blur-[2px] z-0 ripple rounded-2xl">
+          <div className="text-lg md:text-xl pl-3 font-medium text-white">
             {name}
           </div>
+          <ArrowCircleIcon filled="true" color="black" />
         </div>
       </div>
     </Link>

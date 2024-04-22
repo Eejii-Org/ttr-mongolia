@@ -2,7 +2,7 @@ export const Included = ({ tour }: { tour: TourType }) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="text-2xl md:text-4xl font-semibold">Included</div>
-      <div className="md:text-xl">
+      <div className="md:text-lg text-black/70">
         <ul>
           {tour.included.map(({ name, explanation }, index) => (
             <li key={index}>

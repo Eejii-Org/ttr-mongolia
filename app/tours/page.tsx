@@ -78,21 +78,23 @@ const Tours = () => {
             />
           </Suspense>
         </div>
-        {loading ? (
-          <div>Loading...</div>
-        ) : (
-          <>
-            {selectedTours?.length == 0 ? (
-              <div>There is currently no tours with this category</div>
-            ) : (
-              <>
-                {selectedTours.map((tour, index) => (
-                  <Tour {...tour} key={index} />
-                ))}
-              </>
-            )}
-          </>
-        )}
+        <div className="flex flex-col gap-12">
+          {loading ? (
+            <div>Loading...</div>
+          ) : (
+            <>
+              {selectedTours?.length == 0 ? (
+                <div>There is currently no tours with this category</div>
+              ) : (
+                <>
+                  {selectedTours.map((tour, index) => (
+                    <Tour {...tour} key={index} />
+                  ))}
+                </>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </MainLayout>
   );

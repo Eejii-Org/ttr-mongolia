@@ -15,9 +15,9 @@ import {
 const Home: FC = () => {
   return (
     <MainLayout headerTransparent>
-      <div className="flex-1 w-full flex flex-col gap-12">
+      <div className="flex-1 w-full flex flex-col gap-24">
         <Intro />
-        <div className="container mx-auto flex flex-col gap-12">
+        <div className="container mx-auto flex flex-col gap-24">
           <Values />
           <TourCategories />
           <CustomerSupport />

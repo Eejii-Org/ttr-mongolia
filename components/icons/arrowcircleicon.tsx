@@ -58,9 +58,9 @@ export const ArrowCircleIcon = (props: PropsType) => {
         cy="24"
         r="23.5"
         transform="matrix(0 -1 -1 0 48 48)"
-        stroke={
-          hovering && hover == "true" ? colors.hoverBezelColor : colors.color
-        }
+        // stroke={
+        //   hovering && hover == "true" ? colors.hoverBezelColor : colors.color
+        // }
       />
       <path
         d={base[direction]}

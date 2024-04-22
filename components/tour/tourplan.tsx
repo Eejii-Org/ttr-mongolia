@@ -43,7 +43,7 @@ const ListItem = ({ title, description, index }: DayType) => {
       <div
         className={`${
           open ? "flex" : "hidden"
-        } text-base md:text-lg p-3 font-normal`}
+        } text-base md:text-lg p-3 text-black/65 font-normal`}
       >
         {description}
       </div>

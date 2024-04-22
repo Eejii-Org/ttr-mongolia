@@ -8,6 +8,7 @@ export const Tour: FC<TourType> = (props) => {
   const { images, title, overview, originalPrice, days, nights, id } = props;
   const supabase = createClient();
   const [sale, setSale] = useState<TravelDate | null>(null);
+  const [saleCount, setSaleCount] = useState(0);
   useEffect(() => {
     const getSale = async () => {
       const { data, error } = await supabase
@@ -16,8 +17,7 @@ export const Tour: FC<TourType> = (props) => {
         .eq("tourId", id)
         .gte("date", new Date().toISOString())
         .lte("price", originalPrice)
-        .order("price")
-        .limit(1);
+        .order("price");
 
       if (error) {
         console.error(error);
@@ -27,12 +27,13 @@ export const Tour: FC<TourType> = (props) => {
         setSale(null);
         return;
       }
+      setSaleCount(data.length);
       setSale(data?.[0]);
     };
     getSale();
   }, [originalPrice, id]);
   return (
-    <div className="flex flex-col md:flex-row gap-2 md:gap-8 cursor-default">
+    <div className="flex flex-col md:h-48 md:flex-row gap-2 md:gap-8 cursor-default">
       <div className="relative md:w-1/4 md:max-w-80 h-48 md:h-auto rounded overflow-hidden">
         <Link href={"/tours/" + props.id}>
           <Image src={images[0]} alt={title} className="object-cover" fill />
@@ -41,16 +42,16 @@ export const Tour: FC<TourType> = (props) => {
       <div className="flex flex-1 flex-col gap-1">
         <Link href={"/tours/" + props.id}>
           <div className="font-bold text-xl lg:text-3xl">{title}</div>
-          <div className="text-sm md:text-base">
-            {overview.split(" ").slice(0, 60).join(" ")}...
+          <div className="text-sm md:text-base tour-item-description">
+            {overview}
           </div>
         </Link>
       </div>
-      <div className="relative md:w-1/4 flex flex-col justify-between gap-4">
+      <div className="relative md:w-1/4 flex flex-col gap-4">
         <div className="flex flex-row justify-center md:justify-normal md:flex-col gap-1">
           {sale && (
             <div className="font-bold text-primary text-xl">
-              On Sale as low as
+              {saleCount} Departure{saleCount == 1 ? "" : "s"} On Sale
             </div>
           )}
           <div className="flex flex-row gap-2 items-center">
