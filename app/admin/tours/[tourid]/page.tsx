@@ -514,8 +514,8 @@ const ListItem = ({
 };
 
 type ToursPropsType = {
-  selectedCategories: string[];
-  setSelectedCategories: (newCategories: string[]) => void;
+  selectedCategories: number[];
+  setSelectedCategories: (newCategories: number[]) => void;
 };
 
 const SelectTourCategories = ({
@@ -546,16 +546,19 @@ const SelectTourCategories = ({
       {tourCategories?.map((category, index) => (
         <div
           className={`ripple px-4 py-2 rounded whitespace-nowrap cursor-pointer ${
-            selectedCategories.includes(category.name)
+            selectedCategories.includes(category.id || -1)
               ? "bg-primary text-tertiary"
               : "bg-quaternary"
           } hover:bg-primary hover:text-tertiary transition-all min-w-min`}
           onClick={() =>
-            selectedCategories.includes(category.name)
+            selectedCategories.includes(category.id || -1)
               ? setSelectedCategories(
-                  selectedCategories.filter((cat) => cat != category.name)
+                  selectedCategories.filter((cat) => cat != category.id)
                 )
-              : setSelectedCategories([...selectedCategories, category.name])
+              : setSelectedCategories([
+                  ...selectedCategories,
+                  category.id || -1,
+                ])
           }
           key={index}
         >

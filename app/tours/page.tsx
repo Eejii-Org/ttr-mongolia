@@ -14,13 +14,17 @@ const SearchBarFallback = () => {
 
 const Tours = () => {
   const supabase = createClient();
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState<number | "All">(
+    "All"
+  );
   const [tours, setTours] = useState<TourType[]>([]);
   const [loading, setLoading] = useState(true);
   const [scheduledOpened, setScheduledOpened] = useState(false);
   const selectedTours = useMemo(() => {
     if (selectedCategory == "All") return tours;
-    return tours.filter((tour) => tour.categories.includes(selectedCategory));
+    return tours.filter((tour) =>
+      tour.categories.includes(Number(selectedCategory))
+    );
   }, [selectedCategory, tours]);
   useEffect(() => {
     const fetchTours = async () => {

@@ -3,7 +3,6 @@ import { createClient } from "@/utils/supabase/client";
 import { ArrowRight, TrashIcon } from "@components";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -19,6 +18,7 @@ const AdminCategories = () => {
       .from("tourCategories")
       .delete()
       .eq("id", categoryId);
+
     if (image) {
       const name = image?.split("/").pop();
       if (name) {
@@ -38,6 +38,31 @@ const AdminCategories = () => {
       console.error(error);
       return;
     }
+    const { data: toursToUpdate, error: err } = await supabase
+      .from("tours")
+      .select("*")
+      .contains("categories", [categoryId]);
+
+    if (err) {
+      toast.error("Error While Updating");
+      console.error(err);
+      return;
+    }
+    for (const tour of toursToUpdate) {
+      const updatedCategories = tour.categories.filter(
+        (id: number) => id !== categoryId
+      );
+      const { error: er } = await supabase
+        .from("tours")
+        .update({ categories: updatedCategories })
+        .eq("id", tour.id);
+      if (er) {
+        toast.error("Error While Updating");
+        console.error(er);
+        return;
+      }
+    }
+
     setCategories([...categories.filter(({ id }) => id !== categoryId)]);
     toast.success("Successfully Deleted");
   };

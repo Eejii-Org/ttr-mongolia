@@ -8,7 +8,7 @@ type TourType = {
   days: number;
   nights: number;
   minimumRequired: number;
-  categories: string[];
+  categories: number[];
   included: AssetType[];
   excluded: AssetType[];
   itinerary: ItineraryType[];

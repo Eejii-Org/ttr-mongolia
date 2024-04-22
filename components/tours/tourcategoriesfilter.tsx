@@ -3,8 +3,8 @@ import { createClient } from "@/utils/supabase/client";
 import { useSearchParams } from "next/navigation";
 
 type ToursPropsType = {
-  selectedCategory: string;
-  setSelectedCategory: Dispatch<SetStateAction<string>>;
+  selectedCategory: number | "All";
+  setSelectedCategory: Dispatch<SetStateAction<number | "All">>;
 };
 
 export const TourCategoriesFilter = ({
@@ -38,7 +38,7 @@ export const TourCategoriesFilter = ({
   }, []);
   useEffect(() => {
     if (searchCategory) {
-      setSelectedCategory(searchCategory);
+      setSelectedCategory(Number(searchCategory));
     }
   }, [searchCategory]);
   if (loading) {
@@ -59,11 +59,11 @@ export const TourCategoriesFilter = ({
       {tourCategories?.map((category, index) => (
         <div
           className={`ripple px-4 py-2 rounded whitespace-nowrap cursor-pointer ${
-            category.name == selectedCategory
+            JSON.stringify(category.id) == selectedCategory
               ? "bg-primary text-tertiary"
               : "bg-quaternary"
           } hover:bg-primary hover:text-tertiary transition-all min-w-min`}
-          onClick={() => setSelectedCategory(category.name)}
+          onClick={() => setSelectedCategory(category.id || -1)}
           key={index}
         >
           {category.name}

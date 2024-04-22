@@ -1,14 +1,33 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
+import { createClient } from "@/utils/supabase/client";
 
 export const TourIntro = ({ tour }: { tour: TourType }) => {
+  const supabase = createClient();
   const [index, setIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
   const images = useMemo<string[]>(() => {
     if (!tour || tour?.images?.length == 0) return [];
-
-    // scrollRef.current?.sc( );
     return tour?.images;
+  }, [tour]);
+  useEffect(() => {
+    const getCategories = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("tourCategories")
+          .select("*")
+          .in("id", tour.categories);
+
+        if (error) {
+          throw error;
+        }
+        setCategories(data);
+      } catch (error: any) {
+        console.error("Error fetching tour categories:", error.message);
+      }
+    };
+    getCategories();
   }, [tour]);
   useEffect(() => {
     scrollRef.current?.scroll({
@@ -25,7 +44,7 @@ export const TourIntro = ({ tour }: { tour: TourType }) => {
         <div className="font-medium text-base md:text-lg text-center flex flex-row items-center justify-center gap-3 bg-black/25 px-3 py-1 rounded-full">
           {/* <div className="text-xl">{tour.reviews.length} Reviews</div> */}
           <div className="flex flex-row items-center justify-center gap-3">
-            {tour.categories.map((category, index) => (
+            {categories.map((category, index) => (
               <div
                 className="flex flex-row items-center justify-center gap-3"
                 key={index}
@@ -33,7 +52,7 @@ export const TourIntro = ({ tour }: { tour: TourType }) => {
                 {index != 0 && (
                   <div className="w-[calc(2px)] h-4 bg-white rounded" />
                 )}
-                <div>{category}</div>
+                <div>{category.name}</div>
               </div>
             ))}
           </div>
