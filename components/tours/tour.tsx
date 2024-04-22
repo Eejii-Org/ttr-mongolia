@@ -13,7 +13,7 @@ export const Tour: FC<TourType> = (props) => {
       const { data, error } = await supabase
         .from("availableTours")
         .select("*")
-        .eq("id", id)
+        .eq("tourId", id)
         .gte("date", new Date().toISOString())
         .lte("price", originalPrice)
         .order("price")
@@ -40,11 +40,6 @@ export const Tour: FC<TourType> = (props) => {
       </div>
       <div className="flex flex-1 flex-col gap-1">
         <Link href={"/tours/" + props.id}>
-          {sale && (
-            <div className="font-bold text-primary text-xl">
-              On Sale before {new Date(sale.date).toDateString()}
-            </div>
-          )}
           <div className="font-bold text-xl lg:text-3xl">{title}</div>
           <div className="text-sm md:text-base">
             {overview.split(" ").slice(0, 60).join(" ")}...
@@ -52,7 +47,12 @@ export const Tour: FC<TourType> = (props) => {
         </Link>
       </div>
       <div className="relative md:w-1/4 flex flex-col justify-between gap-4">
-        <div className="flex flex-row justify-center md:justify-normal md:flex-col gap-2">
+        <div className="flex flex-row justify-center md:justify-normal md:flex-col gap-1">
+          {sale && (
+            <div className="font-bold text-primary text-xl">
+              On Sale as low as
+            </div>
+          )}
           <div className="flex flex-row gap-2 items-center">
             <PriceIcon />
             <div className="text-xl lg:text-3xl">

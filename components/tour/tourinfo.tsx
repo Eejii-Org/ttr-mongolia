@@ -17,7 +17,7 @@ export const TourInfo = ({
       const { data, error } = await supabase
         .from("availableTours")
         .select("*")
-        .eq("id", tour.id)
+        .eq("tourId", tour.id)
         .gte("date", new Date().toISOString())
         .lte("price", tour.originalPrice)
         .order("price")
@@ -40,7 +40,7 @@ export const TourInfo = ({
     <div className="flex sticky top-16 justify-center md:justify-normal flex-col gap-2">
       {sale && (
         <div className="font-bold text-primary md:text-xl">
-          On Sale before {new Date(sale.date).toDateString()}
+          On Sale as low as
         </div>
       )}
       <div className="flex flex-row md:flex-col gap-2">
