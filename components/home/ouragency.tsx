@@ -1,10 +1,9 @@
 "use client";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 import Image from "next/image";
 import { FC, useEffect, useState } from "react";
 
 export const OurAgency: FC = () => {
-  const supabase = createClient();
   const [pictures, setPictures] = useState<string[]>([]);
   useEffect(() => {
     const getPictures = async () => {

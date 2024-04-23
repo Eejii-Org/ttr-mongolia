@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import Image from "next/image";
-import { DayIcon, NightIcon, PriceIcon } from "../icons";
-import { createClient } from "@/utils/supabase/client";
+import { DayIcon, PriceIcon } from "../icons";
+import { supabase } from "@/utils/supabase/client";
 
 export const Tour: FC<TourType> = (props) => {
-  const { images, title, overview, originalPrice, days, nights, id } = props;
-  const supabase = createClient();
+  const { images, title, overview, originalPrice, days, id } = props;
+
   const [sale, setSale] = useState<TravelDate | null>(null);
   const [saleCount, setSaleCount] = useState(0);
   useEffect(() => {

@@ -1,5 +1,5 @@
 "use client";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 import { ArrowRight, TrashIcon } from "@components";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 const AdminCategories = () => {
-  const supabase = createClient();
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const deleteCategory = async (
     categoryId: number | undefined,

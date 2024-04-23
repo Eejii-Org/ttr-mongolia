@@ -1,5 +1,5 @@
 "use client";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 import { ArrowLeft, EmailIcon, Input, PhoneIcon } from "@components";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import _ from "lodash";
 
 const Transaction = () => {
-  const supabase = createClient();
   const router = useRouter();
   const [transaction, setTransaction] = useState<TransactionType | null>(null);
   const [tourData, setTourData] = useState<TourType | null>(null);

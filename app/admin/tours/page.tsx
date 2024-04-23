@@ -1,5 +1,5 @@
 "use client";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
 import { ArrowRight, TrashIcon } from "@components";
 import Link from "next/link";
@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 
 const AdminTours = () => {
   const [loading, setLoading] = useState(false);
-  const supabase = createClient();
+
   const [tours, setTours] = useState<TourType[]>([]);
   const deleteTour = async (tourId?: number) => {
     if (tourId == undefined) return;

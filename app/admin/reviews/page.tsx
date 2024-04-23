@@ -1,5 +1,5 @@
 "use client";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
 import { ArrowRight, StarsIcon, TrashIcon } from "@components";
 import Link from "next/link";
@@ -8,7 +8,7 @@ import { toDateText } from "@/utils";
 
 const AdminReviews = () => {
   const [loading, setLoading] = useState(false);
-  const supabase = createClient();
+
   const [open, setOpen] = useState(false);
   const [reviews, setReviews] = useState<ReviewType[]>([]);
   const deleteTour = async (reviewId?: number) => {

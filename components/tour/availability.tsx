@@ -1,10 +1,9 @@
 import { FC, useEffect, useMemo, useState } from "react";
 import { ArrowRight, SaleIcon } from "../icons";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 import Link from "next/link";
 
 export const Availability = ({ tour }: { tour: TourType }) => {
-  const supabase = createClient();
   const [loading, setLoading] = useState(false);
   const [tourDates, setTourDates] = useState<TravelDate[]>([]);
   useEffect(() => {

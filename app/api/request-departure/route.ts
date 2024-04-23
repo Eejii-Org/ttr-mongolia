@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
 });
 export async function POST(request: Request) {
   const body = await request.json();
-  const supabase = createClient();
+
   if (
     !body.firstName ||
     !body.lastName ||

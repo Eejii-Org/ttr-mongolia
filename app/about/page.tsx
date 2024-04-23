@@ -1,11 +1,10 @@
 "use client";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 import { MainLayout, AboutIntro } from "@components";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 
 const Volunteering = () => {
-  const supabase = createClient();
   const [members, setMembers] = useState<MemberType[]>([]);
   const administrativeStaffs = useMemo<MemberType[]>(() => {
     return members.filter(

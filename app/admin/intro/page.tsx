@@ -1,5 +1,5 @@
 "use client";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 import { ArrowRight, CaretDownIcon, CaretUpIcon, TrashIcon } from "@components";
 import _ from "lodash";
 import Image from "next/image";
@@ -9,7 +9,6 @@ import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 
 const AdminIntro = () => {
-  const supabase = createClient();
   const [intro, setIntro] = useState<IntroType[]>([]);
   const [newIntro, setNewIntro] = useState<IntroType[]>([]);
   const isSame = useMemo(() => {

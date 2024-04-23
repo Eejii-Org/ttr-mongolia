@@ -6,14 +6,13 @@ import {
   TourCategoriesFilter,
 } from "@components";
 import { useState, useEffect, useMemo, Suspense } from "react";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 
 const SearchBarFallback = () => {
   return <>SearchBar</>;
 };
 
 const Tours = () => {
-  const supabase = createClient();
   const [selectedCategory, setSelectedCategory] = useState<number | "All">(
     "All"
   );

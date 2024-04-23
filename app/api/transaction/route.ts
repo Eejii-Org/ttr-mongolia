@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const supabase = createClient();
+
   const { data, error } = await supabase
     .from("transactions")
     .update({

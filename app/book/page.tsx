@@ -1,5 +1,5 @@
 "use client";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 import {
   ArrowRight,
   ChevronDownIcon,
@@ -39,7 +39,7 @@ const Booking = ({
   );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const supabase = createClient();
+
   const router = useRouter();
   const { availableTourId } = searchParams;
   const [personalDetail, setPersonalDetail] = useState({

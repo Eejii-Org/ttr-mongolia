@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { DayIcon, NightIcon, PriceIcon } from "../icons";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 
 export const TourInfo = ({
   tour,
@@ -9,8 +9,6 @@ export const TourInfo = ({
   tour: TourType;
   checkAvailableDate: () => void;
 }) => {
-  const supabase = createClient();
-
   const [sale, setSale] = useState<TravelDate | null>(null);
   const [saleCount, setSaleCount] = useState(0);
   useEffect(() => {

@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 
 export const TourIntro = ({ tour }: { tour: TourType }) => {
-  const supabase = createClient();
   const [index, setIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [categories, setCategories] = useState<CategoryType[]>([]);

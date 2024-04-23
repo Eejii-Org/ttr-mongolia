@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import { ArrowCircleIcon, CloseIcon } from "../icons";
 import Link from "next/link";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 
 interface TourDateType extends TravelDate {
   title: string;
@@ -21,7 +21,6 @@ export const AvailableDates = ({
   setOpen: Dispatch<SetStateAction<boolean>>;
   tours: TourType[];
 }) => {
-  const supabase = createClient();
   const [tableIndex, setTableIndex] = useState(0);
   const [loading, setLoading] = useState(false);
   const [availableDates, setAvailableDates] = useState<TravelDate[]>([]);

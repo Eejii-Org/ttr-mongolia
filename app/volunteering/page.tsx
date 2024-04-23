@@ -1,11 +1,10 @@
 "use client";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 import { LabelIcon, MainLayout, VolunteeringIntro } from "@components";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const Volunteering = () => {
-  const supabase = createClient();
   const [pictures, setPictures] = useState<string[]>([]);
   useEffect(() => {
     const getPictures = async () => {

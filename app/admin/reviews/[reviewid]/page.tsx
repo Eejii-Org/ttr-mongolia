@@ -1,5 +1,5 @@
 "use client";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 import { ArrowLeft, CloseIcon, Input, PlusIcon } from "@components";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -16,7 +16,6 @@ import _ from "lodash";
 import Image from "next/image";
 
 const Review = () => {
-  const supabase = createClient();
   const router = useRouter();
   const [review, setReview] = useState<ReviewType | null>(null);
   const [originalReview, setOriginalReview] = useState<ReviewType | null>(null);
@@ -279,7 +278,6 @@ const ReviewImages = ({
   originalReview: ReviewType | null;
   setReview: Dispatch<SetStateAction<ReviewType | null>>;
 }) => {
-  const supabase = createClient();
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const uploadImage = async (file: File) => {
@@ -392,7 +390,7 @@ const ReviewImage = ({
     const name = imageUrl.split("/").pop();
     return name ? name : "Unidentified Image";
   }, [imageUrl]);
-  const supabase = createClient();
+
   const deleteImage = async () => {
     setLoading(true);
     if (!imageName) {

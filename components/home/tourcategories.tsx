@@ -1,11 +1,10 @@
 import { FC, useEffect, useState } from "react";
 import { ArrowCircleIcon } from "../icons";
 import Image from "next/image";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 import Link from "next/link";
 
 export const TourCategories: FC = () => {
-  const supabase = createClient();
   const [categories, setCategories] = useState<CategoryType[]>([]);
 
   useEffect(() => {
@@ -48,13 +47,13 @@ export const TourCategories: FC = () => {
   );
 };
 const TourCategory: FC<CategoryType> = (props) => {
-  const { name, image } = props;
+  const { name, image, id } = props;
   return (
     <Link
       href={{
         pathname: "/tours",
         query: {
-          category: name,
+          category: id,
         },
       }}
       className="flex-auto md:flex-1"

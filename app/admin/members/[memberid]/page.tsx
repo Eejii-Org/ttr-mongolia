@@ -1,5 +1,5 @@
 "use client";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 import {
   ArrowLeft,
   CaretDownIcon,
@@ -31,7 +31,6 @@ import _ from "lodash";
 import Image from "next/image";
 
 const Member = () => {
-  const supabase = createClient();
   const router = useRouter();
   const [member, setMember] = useState<MemberType | null>(null);
   const [originalMember, setOriginalMember] = useState<MemberType | null>(null);
@@ -270,7 +269,6 @@ const MemberImage = ({
   originalMember: MemberType | null;
   setMember: Dispatch<SetStateAction<MemberType | null>>;
 }) => {
-  const supabase = createClient();
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const inputRef = useRef(null);

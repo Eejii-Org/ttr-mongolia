@@ -1,5 +1,5 @@
 "use client";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 import {
   Footer,
   Header,
@@ -17,7 +17,6 @@ import { useParams } from "next/navigation";
 
 import { Availability } from "@/components/tour/availability";
 const TourPage = () => {
-  const supabase = createClient();
   const [tour, setTour] = useState<TourType | null>(null);
   const scrollToElement = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);

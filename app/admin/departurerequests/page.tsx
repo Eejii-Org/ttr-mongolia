@@ -1,11 +1,10 @@
 "use client";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 import { ArrowRight } from "@components";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const AdminDepartureRequests = () => {
-  const supabase = createClient();
   const [departureRequests, setDepartureRequests] = useState<
     DepartureRequestType[]
   >([]);

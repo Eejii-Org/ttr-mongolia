@@ -1,5 +1,5 @@
 "use client";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 import { ArrowLeft, EmailIcon, Input, Modal, PhoneIcon } from "@components";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -8,7 +8,6 @@ import _ from "lodash";
 import axios from "axios";
 
 const DepartureRequest = () => {
-  const supabase = createClient();
   const router = useRouter();
   const [departureRequest, setDepartureRequest] =
     useState<DepartureRequestType | null>(null);

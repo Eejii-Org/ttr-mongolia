@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic"; // defaults to auto
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const supabase = createClient();
+
   if (!body.transactionId) {
     return Response.json({
       status: 400,

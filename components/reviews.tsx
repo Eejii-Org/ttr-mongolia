@@ -1,10 +1,9 @@
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 import { FC, use, useEffect, useMemo, useState } from "react";
 import { CloseIcon, StarsIcon } from "./icons";
 import Image from "next/image";
 
 export const Reviews: FC = () => {
-  const supabase = createClient();
   const [reviews, setReviews] = useState<ReviewType[]>([]);
   const [openedImageUrl, setOpenedImageUrl] = useState<string | null>(null);
   useEffect(() => {

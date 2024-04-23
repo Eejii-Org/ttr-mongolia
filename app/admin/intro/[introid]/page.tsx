@@ -1,19 +1,6 @@
 "use client";
-import { createClient } from "@/utils/supabase/client";
-import {
-  ArrowLeft,
-  CaretDownIcon,
-  CaretUpIcon,
-  ChevronDownIcon,
-  CloseIcon,
-  DayIcon,
-  Input,
-  MinusIcon,
-  NightIcon,
-  PlusIcon,
-  PriceIcon,
-  ReloadIcon,
-} from "@components";
+import { supabase } from "@/utils/supabase/client";
+import { ArrowLeft, Input, PlusIcon, ReloadIcon } from "@components";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import {
@@ -31,7 +18,6 @@ import _ from "lodash";
 import Image from "next/image";
 
 const Intro = () => {
-  const supabase = createClient();
   const router = useRouter();
   const [intro, setIntro] = useState<IntroType | null>(null);
   const [originalIntro, setOriginalIntro] = useState<IntroType | null>(null);
@@ -257,7 +243,6 @@ const IntroImages = ({
   originalIntro: IntroType | null;
   setIntro: Dispatch<SetStateAction<IntroType | null>>;
 }) => {
-  const supabase = createClient();
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const inputRef = useRef(null);

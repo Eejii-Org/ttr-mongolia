@@ -1,5 +1,5 @@
 "use client";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 import {
   ArrowLeft,
   CaretDownIcon,
@@ -28,7 +28,6 @@ import _ from "lodash";
 import Image from "next/image";
 
 const Tour = () => {
-  const supabase = createClient();
   const router = useRouter();
   const [tour, setTour] = useState<TourType | null>(null);
   const [originalTour, setOriginalTour] = useState<TourType | null>(null);
@@ -522,7 +521,6 @@ const SelectTourCategories = ({
   selectedCategories,
   setSelectedCategories,
 }: ToursPropsType) => {
-  const supabase = createClient();
   const [tourCategories, setTourCategories] = useState<CategoryType[]>([]);
   useEffect(() => {
     const fetchTourCategories = async () => {
@@ -578,7 +576,6 @@ const TourImages = ({
   originalTour: TourType | null;
   setTour: Dispatch<SetStateAction<TourType | null>>;
 }) => {
-  const supabase = createClient();
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const uploadImage = async (file: File) => {
@@ -689,7 +686,7 @@ const TourImage = ({
     const name = imageUrl.split("/").pop();
     return name ? name : "Unidentified Image";
   }, [imageUrl]);
-  const supabase = createClient();
+
   const deleteImage = async () => {
     setLoading(true);
     if (!imageName) {
@@ -741,7 +738,6 @@ const TourImage = ({
 };
 
 const ScheduledTours = ({ tourId }: { tourId: number }) => {
-  const supabase = createClient();
   const [availableTours, setAvailableTours] = useState<TravelDate[]>([]);
   const addDeparture = () => {
     const today = new Date();

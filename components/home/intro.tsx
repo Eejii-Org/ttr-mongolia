@@ -1,5 +1,5 @@
 "use client";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 import {
   ArrowCircleIcon,
   ArrowDown,
@@ -10,7 +10,6 @@ import {
 import Image from "next/image";
 import { useEffect, useState } from "react";
 export const Intro = () => {
-  const supabase = createClient();
   const [intro, setIntro] = useState<IntroType[]>([]);
   useEffect(() => {
     const fetchIntro = async () => {

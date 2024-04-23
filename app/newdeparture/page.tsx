@@ -1,5 +1,5 @@
 "use client";
-import { createClient } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 import {
   ArrowRight,
   ChevronDownIcon,
@@ -38,7 +38,6 @@ type AvailableTourType = {
 };
 
 const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
-  const supabase = createClient();
   const { tourid } = searchParams;
   const [tours, setTours] = useState<TourType[] | null>([]);
   const [availableTour, setAvailableTour] = useState<AvailableTourType | null>(
