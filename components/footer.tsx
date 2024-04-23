@@ -26,7 +26,7 @@ export const Footer = () => {
                 <Link href="/tours">
                   <div className="text-base text-white/70">Explore Tours</div>
                 </Link>
-                <Link href="/voluteering">
+                <Link href="/volunteering">
                   <div className="text-base text-white/70">Volunteering</div>
                 </Link>
                 <Link href="/contact">
