@@ -1,10 +1,12 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   AmericanExpress,
   Golomt,
   JCB,
   MNT,
   MasterCard,
+  TTRMongolia,
   UnionPay,
   Visa,
 } from "./icons";
@@ -65,7 +67,16 @@ export const Footer = () => {
           </div>
           <div className="flex flex-col gap-16">
             <div className="flex flex-col gap-2 items-center">
-              <div className="font-bold text-2xl">TTR Mongolia</div>
+              <div>
+                <Image
+                  src="/static/ttr.png"
+                  alt="TTR"
+                  width={218.61}
+                  height={132.44}
+                  unoptimized
+                />
+              </div>
+              {/* <div className="font-bold text-2xl">TTR Mongolia</div> */}
               <div className="font-medium">
                 We offer unforgettable travel in Mongolia
               </div>

@@ -29,3 +29,4 @@ export * from "./starsicon";
 export * from "./labelicon";
 export * from "./hamburger";
 export * from "./companyicons";
+export * from "./ttrmongoliaicon";
