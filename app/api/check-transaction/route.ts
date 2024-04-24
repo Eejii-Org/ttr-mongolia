@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 export const dynamic = "force-dynamic"; // defaults to auto
 
 export async function POST(request: Request) {
+  const supabase = createClient()
   const body = await request.json();
 
   if (!body.transactionId) {

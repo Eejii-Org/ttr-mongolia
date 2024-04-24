@@ -15,9 +15,11 @@ export const Tour: FC<TourType> = (props) => {
         .from("availableTours")
         .select("*")
         .eq("tourId", id)
+        .eq("status", "active")
         .gte("date", new Date().toISOString())
         .lte("price", originalPrice)
-        .order("price");
+        .order("price")
+        .limit(1);
 
       if (error) {
         console.error(error);

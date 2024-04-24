@@ -1,6 +1,4 @@
 import nodemailer from "nodemailer";
-import axios from "axios";
-import { createClient } from "@/utils/supabase/server";
 export const dynamic = "force-dynamic"; // defaults to auto
 const transporter = nodemailer.createTransport({
   service: "gmail",

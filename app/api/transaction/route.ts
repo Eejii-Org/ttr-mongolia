@@ -2,6 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
+  const supabase = createClient();
   const body = await request.json();
 
   const { data, error } = await supabase

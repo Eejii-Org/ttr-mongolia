@@ -1,5 +1,4 @@
 import nodemailer from "nodemailer";
-import axios from "axios";
 import { createClient } from "@/utils/supabase/server";
 export const dynamic = "force-dynamic"; // defaults to auto
 const transporter = nodemailer.createTransport({
@@ -13,6 +12,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 export async function POST(request: Request) {
+  const supabase = createClient();
   const body = await request.json();
 
   if (
