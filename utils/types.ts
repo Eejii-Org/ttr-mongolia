@@ -4,7 +4,7 @@ type TourType = {
   images: string[];
   title: string;
   overview: string;
-  originalPrice: number;
+  originalPrice: PriceType[];
   days: number;
   nights: number;
   minimumRequired: number;
@@ -26,10 +26,10 @@ type ItineraryType = {
   description: string;
 };
 
-type TravelDate = {
+type AvailableTourType = {
   id?: number;
   date: string;
-  price: number;
+  salePrice: number | null;
   status: "active" | "inactive";
   tourId: number;
   // tourId: string;
@@ -72,9 +72,8 @@ type CategoryType = {
 };
 
 type PriceType = {
-  tourDateId: string;
-  date: string;
-  price: number;
+  passengerCount: number;
+  pricePerPerson: number;
 };
 
 type TransactionType = {

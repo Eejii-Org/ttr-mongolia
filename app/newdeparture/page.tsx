@@ -1,48 +1,28 @@
 "use client";
 import { supabase } from "@/utils/supabase/client";
 import {
-  ArrowRight,
   ChevronDownIcon,
   EmailIcon,
-  Footer,
-  Header,
   Input,
   MainLayout,
   PhoneIcon,
 } from "@components";
 import axios from "axios";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  ChangeEvent,
-  ChangeEventHandler,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { ChangeEventHandler, useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 
 type TourType = {
   id: number;
   title: string;
-  originalPrice: number;
+  originalPrice: PriceType[];
   days: number;
   nights: number;
   minimumRequired: number;
 };
-
-type AvailableTourType = {
-  tourId: number;
-  price: number;
-  date: string;
-};
-
 const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
   const { tourid } = searchParams;
   const [tours, setTours] = useState<TourType[] | null>([]);
-  const [availableTour, setAvailableTour] = useState<AvailableTourType | null>(
-    null
-  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -66,7 +46,15 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
   const updatePersonalDetail = (key: string, value: string) => {
     setPersonalDetail({ ...personalDetail, [key]: value });
   };
-
+  const pricePerPerson = useMemo(() => {
+    if (!selectedTourData?.originalPrice) return;
+    for (let price of selectedTourData?.originalPrice) {
+      if (price.passengerCount >= personalDetail.peopleCount) {
+        return price.pricePerPerson;
+      }
+    }
+    return selectedTourData?.originalPrice?.at(-1)?.pricePerPerson;
+  }, [selectedTourData, personalDetail]);
   const [requestLoading, setRequestLoading] = useState(false);
   const requestNewTour = async () => {
     setRequestLoading(true);
@@ -274,7 +262,7 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
                 </div>
                 <div className="flex flex-row justify-between items-center">
                   <div className="font-medium text-[#c1c1c1]">
-                    ${selectedTourData?.originalPrice} Per person
+                    ${pricePerPerson} Per person
                   </div>
                   <div className="font-medium text-[#c1c1c1]">
                     {selectedTourData?.days} days / {selectedTourData?.nights}{" "}
@@ -297,22 +285,6 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
                   />
                 </div>
               </div>
-              {/* <div className=" bg-quinary p-3 md:p-4 rounded-xl flex flex-col gap-2">
-                <div className="text-lg font-semibold lg:text-xl">Price</div>
-                <div className="text-base text- font-semibold lg:text-xl text-center">
-                  {selectedTourData ? (
-                    <>
-                      {" "}
-                      {personalDetail.peopleCount} * $
-                      {selectedTourData?.originalPrice} = $
-                      {personalDetail.peopleCount *
-                        selectedTourData?.originalPrice}
-                    </>
-                  ) : (
-                    "???"
-                  )}
-                </div>
-              </div> */}
               <button
                 type="submit"
                 className="bg-primary px-4 py-3 width-full text-center text-secondary whitespace-nowrap font-bold ripple"

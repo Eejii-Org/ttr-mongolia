@@ -1,48 +1,26 @@
 import Link from "next/link";
-import { FC, useEffect, useState } from "react";
+import { useMemo } from "react";
 import Image from "next/image";
 import { DayIcon, PriceIcon } from "../icons";
-import { supabase } from "@/utils/supabase/client";
+import { CombinedToursDataType } from "@/app/tours/page";
 
-export const Tour: FC<TourType> = (props) => {
-  const { images, title, overview, originalPrice, days, id } = props;
-
-  const [sale, setSale] = useState<TravelDate | null>(null);
-  const [saleCount, setSaleCount] = useState(0);
-  useEffect(() => {
-    const getSale = async () => {
-      const { data, error } = await supabase
-        .from("availableTours")
-        .select("*")
-        .eq("tourId", id)
-        .eq("status", "active")
-        .gte("date", new Date().toISOString())
-        .lte("price", originalPrice)
-        .order("price")
-        .limit(1);
-
-      if (error) {
-        console.error(error);
-        return;
-      }
-      if (data.length == 0) {
-        setSale(null);
-        return;
-      }
-      setSaleCount(data.length);
-      setSale(data?.[0]);
-    };
-    getSale();
-  }, [originalPrice, id]);
+export const Tour = (props: { tour: CombinedToursDataType }) => {
+  const { tour } = props;
+  const { images, title, overview, originalPrice, days, id } = tour;
+  const sale = useMemo<AvailableTourType[]>(() => {
+    return tour.availableTours
+      .filter((availableTour) => availableTour.salePrice !== null)
+      .sort((a, b) => (a.salePrice || 0) - (b.salePrice || 0));
+  }, [tour]);
   return (
     <div className="flex flex-col md:h-48 md:flex-row gap-2 md:gap-8 cursor-default">
       <div className="relative md:w-1/4 md:max-w-80 h-48 md:h-auto rounded overflow-hidden">
-        <Link href={"/tours/" + props.id}>
+        <Link href={"/tours/" + tour.id}>
           <Image src={images[0]} alt={title} className="object-cover" fill />
         </Link>
       </div>
       <div className="flex flex-1 flex-col gap-1">
-        <Link href={"/tours/" + props.id}>
+        <Link href={"/tours/" + tour.id}>
           <div className="font-bold text-xl lg:text-3xl">{title}</div>
           <div className="text-sm md:text-base tour-item-description">
             {overview}
@@ -53,7 +31,7 @@ export const Tour: FC<TourType> = (props) => {
         <div className="flex flex-row justify-center md:justify-normal md:flex-col gap-1">
           {sale && (
             <div className="font-bold text-primary text-xl">
-              {saleCount} Departure{saleCount == 1 ? "" : "s"} On Sale
+              {sale.length} Departure{sale.length == 1 ? "" : "s"} On Sale
             </div>
           )}
           <div className="flex flex-row gap-2 items-center">
@@ -64,12 +42,15 @@ export const Tour: FC<TourType> = (props) => {
                   sale ? "line-through" : ""
                 }`}
               >
-                ${originalPrice}
+                ${originalPrice.at(-1)?.pricePerPerson}
               </span>
               {sale && (
                 <>
                   <span>/</span>
-                  <span className="font-bold text-primary"> ${sale.price}</span>
+                  <span className="font-bold text-primary">
+                    {" "}
+                    ${sale[0].salePrice}
+                  </span>
                 </>
               )}
             </div>
@@ -92,7 +73,7 @@ export const Tour: FC<TourType> = (props) => {
             Book Now
           </button> */}
           <Link
-            href={"/tours/" + props.id}
+            href={"/tours/" + id}
             className="ripple w-full md:w-auto lg:w-1/2 py-2 md:py-3 bg-quaternary text-center font-bold rounded"
           >
             Learn More

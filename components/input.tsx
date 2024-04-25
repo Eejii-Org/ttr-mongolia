@@ -26,7 +26,7 @@ export const Input = ({
   disabled = false,
 }: InputType) => {
   return (
-    <div className="px-4 py-3 border bg-tertiary flex flex-row gap-3 flex-1">
+    <div className="px-4 py-3 border bg-tertiary flex flex-row gap-3 flex-1 rounded">
       {icon && icon}
       <input
         type={type}

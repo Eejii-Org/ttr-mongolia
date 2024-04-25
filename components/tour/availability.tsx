@@ -1,43 +1,26 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { ArrowRight, SaleIcon } from "../icons";
 import { supabase } from "@/utils/supabase/client";
 import Link from "next/link";
 
-export const Availability = ({ tour }: { tour: TourType }) => {
-  const [loading, setLoading] = useState(false);
-  const [tourDates, setTourDates] = useState<TravelDate[]>([]);
-  useEffect(() => {
-    const getAvailableDates = async () => {
-      setLoading(true);
-      try {
-        const { data, error } = await supabase
-          .from("availableTours")
-          .select("*")
-          .eq("tourId", tour.id)
-          .eq("status", "active")
-          .gte("date", new Date().toISOString());
-        if (error) {
-          throw error;
-        }
-        setTourDates(data);
-      } catch (error: any) {
-        console.error("Error fetching availableTours:", error.message);
-      }
-      setLoading(false);
-    };
-    getAvailableDates();
-  }, [tour]);
+export const Availability = ({
+  tour,
+  availableTours,
+}: {
+  tour: TourType;
+  availableTours: AvailableTourType[];
+}) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="text-2xl md:text-4xl font-semibold">Available Tours</div>
       <div className="flex flex-col gap-4">
-        {tourDates.length == 0 && (
+        {availableTours.length == 0 && (
           <div>
             There are currently no scheduled departures but you can request a
             new departure date.
           </div>
         )}
-        {tourDates.map((tourDate, index) => (
+        {availableTours.map((tourDate, index) => (
           <AvailabilityItem
             {...tourDate}
             originalPrice={tour.originalPrice}
@@ -66,23 +49,20 @@ export const Availability = ({ tour }: { tour: TourType }) => {
     </div>
   );
 };
-interface AvailabilityItemPropsType extends TravelDate {
-  originalPrice: number;
+interface AvailabilityItemPropsType extends AvailableTourType {
+  originalPrice: PriceType[];
   days: number;
   nights: number;
 }
 
 const AvailabilityItem: FC<AvailabilityItemPropsType> = ({
   date,
-  price,
+  salePrice,
   originalPrice,
   days,
   nights,
   id,
 }) => {
-  const isOnSale = useMemo(() => {
-    return price < originalPrice;
-  }, [originalPrice, price]);
   const dates = useMemo(() => {
     const startingDate = new Date(date);
     let endingDate = new Date(date);
@@ -115,36 +95,39 @@ const AvailabilityItem: FC<AvailabilityItemPropsType> = ({
           <div className="font-medium text-base text-[#c1c1c1]">
             {dates.startingDate.day}
           </div>
-          <div className="font-bold text-xl">{dates.startingDate.date}</div>
+          <div className="font-bold md:text-xl">{dates.startingDate.date}</div>
         </div>
         <ArrowRight />
         <div>
           <div className="font-medium text-base text-[#c1c1c1]">
             {dates.endingDate.day}
           </div>
-          <div className="font-bold text-xl">{dates.endingDate.date}</div>
+          <div className="font-bold md:text-xl">{dates.endingDate.date}</div>
         </div>
       </div>
       <div className="flex flex-1 items-center justify-center flex-col">
         <div className="flex flex-row md:flex-col gap-4 md:gap-0 items-center md:items-start">
-          <div className="flex flex-row items-center gap-1">
-            <SaleIcon />
-            <div className="font-bold text-primary text-lg md:text-xl">
-              On Sale
+          {salePrice !== null && (
+            <div className="flex flex-row items-center gap-1">
+              {/* <SaleIcon /> */}
+              <div className="font-bold text-primary text-base md:text-base">
+                On Sale
+              </div>
             </div>
-          </div>
+          )}
+
           <div className="text-lg lg:text-xl">
             <span
               className={`font-bold text-secondary ${
-                isOnSale ? "line-through" : ""
+                salePrice !== null ? "line-through" : ""
               }`}
             >
-              ${originalPrice}
+              ${originalPrice.at(-1)?.pricePerPerson}
             </span>
-            {isOnSale && (
+            {salePrice !== null && (
               <>
                 <span>/</span>
-                <span className="font-bold text-primary"> ${price}</span>
+                <span className="font-bold text-primary"> ${salePrice}</span>
               </>
             )}
           </div>

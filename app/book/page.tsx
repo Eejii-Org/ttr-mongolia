@@ -4,44 +4,36 @@ import {
   ArrowRight,
   ChevronDownIcon,
   EmailIcon,
-  Footer,
-  Header,
   Input,
   MainLayout,
   PhoneIcon,
 } from "@components";
 import axios from "axios";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEventHandler, useEffect, useMemo, useState } from "react";
 
 type TourType = {
   title: string;
-  originalPrice: number;
+  originalPrice: PriceType[];
   days: number;
   nights: number;
 };
-
 type AvailableTourType = {
   tourId: number;
-  price: number;
+  salePrice: number | null;
   date: string;
 };
 
-const Booking = ({
-  searchParams,
-}: {
-  searchParams: { availableTourId: string };
-}) => {
+const Booking = () => {
   const [tour, setTour] = useState<TourType | null>(null);
   const [availableTour, setAvailableTour] = useState<AvailableTourType | null>(
     null
   );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const searchParams = useSearchParams();
+  const availableTourId = searchParams.get("availableTourId");
   const router = useRouter();
-  const { availableTourId } = searchParams;
   const [personalDetail, setPersonalDetail] = useState({
     firstName: "",
     lastName: "",
@@ -53,12 +45,12 @@ const Booking = ({
     additionalInformation: "",
   });
 
-  const updatePersonalDetail = (key: string, value: string) => {
+  const updatePersonalDetail = (key: string, value: string | number) => {
     setPersonalDetail({ ...personalDetail, [key]: value });
   };
   const [bookLoading, setBookLoading] = useState(false);
   const book = async () => {
-    if (!availableTour || !availableTour.price) {
+    if (!availableTour) {
       setError("Tour Not Found");
       return;
     }
@@ -86,10 +78,22 @@ const Booking = ({
     setBookLoading(false);
     router.push(`/book/payment?invoice=${res.data.invoice}`);
   };
-
+  const pricePerPerson = useMemo(() => {
+    if (availableTour?.salePrice == null) {
+      console.log(tour?.originalPrice, personalDetail.peopleCount);
+      if (!tour?.originalPrice) return;
+      for (let price of tour?.originalPrice) {
+        if (price.passengerCount >= personalDetail.peopleCount) {
+          return price.pricePerPerson;
+        }
+      }
+      return tour?.originalPrice.at(-1)?.pricePerPerson;
+    }
+    return availableTour.salePrice;
+  }, [availableTour, personalDetail]);
   useEffect(() => {
     const getTour = async () => {
-      if (availableTourId == "" || availableTour) {
+      if (availableTourId == "") {
         // router.push("/");
         setError("Tour Not Found");
         setLoading(false);
@@ -98,7 +102,7 @@ const Booking = ({
       setLoading(true);
       const { data, error } = await supabase
         .from("availableTours")
-        .select("tourId, price, date")
+        .select("tourId, salePrice, date")
         .eq("id", availableTourId);
       if (error) {
         console.error(error);
@@ -265,9 +269,13 @@ const Booking = ({
                   <Input
                     value={personalDetail.peopleCount}
                     type={"number"}
+                    min={1}
                     placeholder="3"
                     onChange={(e) => {
-                      updatePersonalDetail("peopleCount", e.target.value);
+                      updatePersonalDetail(
+                        "peopleCount",
+                        Number(e.target.value)
+                      );
                     }}
                     required
                   />
@@ -315,19 +323,25 @@ const Booking = ({
                   </div>
                 </div>
               </div>
-              <div className=" bg-quinary p-3 md:p-4 flex flex-col gap-2">
-                <div className="text-lg font-semibold lg:text-xl">Price</div>
-                <div className="text-base font-semibold lg:text-xl text-center">
-                  {personalDetail.peopleCount} * ${availableTour?.price} = $
-                  {personalDetail.peopleCount * availableTour?.price}
-                </div>
-              </div>
-              <button
-                type="submit"
-                className="bg-primary px-4 py-3 width-full text-center text-secondary whitespace-nowrap font-bold ripple"
-              >
-                {bookLoading ? "Loading" : "Book"}
-              </button>
+              {pricePerPerson && (
+                <>
+                  <div className=" bg-quinary p-3 md:p-4 flex flex-col gap-2">
+                    <div className="text-lg font-semibold lg:text-xl">
+                      Price
+                    </div>
+                    <div className="text-base font-semibold lg:text-xl text-center">
+                      {personalDetail.peopleCount} * ${pricePerPerson} = $
+                      {personalDetail.peopleCount * pricePerPerson}
+                    </div>
+                  </div>
+                  <button
+                    type="submit"
+                    className="bg-primary px-4 py-3 width-full text-center text-secondary whitespace-nowrap font-bold ripple"
+                  >
+                    {bookLoading ? "Loading" : "Book"}
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </form>

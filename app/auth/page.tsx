@@ -21,6 +21,15 @@ const Auth = () => {
     router.push("/admin");
     setLoading(false);
   };
+  const signUpWithEmail = async () => {
+    setLoading(true);
+    const { data, error } = await supabase.auth.signUp({
+      email: "example@email.com",
+      password: "example-password",
+    });
+    router.push("/admin");
+    setLoading(false);
+  };
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     console.error(error);
@@ -102,6 +111,7 @@ const Auth = () => {
               "Sign In"
             )}
           </button>
+          <button onClick={signUpWithEmail}>SignUp</button>
           {user && (
             <Link
               href="/admin"

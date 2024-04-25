@@ -8,6 +8,13 @@ import {
 import { useState, useEffect, useMemo, Suspense } from "react";
 import { supabase } from "@/utils/supabase/client";
 
+export interface CombinedToursDataType extends TourType {
+  availableTours: AvailableTourType[];
+}
+export interface CombinedAvailableToursDataType extends AvailableTourType {
+  tourData: TourType | null;
+}
+
 const SearchBarFallback = () => {
   return <>SearchBar</>;
 };
@@ -17,14 +24,39 @@ const Tours = () => {
     "All"
   );
   const [tours, setTours] = useState<TourType[]>([]);
+  const [availableTours, setAvailableTours] = useState<AvailableTourType[]>([]);
   const [loading, setLoading] = useState(true);
   const [scheduledOpened, setScheduledOpened] = useState(false);
-  const selectedTours = useMemo(() => {
-    if (selectedCategory == "All") return tours;
-    return tours.filter((tour) =>
+  const combinedToursData = useMemo<CombinedToursDataType[]>(() => {
+    if (!tours) return [];
+    return tours.map((tour) => {
+      return {
+        ...tour,
+        availableTours: availableTours.filter(
+          (availableTours) => availableTours.tourId === tour.id
+        ),
+      };
+    });
+  }, [tours, availableTours]);
+  const combinedAvailableToursData = useMemo<
+    CombinedAvailableToursDataType[]
+  >(() => {
+    if (!tours || !availableTours) return [];
+    return availableTours.map((availableTour) => {
+      return {
+        ...availableTour,
+        tourData: tours.find((tour) => tour.id == availableTour.tourId) || null,
+      };
+    });
+  }, [tours, availableTours]);
+
+  const selectedTours = useMemo<CombinedToursDataType[]>(() => {
+    if (selectedCategory == "All") return combinedToursData;
+    return combinedToursData.filter((tour) =>
       tour.categories.includes(Number(selectedCategory))
     );
-  }, [selectedCategory, tours]);
+  }, [selectedCategory, combinedToursData]);
+
   useEffect(() => {
     const fetchTours = async () => {
       setLoading(true);
@@ -36,6 +68,15 @@ const Tours = () => {
         if (error) {
           throw error;
         }
+        const { data: availableToursData, error: err } = await supabase
+          .from("availableTours")
+          .select("*")
+          .eq("status", "active")
+          .order("date");
+        if (err) {
+          throw error;
+        }
+        setAvailableTours(availableToursData);
         setTours(data);
       } catch (error: any) {
         console.error("Error fetching tour categories:", error.message);
@@ -50,7 +91,7 @@ const Tours = () => {
       <AvailableDates
         open={scheduledOpened}
         setOpen={setScheduledOpened}
-        tours={tours}
+        combinedAvailableToursData={combinedAvailableToursData}
       />
       <div className="flex flex-col gap-8 px-3 md:p-0 pt-16 md:pt-14 md:mx-auto container">
         <div className="flex flex-col gap-4 md:gap-8">
@@ -91,7 +132,7 @@ const Tours = () => {
               ) : (
                 <>
                   {selectedTours.map((tour, index) => (
-                    <Tour {...tour} key={index} />
+                    <Tour tour={tour} key={index} />
                   ))}
                 </>
               )}

@@ -1,12 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: false,
   images: {
+    // remotePatterns: [
+    //   {
+    //     protocol: "https",
+    //     hostname: "qgowfgocgbsonbpypbvu.supabase.co",
+    //     port: "",
+    //     pathname: "/storage/**",
+    //   },
+    // ],
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "qgowfgocgbsonbpypbvu.supabase.co",
-        port: "",
-        pathname: "/storage/**",
+        hostname: "**",
       },
     ],
   },
@@ -30,6 +37,9 @@ const nextConfig = {
         ],
       },
     ];
+  },
+  experimental: {
+    missingSuspenseWithCSRBailout: false,
   },
 };
 

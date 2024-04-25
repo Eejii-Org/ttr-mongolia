@@ -1,78 +1,22 @@
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { ArrowCircleIcon, CloseIcon } from "../icons";
 import Link from "next/link";
-import { supabase } from "@/utils/supabase/client";
-
-interface TourDateType extends TravelDate {
-  title: string;
-  overview: string;
-  days: number;
-  nights: number;
-  date: string;
-  originalPrice: number;
-}
+import { CombinedAvailableToursDataType } from "@/app/tours/page";
 
 export const AvailableDates = ({
   open,
   setOpen,
-  tours,
+  combinedAvailableToursData,
 }: {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  tours: TourType[];
+  combinedAvailableToursData: CombinedAvailableToursDataType[];
 }) => {
   const [tableIndex, setTableIndex] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [availableDates, setAvailableDates] = useState<TravelDate[]>([]);
   const availableTours = useMemo(() => {
-    let obj: { [key: number]: TourType } = {};
-    tours.map((tour) => {
-      if (tour.id) obj[tour.id] = tour;
-    });
-    return availableDates.map((availableDate) => ({
-      ...availableDate,
-      ...obj[availableDate.tourId || 0],
-      availableTourId: availableDate.id,
-    }));
-  }, [tours, availableDates]);
-
-  useEffect(() => {
-    const getAvailableDates = async () => {
-      setLoading(true);
-      try {
-        const { data, error } = await supabase
-          .from("availableTours")
-          .select("*")
-          .eq("status", "active")
-          .gte("date", new Date().toISOString());
-        if (error) {
-          throw error;
-        }
-        setAvailableDates(data);
-      } catch (error: any) {
-        console.error("Error fetching availableTours:", error.message);
-      }
-      setLoading(false);
-    };
-    getAvailableDates();
-  }, []);
-
-  // const availableTours = useMemo(() => {
-  //   const a: TourDateType[] = [];
-  //   tours.forEach((tour) => {
-  //     a.push(
-  //       ...tour.dates.map((tourDate) => ({
-  //         ...tourDate,
-  //         title: tour.title,
-  //         overview: tour.overview,
-  //         days: tour.days,
-  //         nights: tour.nights,
-  //         originalPrice: tour.originalPrice,
-  //       }))
-  //     );
-  //   });
-  //   return a;
-  // }, [tours]);
+    return combinedAvailableToursData.filter((t) => t.tourData !== null);
+  }, [combinedAvailableToursData]);
   return (
     <div
       className={`absolute z-50 top-0 bottom-0 w-screen h-screen overflow-scroll backdrop-blur-sm bg-black/50 items-center justify-center ${
@@ -116,43 +60,6 @@ export const AvailableDates = ({
                     Booking
                   </th>
                 </tr>
-                {/* {availableTours.map((availableTour, i) => (
-                  <tr className="hover:bg-black/5 flex md:hidden" key={i}>
-                    <td className="px-3 flex items-center min-w-10">
-                      {tableIndex * 8 + i + 1}
-                    </td>
-                    <td className="flex-1 flex min-w-36 md:min-w-min py-2 px-3 font-semibold ">
-                      <Link
-                        href={`/tours/${availableTour.tourId}`}
-                        className=" flex-1"
-                      >
-                        {availableTour.title}
-                      </Link>
-                    </td>
-                    <td className="flex-1 min-w-36 md:min-w-min px-3 py-2">
-                      {availableTour.days} days / {availableTour.nights} nights
-                    </td>
-                    <td className="flex-1 min-w-36 md:min-w-min px-3 font-semibold py-2">
-                      {new Date(availableTour.date).toDateString()}
-                    </td>
-                    <td className="flex-1 min-w-36 md:min-w-min px-3 font-bold py-2">
-                      ${availableTour.originalPrice}/ ${availableTour.price}
-                    </td>
-                    <td className="px-3 py-2">
-                      <Link
-                        className="bg-primary px-4 py-2 whitespace-nowrap font-bold"
-                        href={{
-                          pathname: "/book",
-                          query: {
-                            availableTourId: availableTour.availableTourId,
-                          },
-                        }}
-                      >
-                        Book Now
-                      </Link>
-                    </td>
-                  </tr>
-                ))} */}
                 {availableTours
                   .slice(tableIndex * 8, (tableIndex + 1) * 8)
                   .map((availableTour, i) => (
@@ -165,21 +72,30 @@ export const AvailableDates = ({
                           href={`/tours/${availableTour.tourId}`}
                           className=" flex-1"
                         >
-                          {availableTour.title}
+                          {availableTour.tourData?.title}
                         </Link>
                       </td>
                       <td className="flex-1 min-w-36 md:min-w-min px-3 py-2">
-                        {availableTour.days} days / {availableTour.nights}{" "}
-                        nights
+                        {availableTour.tourData?.days} days /{" "}
+                        {availableTour.tourData?.nights} nights
                       </td>
                       <td className="flex-1 min-w-36 md:min-w-min px-3 font-semibold py-2">
                         {new Date(availableTour.date).toDateString()}
                       </td>
                       <td className="flex-1 min-w-36 md:min-w-min px-3 font-bold py-2">
-                        ${availableTour.originalPrice}/{" "}
-                        <span className="text-primary">
-                          ${availableTour.price}
-                        </span>
+                        $
+                        {
+                          availableTour.tourData?.originalPrice.at(-1)
+                            ?.pricePerPerson
+                        }
+                        {availableTour.salePrice && (
+                          <>
+                            /
+                            <span className="text-primary">
+                              ${availableTour.salePrice}
+                            </span>
+                          </>
+                        )}
                       </td>
                       <td className="px-3 py-2">
                         <Link
@@ -187,7 +103,7 @@ export const AvailableDates = ({
                           href={{
                             pathname: "/book",
                             query: {
-                              availableTourId: availableTour.availableTourId,
+                              availableTourId: availableTour.id,
                             },
                           }}
                         >

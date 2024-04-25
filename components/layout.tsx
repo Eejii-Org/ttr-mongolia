@@ -36,7 +36,7 @@ export const MainLayout = ({
           className="sticky bottom-8 left-[calc(100vw-104px)] w-[72px] h-[72.45px] z-30"
           href="https://wa.me/97688113977"
         >
-          <Image src="/static/whatsapp.png" alt="whatsapp" fill unoptimized />
+          <Image src="/static/whatsapp.svg" alt="whatsapp" fill />
         </a>
       </div>
       <Footer />

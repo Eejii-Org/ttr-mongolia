@@ -1,8 +1,6 @@
 "use client";
 import { supabase } from "@/utils/supabase/client";
 import {
-  Footer,
-  Header,
   Included,
   MainLayout,
   NotIncluded,
@@ -12,9 +10,9 @@ import {
   TourIntro,
   TourPlan,
 } from "@components";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-
+import _ from "lodash";
 import { Availability } from "@/components/tour/availability";
 const TourPage = () => {
   const [tour, setTour] = useState<TourType | null>(null);
@@ -22,29 +20,46 @@ const TourPage = () => {
   const [loading, setLoading] = useState(false);
   const params = useParams();
   const { tourid } = params;
-
-  const checkAvailableDate = () => scrollToElement.current?.scrollIntoView();
-
+  const [availableTours, setAvailableTours] = useState<AvailableTourType[]>([]);
+  const saleTours = useMemo<AvailableTourType[]>(() => {
+    return availableTours.filter(
+      (availableTour) => availableTour.salePrice !== null
+    );
+  }, [availableTours]);
   useEffect(() => {
-    const fetchTour = async () => {
+    const getTour = async () => {
       setLoading(true);
       try {
         const { data, error } = await supabase
           .from("tours")
           .select("*")
-          .eq("id", tourid);
-
-        if (error) {
+          .eq("id", tourid)
+          .maybeSingle();
+        if (error || !data) {
           throw error;
         }
-        setTour(data[0] as TourType);
+        const { data: availableToursData, error: err } = await supabase
+          .from("availableTours")
+          .select("*")
+          .eq("tourId", data.id)
+          .eq("status", "active")
+          .gte("date", new Date().toISOString())
+          .order("date");
+        if (err) {
+          throw err;
+        }
+        setAvailableTours(availableToursData);
+        setTour(data as TourType);
+        setLoading(false);
       } catch (error: any) {
         console.error("Error fetching tour categories:", error.message);
       }
       setLoading(false);
     };
-    fetchTour();
+    getTour();
   }, [tourid]);
+
+  const checkAvailableDate = () => scrollToElement.current?.scrollIntoView();
 
   if (!tour) {
     return <div>Loading</div>;
@@ -69,11 +84,15 @@ const TourPage = () => {
               <TourPlan itinerary={tour.itinerary} />
             </div>
             <div ref={scrollToElement} className="pt-24 -mt-24">
-              <Availability tour={tour} />
+              <Availability tour={tour} availableTours={availableTours} />
             </div>
           </div>
           <div className="bg-white pb-4 md:p-0 md:bg-transparent w-full md:w-1/3 md:pl-8 md:relative">
-            <TourInfo tour={tour} checkAvailableDate={checkAvailableDate} />
+            <TourInfo
+              tour={tour}
+              saleTours={saleTours}
+              checkAvailableDate={checkAvailableDate}
+            />
           </div>
         </div>
         <div className="mt-32">

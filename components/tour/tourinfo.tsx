@@ -1,71 +1,78 @@
-import { useEffect, useMemo, useState } from "react";
-import { DayIcon, NightIcon, PriceIcon } from "../icons";
-import { supabase } from "@/utils/supabase/client";
-
+import { useMemo } from "react";
+import _ from "lodash";
 export const TourInfo = ({
   tour,
   checkAvailableDate,
+  saleTours,
 }: {
   tour: TourType;
   checkAvailableDate: () => void;
+  saleTours: AvailableTourType[];
 }) => {
-  const [sale, setSale] = useState<TravelDate | null>(null);
-  const [saleCount, setSaleCount] = useState(0);
-  useEffect(() => {
-    const getSale = async () => {
-      const { data, error } = await supabase
-        .from("availableTours")
-        .select("*")
-        .eq("tourId", tour.id)
-        .gte("date", new Date().toISOString())
-        .lte("price", tour.originalPrice)
-        .order("price");
-      if (error) {
-        console.error(error);
-        return;
-      }
-      if (data.length == 0) {
-        setSale(null);
-        return;
-      }
-      setSaleCount(data?.length);
-      setSale(data?.[0]);
-    };
-    if (tour) getSale();
-  }, [tour]);
-
+  const minimumPrice = useMemo(() => {
+    return _.min(saleTours.map((t) => t.salePrice));
+  }, [saleTours]);
   return (
-    <div className="flex sticky top-16 justify-center md:justify-normal flex-col gap-2">
-      {sale && (
-        <div className="font-bold text-primary text-xl">
-          {saleCount} Departure{saleCount == 1 ? "" : "s"} On Sale
+    <div className="flex sticky top-16 max-w-96 justify-center md:justify-normal flex-col gap-2">
+      <div className="font-bold text-secondary text-xl">Price</div>
+      {saleTours.length !== 0 && (
+        <div className="flex flex-row justify-between">
+          <div className="font-semibold text-primary text-xl">
+            {saleTours.length} Departure{saleTours.length == 1 ? "" : "s"} On
+            Sale
+          </div>
+          <div className="font-semibold text-primary text-xl">
+            ${minimumPrice}
+          </div>
         </div>
       )}
       <div className="flex flex-row md:flex-col gap-2">
-        <div className="flex flex-row gap-2 items-center">
+        <div className="grid grid-cols-2 gap-2">
+          {tour.originalPrice.map((price, index) => (
+            <div
+              className="bg-[#F2F2F2] px-3 py-2 rounded border border-black/5"
+              key={index}
+            >
+              <div className="font-medium">
+                {price.passengerCount}
+                {index == tour.originalPrice.length - 1 ? "+" : ""} Pax
+              </div>
+              <div>
+                <span className="font-bold text-lg">
+                  ${price.pricePerPerson}
+                </span>{" "}
+                <span>per person</span>
+              </div>
+            </div>
+          ))}
+        </div>
+        {/* <div className="flex flex-row gap-2 items-center">
           <PriceIcon />
           <div className="text-xl lg:text-3xl">
             <span
               className={`font-bold text-secondary ${
-                sale ? "line-through" : ""
+                saleTours.length !== 0 ? "line-through" : ""
               }`}
             >
-              ${tour.originalPrice}
+              ${tour.originalPrice.at(-1)?.pricePerPerson}
             </span>
-            {sale && (
+            {saleTours.length !== 0 && (
               <>
                 <span>/</span>
-                <span className="font-bold text-primary"> ${sale.price}</span>
+                <span className="font-bold text-primary">
+                  {" "}
+                  ${saleTours[0].salePrice}
+                </span>
               </>
             )}
           </div>
-        </div>
-        <div className="flex flex-row gap-2 items-center">
+        </div> */}
+        {/* <div className="flex flex-row gap-2 items-center">
           <DayIcon />
           <div className="text-base lg:text-xl">
             <span className="font-bold">{tour.days}</span> days
           </div>
-        </div>
+        </div> */}
         {/* <div className="flex flex-row gap-2 items-center">
           <NightIcon />
           <div className="text-base lg:text-xl">
@@ -75,7 +82,7 @@ export const TourInfo = ({
       </div>
 
       <button
-        className="md:max-w-60 mt-5 ripple flex-1 py-3 bg-primary text-center font-bold text-secondary"
+        className="mt-2 ripple flex-1 py-3 bg-primary text-center font-bold text-secondary rounded"
         onClick={checkAvailableDate}
       >
         Check Availability

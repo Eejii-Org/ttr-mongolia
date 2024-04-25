@@ -37,7 +37,7 @@ type transactionDetailType = {
     created_at: string;
     date: string;
     id: number;
-    price: number;
+    salePrice: number | null;
     tourId: number;
   };
 };

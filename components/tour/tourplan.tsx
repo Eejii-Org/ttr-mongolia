@@ -9,7 +9,7 @@ export const TourPlan: FC<TourPlanType> = ({ itinerary }) => {
     <div className="flex flex-col gap-4">
       <div className="text-2xl md:text-4xl font-semibold">Tour Plan</div>
       <div className="font-medium text-xl">
-        {itinerary.map((itinerary, index) => (
+        {itinerary?.map((itinerary, index) => (
           <ListItem {...itinerary} index={index} key={index} />
         ))}
       </div>
