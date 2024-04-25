@@ -12,6 +12,7 @@ export const Tour = (props: { tour: CombinedToursDataType }) => {
       .filter((availableTour) => availableTour.salePrice !== null)
       .sort((a, b) => (a.salePrice || 0) - (b.salePrice || 0));
   }, [tour]);
+  console.log(sale);
   return (
     <div className="flex flex-col md:h-48 md:flex-row gap-2 md:gap-8 cursor-default">
       <div className="relative md:w-1/4 md:max-w-80 h-48 md:h-auto rounded overflow-hidden">
@@ -29,7 +30,7 @@ export const Tour = (props: { tour: CombinedToursDataType }) => {
       </div>
       <div className="relative md:w-1/4 flex flex-col gap-4">
         <div className="flex flex-row justify-center md:justify-normal md:flex-col gap-1">
-          {sale && (
+          {sale.length !== 0 && (
             <div className="font-bold text-primary text-xl">
               {sale.length} Departure{sale.length == 1 ? "" : "s"} On Sale
             </div>
@@ -44,7 +45,7 @@ export const Tour = (props: { tour: CombinedToursDataType }) => {
               >
                 ${originalPrice.at(-1)?.pricePerPerson}
               </span>
-              {sale && (
+              {sale.length !== 0 && (
                 <>
                   <span>/</span>
                   <span className="font-bold text-primary">
