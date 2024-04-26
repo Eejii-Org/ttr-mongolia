@@ -8,12 +8,23 @@ import {
 import { useState, useEffect, useMemo, Suspense } from "react";
 import { supabase } from "@/utils/supabase/client";
 
-export interface CombinedToursDataType extends TourType {
+export interface CombinedToursDataType extends TType {
   availableTours: AvailableTourType[];
 }
 export interface CombinedAvailableToursDataType extends AvailableTourType {
-  tourData: TourType | null;
+  tourData: TType | null;
 }
+
+type TType = {
+  id?: number;
+  images: string[];
+  title: string;
+  overview: string;
+  days: number;
+  nights: number;
+  categories: number[];
+  displayPrice: number | null;
+};
 
 const SearchBarFallback = () => {
   return <>SearchBar</>;
@@ -23,7 +34,7 @@ const Tours = () => {
   const [selectedCategory, setSelectedCategory] = useState<number | "All">(
     "All"
   );
-  const [tours, setTours] = useState<TourType[]>([]);
+  const [tours, setTours] = useState<TType[]>([]);
   const [availableTours, setAvailableTours] = useState<AvailableTourType[]>([]);
   const [loading, setLoading] = useState(true);
   const [scheduledOpened, setScheduledOpened] = useState(false);
@@ -63,7 +74,9 @@ const Tours = () => {
       try {
         const { data, error } = await supabase
           .from("tours")
-          .select("*")
+          .select(
+            "id, title, overview, days, nights, images, categories, displayPrice"
+          )
           .eq("status", "active");
         if (error) {
           throw error;

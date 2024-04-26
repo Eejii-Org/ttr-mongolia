@@ -1,3 +1,4 @@
+// For Golomt API PUSH NOTIF NOT DONE EMAIL USER
 import { createClient } from "@/utils/supabase/server";
 export const dynamic = "force-dynamic";
 

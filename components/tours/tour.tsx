@@ -6,13 +6,12 @@ import { CombinedToursDataType } from "@/app/tours/page";
 
 export const Tour = (props: { tour: CombinedToursDataType }) => {
   const { tour } = props;
-  const { images, title, overview, originalPrice, days, id } = tour;
+  const { images, title, overview, displayPrice, days, id } = tour;
   const sale = useMemo<AvailableTourType[]>(() => {
     return tour.availableTours
       .filter((availableTour) => availableTour.salePrice !== null)
       .sort((a, b) => (a.salePrice || 0) - (b.salePrice || 0));
   }, [tour]);
-  console.log(sale);
   return (
     <div className="flex flex-col md:h-48 md:flex-row gap-2 md:gap-8 cursor-default">
       <div className="relative md:w-1/4 md:max-w-80 h-48 md:h-auto rounded overflow-hidden">
@@ -40,10 +39,10 @@ export const Tour = (props: { tour: CombinedToursDataType }) => {
             <div className="text-xl lg:text-3xl">
               <span
                 className={`font-bold text-secondary ${
-                  sale ? "line-through" : ""
+                  sale.length !== 0 ? "line-through" : ""
                 }`}
               >
-                ${originalPrice.at(-1)?.pricePerPerson}
+                ${displayPrice}
               </span>
               {sale.length !== 0 && (
                 <>

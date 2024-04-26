@@ -1,6 +1,6 @@
 "use client";
 import { supabase } from "@/utils/supabase/client";
-import { ArrowLeft, DayIcon, Input, NightIcon } from "@components";
+import { ArrowLeft, DayIcon, Input, NightIcon, PriceIcon } from "@components";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
@@ -83,6 +83,7 @@ const Tour = () => {
           itinerary: [],
           reviews: [],
           status: "active",
+          displayPrice: null,
         });
         setOriginalTour({
           images: [],
@@ -98,6 +99,7 @@ const Tour = () => {
           itinerary: [],
           reviews: [],
           status: "active",
+          displayPrice: null,
         });
         setIsNew(true);
         setLoading(false);
@@ -247,18 +249,18 @@ const Detail = ({
         </div>
       </div>
       <div className="flex flex-row gap-8">
-        {/* <div className="max-w-80">
-          <label className="pl-2 font-medium">Price:</label>
+        <div className="max-w-80">
+          <label className="pl-2 font-medium">DisplayPrice:</label>
           <Input
             type="number"
             placeholder="1000"
-            value={tour.originalPrice}
+            value={tour.displayPrice || 0}
             icon={<PriceIcon />}
             onChange={(e) =>
-              setTour({ ...tour, originalPrice: Number(e.target.value) })
+              setTour({ ...tour, displayPrice: Number(e.target.value) })
             }
           />
-        </div> */}
+        </div>
         <div className="max-w-80">
           <label className="pl-2 font-medium">Tour Days:</label>
           <Input

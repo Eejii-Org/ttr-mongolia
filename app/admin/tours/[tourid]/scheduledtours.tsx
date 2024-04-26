@@ -147,7 +147,6 @@ const ScheduledTour = ({
   const [dep, setDep] = useState<AvailableTourType | null>();
   const isSaveDisabled = useMemo(() => {
     if (!dep?.id) return false;
-    console.log(dep);
     return dep?.salePrice === departure.salePrice;
   }, [dep, departure]);
   // const updateable = useMemo<boolean>(() => {

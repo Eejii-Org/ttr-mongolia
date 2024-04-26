@@ -1,6 +1,5 @@
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
-import { ArrowRight, SaleIcon } from "../icons";
-import { supabase } from "@/utils/supabase/client";
+import { FC, useMemo } from "react";
+import { ArrowRight } from "../icons";
 import Link from "next/link";
 
 export const Availability = ({
@@ -23,6 +22,7 @@ export const Availability = ({
         {availableTours.map((tourDate, index) => (
           <AvailabilityItem
             {...tourDate}
+            displayPrice={tour.displayPrice}
             originalPrice={tour.originalPrice}
             days={tour.days}
             nights={tour.nights}
@@ -51,14 +51,16 @@ export const Availability = ({
 };
 interface AvailabilityItemPropsType extends AvailableTourType {
   originalPrice: PriceType[];
+  displayPrice: null | number;
   days: number;
   nights: number;
 }
 
 const AvailabilityItem: FC<AvailabilityItemPropsType> = ({
   date,
-  salePrice,
   originalPrice,
+  salePrice,
+  displayPrice,
   days,
   nights,
   id,
@@ -122,7 +124,7 @@ const AvailabilityItem: FC<AvailabilityItemPropsType> = ({
                 salePrice !== null ? "line-through" : ""
               }`}
             >
-              ${originalPrice.at(-1)?.pricePerPerson}
+              ${displayPrice || originalPrice.at(-1)?.pricePerPerson}
             </span>
             {salePrice !== null && (
               <>

@@ -14,6 +14,7 @@ type TourType = {
   itinerary: ItineraryType[];
   reviews: ReviewType[];
   status: "active" | "inactive";
+  displayPrice: number | null;
 };
 
 type AssetType = {

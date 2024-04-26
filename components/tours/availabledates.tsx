@@ -83,11 +83,13 @@ export const AvailableDates = ({
                         {new Date(availableTour.date).toDateString()}
                       </td>
                       <td className="flex-1 min-w-36 md:min-w-min px-3 font-bold py-2">
-                        $
-                        {
-                          availableTour.tourData?.originalPrice.at(-1)
-                            ?.pricePerPerson
-                        }
+                        <span
+                          className={`${
+                            availableTour.salePrice ? "line-through" : ""
+                          }`}
+                        >
+                          ${availableTour.tourData?.displayPrice}
+                        </span>
                         {availableTour.salePrice && (
                           <>
                             /

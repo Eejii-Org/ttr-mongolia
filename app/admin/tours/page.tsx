@@ -101,9 +101,7 @@ const AdminTours = () => {
               <td className="px-3 py-2">
                 {tour.days} days / {tour.nights} nights
               </td>
-              <td className=" px-3 font-bold py-2">
-                ${tour.originalPrice.at(-1)?.pricePerPerson}
-              </td>
+              <td className=" px-3 font-bold py-2">${tour.displayPrice}</td>
               <td className="flex justify-end max-w-12 w-12">
                 <Link
                   className="font-bold rounded-full ripple p-3"
