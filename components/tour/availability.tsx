@@ -51,7 +51,7 @@ export const Availability = ({
 };
 interface AvailabilityItemPropsType extends AvailableTourType {
   originalPrice: PriceType[];
-  displayPrice: null | number;
+  displayPrice: number;
   days: number;
   nights: number;
 }
@@ -124,7 +124,7 @@ const AvailabilityItem: FC<AvailabilityItemPropsType> = ({
                 salePrice !== null ? "line-through" : ""
               }`}
             >
-              ${displayPrice || originalPrice.at(-1)?.pricePerPerson}
+              ${displayPrice}
             </span>
             {salePrice !== null && (
               <>

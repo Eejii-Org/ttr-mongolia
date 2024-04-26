@@ -83,7 +83,7 @@ const Tour = () => {
           itinerary: [],
           reviews: [],
           status: "active",
-          displayPrice: null,
+          displayPrice: 1000,
         });
         setOriginalTour({
           images: [],
@@ -99,7 +99,7 @@ const Tour = () => {
           itinerary: [],
           reviews: [],
           status: "active",
-          displayPrice: null,
+          displayPrice: 1000,
         });
         setIsNew(true);
         setLoading(false);
@@ -250,11 +250,11 @@ const Detail = ({
       </div>
       <div className="flex flex-row gap-8">
         <div className="max-w-80">
-          <label className="pl-2 font-medium">DisplayPrice:</label>
+          <label className="pl-2 font-medium">Display Price:</label>
           <Input
             type="number"
             placeholder="1000"
-            value={tour.displayPrice || 0}
+            value={tour.displayPrice}
             icon={<PriceIcon />}
             onChange={(e) =>
               setTour({ ...tour, displayPrice: Number(e.target.value) })
