@@ -43,7 +43,7 @@ const DepartureRequest = () => {
             .from("availableTours")
             .insert({
               tourId: departureRequest.tourId,
-              price: tourData.originalPrice,
+              salePrice: null,
               date: departureRequest.startingDate,
               status: "active",
             })
@@ -66,7 +66,6 @@ const DepartureRequest = () => {
         "http://localhost:3000/api/reply-departure",
         {
           departureRequest: departureRequest,
-          tour: tourData,
           status: newStatus == "Approve" ? "Approved" : "Denied",
           availableTourId,
         }

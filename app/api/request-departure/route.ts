@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import { createClient } from "@/utils/supabase/server";
+import { mailTemplate } from "@/utils";
 export const dynamic = "force-dynamic"; // defaults to auto
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -14,7 +15,6 @@ const transporter = nodemailer.createTransport({
 export async function POST(request: Request) {
   const supabase = createClient();
   const body = await request.json();
-
   if (
     !body.firstName ||
     !body.lastName ||
@@ -64,43 +64,29 @@ export async function POST(request: Request) {
   if (error) {
     return Response.json(error);
   }
+  const { text, html, subject } = mailTemplate("requestReply", {
+    name: firstName + " " + lastName,
+    
+  });
+  const { text: adminText, html: adminHTML, subject: adminSubject } = mailTemplate("requestAdmin", {
+    departureDetail:body,
+  });
   const info = await transporter.sendMail({
-    from: `"TTR Mongolia Website Departure Request" <${process.env.CONTACT_EMAIL}>`, // sender address
-    // to: "info@ttrmongolia.com", // list of receivers
+    from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`, // sender address
+    to: email,
+    subject,
+    text,
+    html,
+  });
+  const adminInfo = await transporter.sendMail({
+    from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`, // sender address
     to: "info@ttrmongolia.com",
-    subject: `New Departure Request ${email}`, // Subject line
-    text: `
-      \n Tour Detail
-      \n TourId: ${tourId}
-      \n Tour Title: ${tourTitle}
-      \n RequestedStartingDate: ${startingDate}
-      \n Personal Information:
-      \n Name: ${firstName} ${lastName}
-      \n Email: ${email}
-      \n PhoneNumber: ${phoneNumber}
-      \n Nationality: ${nationality}
-      \n DateOfBirth: ${dateOfBirth}
-      \n People Count: ${peopleCount}
-      \n Additional Information: ${additionalInformation}
-  `, // plain text body
-    html: `
-        <div>
-          <div>Tour Detail</div>
-          <div>TourId: ${tourId}</div>
-          <div>Tour Title: ${tourTitle}</div>
-          <div>RequestedStartingDate: ${startingDate}</div>
-          <div>Personal Information:</div>
-          <div>Name: ${firstName} ${lastName}</div>
-          <div>Email: ${email}</div>
-          <div>PhoneNumber: ${phoneNumber}</div>
-          <div>Nationality: ${nationality}</div>
-          <div>DateOfBirth: ${dateOfBirth}</div>
-          <div>People Count: ${peopleCount}</div>
-          <div>Additional Information: ${additionalInformation}</div>
-        </div>
-      `, // html body
+    subject: adminSubject,
+    text: adminText,
+    html: adminHTML,
   });
   return Response.json({
     info,
+    adminInfo
   });
 }

@@ -1,3 +1,4 @@
+import { mailTemplate, templateTypeType } from "@/utils";
 import nodemailer from "nodemailer";
 export const dynamic = "force-dynamic"; // defaults to auto
 
@@ -14,36 +15,28 @@ const transporter = nodemailer.createTransport({
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const info = await transporter.sendMail({
-    from: `"TTR Mongolia Website Contact" <${process.env.CONTACT_EMAIL}>`, // sender address
-    to: "info@ttrmongolia.com", // list of receivers
-    subject: `Contact ${body?.email}`, // Subject line
-    text:
-      "Name: " +
-      body?.firstName +
-      " " +
-      body?.lastName +
-      "\n email: " +
-      body?.email +
-      "\n phoneNumber:" +
-      body?.phoneNumber +
-      "\n Description:" +
-      body?.description, // plain text body
-    html: `
-        <div>
-          <div>Name: ${body?.firstName} ${body?.lastName}</div>
-          <div>Email: ${body?.email}</div>
-          <div>PhoneNumber: ${body?.phoneNumber}</div>
-          <div>Description: ${body?.description}</div>
-        </div>
-      `, // html body
+  const { text, html, subject } = mailTemplate("contact", {
+   name: body?.firstName + " " + body?.lastName,
   });
-  return Response.json(info);
+  const { text: adminText, html: adminHTML, subject: adminSubject } = mailTemplate('contactAdmin', {
+    userDetail: body,
+  });
+    const info = await transporter.sendMail({
+      from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`, // sender address
+      to: body.email,
+      subject,
+      text,
+      html
+    });
+    const adminInfo = await transporter.sendMail({
+      from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`, // sender address
+      to: "info@ttrmongolia.com",
+      subject: adminSubject, 
+      text: adminText,
+      html: adminHTML
+    });
+  return Response.json({
+    info,
+    adminInfo
+  });
 }
-// type RequestBodyType = {
-//   firstName: string;
-//   lastName: string;
-//   email: string;
-//   phoneNumber: string;
-//   description: string;
-// };

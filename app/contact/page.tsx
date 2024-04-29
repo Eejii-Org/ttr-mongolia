@@ -1,7 +1,14 @@
 "use client";
-import { EmailIcon, Input, MainLayout, PhoneIcon } from "@components";
+import {
+  EmailIcon,
+  Input,
+  MainLayout,
+  PhoneIcon,
+  SelectBirthday,
+  SelectNationality,
+} from "@components";
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 const Contact = () => {
   const [contact, setContact] = useState({
@@ -9,6 +16,8 @@ const Contact = () => {
     lastName: "",
     email: "",
     phoneNumber: "",
+    nationality: "",
+    dateOfBirth: "2000-1-1",
     description: "",
   });
   const [loading, setLoading] = useState(false);
@@ -18,24 +27,21 @@ const Contact = () => {
   };
   const contactSubmit = async () => {
     setLoading(true);
-    const response = await fetch(
-      "https://ttr-mongolia.vercel.app/api/contact",
-      {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
-        mode: "cors", // no-cors, *cors, same-origin
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: "same-origin", // include, *same-origin, omit
-        headers: {
-          "Content-Type": "application/json",
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        redirect: "follow", // manual, *follow, error
-        referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        body: JSON.stringify(contact), // body data type must match "Content-Type" header
-      }
-    );
+    const response = await fetch("http://localhost:3000/api/contact", {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, *cors, same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+        "Content-Type": "application/json",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: "follow", // manual, *follow, error
+      referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      body: JSON.stringify(contact), // body data type must match "Content-Type" header
+    });
     const result = await response.json();
-    if (result.response.includes("OK")) {
+    if (result.adminInfo.response.includes("OK")) {
       toast.success("Successfully sent");
     } else {
       toast.error(
@@ -118,6 +124,14 @@ const Contact = () => {
                   updateContact("email", e.target.value);
                 }}
                 required
+              />
+              <SelectNationality
+                value={contact.nationality}
+                onChange={(value) => updateContact("nationality", value)}
+              />
+              <SelectBirthday
+                value={contact.dateOfBirth}
+                onChange={(value) => updateContact("dateOfBirth", value)}
               />
               <textarea
                 placeholder="How can we help?"
