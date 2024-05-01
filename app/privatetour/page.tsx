@@ -1,5 +1,4 @@
 "use client";
-import { supabase } from "@/utils/supabase/client";
 import {
   EmailIcon,
   Input,
@@ -10,24 +9,9 @@ import {
 } from "@components";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "react-toastify";
-
-type TourType = {
-  id: number;
-  title: string;
-  originalPrice: PriceType[];
-  days: number;
-  nights: number;
-  minimumRequired: number;
-  displayPrice: number;
-};
-const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
-  const { tourid } = searchParams;
-  const [tours, setTours] = useState<TourType[] | null>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
+const NewTour = () => {
   const [personalDetail, setPersonalDetail] = useState({
     firstName: "",
     lastName: "",
@@ -37,39 +21,24 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
     dateOfBirth: "",
     peopleCount: 1,
     additionalInformation: "",
+    tourPlan: "",
   });
-  const [tourDate, setTourDate] = useState("");
-  const [selectedTour, setSelectedTour] = useState<number | undefined>(tourid);
-  const selectedTourData = useMemo<TourType | null>(() => {
-    if (!tours) return null;
-    const tourData = tours.find((t) => t.id == selectedTour);
-    return tourData ? tourData : null;
-  }, [selectedTour, tours]);
+  const [tourDate, setTourDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+
   const updatePersonalDetail = (key: string, value: string) => {
     setPersonalDetail({ ...personalDetail, [key]: value });
   };
-  const pricePerPerson = useMemo(() => {
-    if (!selectedTourData?.originalPrice) return;
-    for (let price of selectedTourData?.originalPrice) {
-      if (price.passengerCount >= personalDetail.peopleCount) {
-        return price.pricePerPerson;
-      }
-    }
-    return selectedTourData?.originalPrice?.at(-1)?.pricePerPerson;
-  }, [selectedTourData, personalDetail]);
   const [requestLoading, setRequestLoading] = useState(false);
   const requestNewTour = async () => {
     setRequestLoading(true);
-
     try {
       const res = await axios.post(
-        "https://ttr-mongolia.vercel.app/api/request-departure",
+        "http://localhost:3000/api/request-private-tour",
         {
           ...personalDetail,
-          tourId: selectedTour,
           startingDate: tourDate,
-          tourTitle: selectedTourData?.title,
-          price: selectedTourData?.displayPrice,
         }
       );
     } catch (err: any) {
@@ -88,55 +57,11 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
       dateOfBirth: "",
       peopleCount: 1,
       additionalInformation: "",
+      tourPlan: "",
     });
     setRequestLoading(false);
     setTourDate("");
   };
-
-  useEffect(() => {
-    const getTour = async () => {
-      const { data, error } = await supabase
-        .from("tours")
-        .select(
-          "id, title, originalPrice, days, nights, minimumRequired, displayPrice"
-        );
-      if (error) {
-        console.error(error);
-        toast.error(error.message);
-      }
-      setTours(data);
-      setLoading(false);
-    };
-    getTour();
-  }, []);
-
-  if (error) {
-    return (
-      <MainLayout>
-        <div className="w-screen flex-1 px-3 pt-16 md:pt-14  xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col items-center gap-4 justify-center">
-          <div className="flex flex-col gap-4">
-            <div className="text-2xl font-semibold lg:text-4xl">{error}</div>
-            <button
-              onClick={() => router.back()}
-              className="bg-primary px-4 py-3 width-full text-center text-secondary whitespace-nowrap font-bold rounded-xl ripple w-full"
-            >
-              Go Back
-            </button>
-          </div>
-        </div>
-      </MainLayout>
-    );
-  }
-
-  if (loading) {
-    return (
-      <MainLayout>
-        <div className="w-screen flex-1 px-3 pt-16 md:pt-14 xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col gap-4 justify-center">
-          Loading
-        </div>
-      </MainLayout>
-    );
-  }
 
   return (
     <MainLayout>
@@ -239,45 +164,6 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
             <div className="flex-1 flex flex-col gap-4">
               <div className=" bg-quinary p-3 md:p-4 flex flex-col gap-2">
                 <div className="text-lg font-semibold lg:text-xl">
-                  Choose Tour
-                </div>
-                <div>
-                  <select
-                    name="tours"
-                    required
-                    className={`text-base px-4 py-3 w-full outline-none border ${
-                      selectedTour ? "text-secondary" : "text-[#c1c1c1]"
-                    }`}
-                    onChange={(e) => setSelectedTour(Number(e.target.value))}
-                    value={selectedTour}
-                    style={{
-                      appearance: "none",
-                      WebkitAppearance: "none",
-                      MozAppearance: "none",
-                    }}
-                  >
-                    <option value="" className="text-quaternary">
-                      Select Tour
-                    </option>
-                    {tours?.map((t, key) => (
-                      <option value={t.id} key={t.id + key}>
-                        {t.title}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="flex flex-row justify-between items-center">
-                  <div className="font-medium text-[#c1c1c1]">
-                    ${pricePerPerson} Per person
-                  </div>
-                  <div className="font-medium text-[#c1c1c1]">
-                    {selectedTourData?.days} days / {selectedTourData?.nights}{" "}
-                    nights
-                  </div>
-                </div>
-              </div>
-              <div className=" bg-quinary p-3 md:p-4 flex flex-col gap-2">
-                <div className="text-lg font-semibold lg:text-xl">
                   Tour Starting Date
                 </div>
                 <div className="text-base font-semibold lg:text-xl text-center flex flex-row gap-4">
@@ -291,11 +177,26 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
                   />
                 </div>
               </div>
+              <div className=" bg-quinary p-3 md:p-4 flex flex-col gap-2">
+                <div className="text-lg font-semibold lg:text-xl">
+                  Tour Plan
+                </div>
+                <textarea
+                  placeholder="What's on your mind?"
+                  className=" min-h-32 p-4 border"
+                  value={personalDetail.tourPlan}
+                  required
+                  onChange={(e) => {
+                    updatePersonalDetail("tourPlan", e.target.value);
+                  }}
+                ></textarea>
+              </div>
+
               <button
                 type="submit"
                 className="bg-primary px-4 py-3 width-full text-center text-secondary whitespace-nowrap font-bold ripple"
               >
-                {requestLoading ? "Loading" : "Request A New Departure"}
+                {requestLoading ? "Loading" : "Request A Private Departure"}
               </button>
             </div>
           </div>

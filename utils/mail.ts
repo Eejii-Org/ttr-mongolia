@@ -3,7 +3,7 @@ import {convert} from 'html-to-text'
 const options = {
   wordwrap: 130,
 }
-export type templateTypeType = "requestApprove" | "requestDeny" | "requestReply" | "requestAdmin" | "bookSuccess" | "bookFail" | "adminPaymentSuccess" | "adminPaymentFailure" | "contact" | "contactAdmin";
+export type templateTypeType = "requestApprove" | "requestDeny" | "requestReply" | "requestAdmin" | "bookSuccess" | "bookFail" | "adminPaymentSuccess" | "adminPaymentFailure" | "contact" | "contactAdmin" | "privateTour" | "adminPrivateTour";
 export type detailType = {
   name?: string;
   paymentURL?: string;
@@ -49,11 +49,23 @@ export type detailType = {
     dateOfBirth: string;
     peopleCount: number;
     additionalInformation: string;
+  },
+  privateTourDetail?: {
+    startingDate: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber: string;
+    nationality: string;
+    dateOfBirth: string;
+    peopleCount: number;
+    additionalInformation: string;
+    tourPlan: string;
   }
 }
 // subject: string, body1: string, body2?: string
 export const mailTemplate = (templateType: templateTypeType, detail: detailType) => {
-  const { name, bookURL, paymentURL, tourDetail, userDetail, departureDetail, paymentDetail, adminNote } = detail;
+  const { name, bookURL, paymentURL, tourDetail, userDetail, departureDetail, paymentDetail, adminNote, privateTourDetail } = detail;
   const emailDetails: { [K in templateTypeType]: {
     header: string;
     top: string[];
@@ -194,7 +206,7 @@ export const mailTemplate = (templateType: templateTypeType, detail: detailType)
     'contact': {
       header: `Thank You For Reaching Out To Us ❤️️`,
       top: [
-        `Dear ${name},`,
+        `Dear ${userDetail?.firstName + ' ' + userDetail?.lastName},`,
         `Thank you for reaching out to us.`,
         `We have received your contact and want to assure you that our team is already working diligently to process it. Ensuring that your experience with us is seamless and enjoyable is our top priority.`
       ],
@@ -212,6 +224,32 @@ export const mailTemplate = (templateType: templateTypeType, detail: detailType)
         `Nationality: ${userDetail?.nationality}`,
         `DateOfBirth: ${userDetail?.dateOfBirth}`,
         `Message: ${userDetail?.description}`
+      ],
+      bottom: []
+    },
+    "privateTour": {
+      header: `Thank You For Reaching Out To Us ❤️️`,
+      top: [
+        `Dear ${name},`,
+        `Thank you for reaching out to us.`,
+        `We have received your private tour request and want to assure you that our team is already working diligently to process it. Ensuring that your experience with us is seamless and enjoyable is our top priority.`
+      ],
+      bottom: [
+        `Please be patient as we review your request. We will get back to you promptly.`,
+        `Thank you for choosing us for your travel needs. We look forward to welcoming you on this unforgettable journey!`,
+      ]
+    },
+    "adminPrivateTour": {
+      header: `[Action Required] New Private Tour Request from ${privateTourDetail?.email}`,
+      top: [
+        `Name: ${privateTourDetail?.firstName + ' ' + privateTourDetail?.lastName}`,
+        `Phone: ${privateTourDetail?.phoneNumber}`,
+        `Email: ${privateTourDetail?.email}`,
+        `Nationality: ${privateTourDetail?.nationality}`,
+        `DateOfBirth: ${privateTourDetail?.dateOfBirth}`,
+        `PeopleCount: ${privateTourDetail?.peopleCount}`,
+        `AdditionalInformation: ${privateTourDetail?.additionalInformation}`,
+        `TourPlan: ${privateTourDetail?.tourPlan}`
       ],
       bottom: []
     }
