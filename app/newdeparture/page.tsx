@@ -21,6 +21,7 @@ type TourType = {
   days: number;
   nights: number;
   minimumRequired: number;
+  displayPrice: number;
 };
 const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
   const { tourid } = searchParams;
@@ -69,6 +70,7 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
           tourId: selectedTour,
           startingDate: tourDate,
           tourTitle: selectedTourData?.title,
+          price: selectedTourData?.displayPrice,
         }
       );
     } catch (err: any) {
@@ -96,7 +98,9 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
     const getTour = async () => {
       const { data, error } = await supabase
         .from("tours")
-        .select("id, title, originalPrice, days, nights, minimumRequired");
+        .select(
+          "id, title, originalPrice, days, nights, minimumRequired, displayPrice"
+        );
       if (error) {
         console.error(error);
         toast.error(error.message);

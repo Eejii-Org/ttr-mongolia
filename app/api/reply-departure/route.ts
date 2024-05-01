@@ -24,10 +24,11 @@ export async function POST(request: Request) {
       message: "Bad Request",
     });
   }
-  const { firstName, lastName } = departureRequest;
+  const { firstName, lastName, adminNote } = departureRequest;
   const { text, html, subject } = mailTemplate(status == "Denied" ?"requestDeny" : "requestApprove", {
     name: firstName + " " + lastName,
     bookURL: `https://ttr-mongolia.vercel.app/book?availableTourId=${availableTourId}`,
+    adminNote: adminNote,
    });
   const info = await transporter.sendMail({
     from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`, // sender address

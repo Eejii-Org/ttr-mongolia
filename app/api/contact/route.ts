@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     });
     const adminInfo = await transporter.sendMail({
       from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`, // sender address
-      to: "info@ttrmongolia.com",
+      to: process.env.ADMIN_EMAIL,
       subject: adminSubject, 
       text: adminText,
       html: adminHTML

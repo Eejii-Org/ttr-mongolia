@@ -18,7 +18,7 @@ export const Modal = (props: any) => {
   return (
     <div
       {...props}
-      className={`fixed z-50 top-0 bottom-0 h-full w-full overflow-scroll backdrop-blur-sm bg-black/50 items-center justify-center ${
+      className={`fixed z-50 top-0 left-0 bottom-0 h-screen w-screen overflow-scroll backdrop-blur-sm bg-black/50 items-center justify-center ${
         open ? "flex" : "hidden"
       } ${props.className ? props.className : ""}`}
     >

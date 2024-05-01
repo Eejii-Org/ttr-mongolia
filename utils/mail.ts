@@ -8,6 +8,7 @@ export type detailType = {
   name?: string;
   paymentURL?: string;
   bookURL?: string;
+  adminNote?: string;
   tourDetail?: {
     title: string;
     date: string;
@@ -52,7 +53,7 @@ export type detailType = {
 }
 // subject: string, body1: string, body2?: string
 export const mailTemplate = (templateType: templateTypeType, detail: detailType) => {
-  const { name, bookURL, paymentURL, tourDetail, userDetail, departureDetail, paymentDetail } = detail;
+  const { name, bookURL, paymentURL, tourDetail, userDetail, departureDetail, paymentDetail, adminNote } = detail;
   const emailDetails: { [K in templateTypeType]: {
     header: string;
     top: string[];
@@ -64,7 +65,7 @@ export const mailTemplate = (templateType: templateTypeType, detail: detailType)
   }} = {
     'requestApprove': {
       header: `Departure Request Approved! <br/> Book Your Tour Now 🎉`,
-      top: [`Dear ${name},`, `We are thrilled to inform you that your departure request has been approved! Your desired date has been successfully added to our departure schedule.`, `To secure your spot and confirm your booking, simply click on the button below:`],
+      top: [`Dear ${name},`, `We are thrilled to inform you that your departure request has been approved! Your desired date has been successfully added to our departure schedule.`, `Admin's Note: ${adminNote}` ,`To secure your spot and confirm your booking, simply click on the button below:`],
       link: {
         text: 'Book Now',
         url: bookURL
@@ -77,7 +78,7 @@ export const mailTemplate = (templateType: templateTypeType, detail: detailType)
     },
     'requestDeny': {
       header: `Departure Request Denied!`,
-      top: [`Dear ${name},`, `Regrettably, we must inform you that your departure request has been denied. Unfortunately, we were unable to accommodate your requested departure at this time. We apologize for any inconvenience this may cause.`],
+      top: [`Dear ${name},`, `Regrettably, we must inform you that your departure request has been denied. Unfortunately, we were unable to accommodate your requested departure at this time. We apologize for any inconvenience this may cause.`, `Admin's Note: ${adminNote}`],
       bottom: [
         `Should you have any questions or require further assistance, feel free to reach out to our customer support team at info@ttrmongolia.com or +976 7014-1001.`,
       ]

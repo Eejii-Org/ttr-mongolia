@@ -96,7 +96,7 @@ type TransactionType = {
 
 type DepartureRequestType = {
   id?: number;
-  created_at: string;
+  created_at?: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -108,6 +108,7 @@ type DepartureRequestType = {
   tourId: string;
   startingDate: string;
   status: "Pending" | "Denied" | "Approved";
+  adminNote: string | null;
 };
 
 type MemberType = {

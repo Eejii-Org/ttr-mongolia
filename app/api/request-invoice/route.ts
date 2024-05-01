@@ -1,19 +1,32 @@
 import crypto from "crypto";
 import axios from "axios";
+import { createClient } from "@/utils/supabase/server";
 export const dynamic = "force-dynamic"; // defaults to auto
 
 export async function POST(request: Request) {
+  const supabase = createClient();
   const body = await request.json();
   if (!body.amount || !body.availableTourId) {
     return Response.json({
       status: 400,
-      message: "Bad Request",
+      statusText: "Bad Request",
     });
   }
   const { amount } = body;
   const transactionId = generateTransactionId();
   const res = await getInvoice(transactionId, amount);
-
+  const { error } = await supabase.from("transactions").insert({
+    ...body.personalDetail,
+    transactionId: res.data.transactionId,
+    availableTourId: body.availableTourId,
+    amount: body.amount,
+  });
+  if (error) {
+    return Response.json({
+      status: error.code,
+      statusText: error.message,
+    });
+  }
   return Response.json(res.data);
 }
 

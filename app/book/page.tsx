@@ -2,7 +2,6 @@
 import { supabase } from "@/utils/supabase/client";
 import {
   ArrowRight,
-  ChevronDownIcon,
   EmailIcon,
   Input,
   MainLayout,
@@ -12,7 +11,7 @@ import {
 } from "@components";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ChangeEventHandler, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type TourType = {
   title: string;
@@ -57,25 +56,14 @@ const Booking = () => {
       return;
     }
     setBookLoading(true);
-    const res = await axios.post(
-      "https://ttr-mongolia.vercel.app/api/request-invoice",
-      {
-        // amount: personalDetail.peopleCount * availableTour?.price,
-        amount: "0.01",
-        availableTourId,
-      }
-    );
-    const { error } = await supabase.from("transactions").insert({
-      ...personalDetail,
-      transactionId: res.data.transactionId,
-      availableTourId: availableTourId,
+    const res = await axios.post("http://localhost:3000/api/request-invoice", {
       // amount: personalDetail.peopleCount * availableTour?.price,
       amount: "0.01",
+      availableTourId,
+      personalDetail,
     });
-    if (error) {
-      console.error(error);
-      setError(error.message);
-      return;
+    if (res.status !== 200) {
+      setError(res.statusText);
     }
     setBookLoading(false);
     router.push(`/book/payment?invoice=${res.data.invoice}`);

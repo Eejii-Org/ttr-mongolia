@@ -11,6 +11,7 @@ const DepartureRequest = () => {
   const router = useRouter();
   const [departureRequest, setDepartureRequest] =
     useState<DepartureRequestType | null>(null);
+  const [adminNote, setAdminNote] = useState("");
   const [tourData, setTourData] = useState<TourType | null>(null);
   const [loading, setLoading] = useState(true);
   const params = useParams();
@@ -36,6 +37,7 @@ const DepartureRequest = () => {
           .from("departureRequests")
           .update({
             status: newStatus == "Approve" ? "Approved" : "Denied",
+            adminNote: adminNote,
           })
           .eq("id", requestid),
         newStatus == "Approve" &&
@@ -65,7 +67,7 @@ const DepartureRequest = () => {
       const res = await axios.post(
         "http://localhost:3000/api/reply-departure",
         {
-          departureRequest: departureRequest,
+          departureRequest: { ...departureRequest, adminNote },
           status: newStatus == "Approve" ? "Approved" : "Denied",
           availableTourId,
         }
@@ -142,6 +144,15 @@ const DepartureRequest = () => {
         <div className="p-4 bg-tertiary flex flex-col gap-4">
           <div className="text-lg">
             Are you sure you want to {inquireOpen} this request?
+          </div>
+          <div>
+            <Input
+              type="text"
+              placeholder="Admin Note"
+              disabled={departureRequest?.status !== "Pending"}
+              value={departureRequest?.adminNote || adminNote}
+              onChange={(e) => setAdminNote(e.target.value)}
+            />
           </div>
           {statusLoading ? (
             <div className="h-10 text-center">
@@ -248,6 +259,20 @@ const Detail = ({
           )}
         </div>
       </div>
+      {departureRequest?.adminNote && (
+        <div className="flex flex-row flex-wrap gap-8">
+          <div className="min-w-80">
+            <label className="pl-2 font-medium">Admin's Note:</label>
+            <Input
+              type="text"
+              placeholder="Admin Note"
+              value={departureRequest?.adminNote}
+              disabled
+            />
+          </div>
+        </div>
+      )}
+
       <div className="flex flex-row flex-wrap gap-8">
         <div className="min-w-80">
           <label className="pl-2 font-medium">Requested Tour Date:</label>
