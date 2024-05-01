@@ -85,6 +85,7 @@ const Tours = () => {
           .from("availableTours")
           .select("*")
           .eq("status", "active")
+          .gte("date", new Date().toISOString())
           .order("date");
         if (err) {
           throw error;
