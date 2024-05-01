@@ -56,12 +56,15 @@ const Booking = () => {
       return;
     }
     setBookLoading(true);
-    const res = await axios.post("http://localhost:3000/api/request-invoice", {
-      // amount: personalDetail.peopleCount * availableTour?.price,
-      amount: "0.01",
-      availableTourId,
-      personalDetail,
-    });
+    const res = await axios.post(
+      "https://ttr-mongolia.vercel.app/api/request-invoice",
+      {
+        // amount: personalDetail.peopleCount * availableTour?.price,
+        amount: "0.01",
+        availableTourId,
+        personalDetail,
+      }
+    );
     if (res.status !== 200) {
       setError(res.statusText);
     }
