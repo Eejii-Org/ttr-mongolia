@@ -1,6 +1,7 @@
 "use client";
 import { supabase } from "@/utils/supabase/client";
 import {
+  ArrowRight,
   Included,
   MainLayout,
   NotIncluded,
@@ -14,6 +15,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import _ from "lodash";
 import { Availability } from "@/components/tour/availability";
+import Link from "next/link";
 const TourPage = () => {
   const [tour, setTour] = useState<TourType | null>(null);
   const scrollToElement = useRef<HTMLDivElement>(null);
@@ -88,11 +90,31 @@ const TourPage = () => {
             </div>
           </div>
           <div className="bg-white pb-4 md:p-0 md:bg-transparent w-full md:w-1/3 md:pl-8 md:relative">
-            <TourInfo
-              tour={tour}
-              saleTours={saleTours}
-              checkAvailableDate={checkAvailableDate}
-            />
+            <div className="sticky top-16 md:max-w-96 flex flex-col gap-6">
+              <TourInfo
+                tour={tour}
+                saleTours={saleTours}
+                checkAvailableDate={checkAvailableDate}
+              />
+              <div className="bg-[#FFF5E5]  flex flex-col gap-8 px-4 py-3 rounded-lg">
+                <div className="flex flex-col gap-2">
+                  <h3 className="font-bold text-lg">Got a question?</h3>
+                  <p>
+                    Contact us now to have all of your adventure related
+                    questions answered!
+                  </p>
+                </div>
+                <div className="flex justify-end">
+                  <Link
+                    href={"/contact"}
+                    className="flex flex-row items-center font-bold text-primary"
+                  >
+                    Contact Now
+                    <ArrowRight color="#FDA403" />
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div className="mt-32">
@@ -102,6 +124,7 @@ const TourPage = () => {
     </MainLayout>
   );
 };
+
 export default TourPage;
 
 // useEffect(() => {

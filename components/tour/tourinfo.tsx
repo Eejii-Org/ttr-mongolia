@@ -13,7 +13,7 @@ export const TourInfo = ({
     return _.min(saleTours.map((t) => t.salePrice));
   }, [saleTours]);
   return (
-    <div className="flex sticky top-16 max-w-96 justify-center md:justify-normal flex-col gap-2">
+    <div className="flex justify-center md:justify-normal flex-col gap-2">
       <div className="font-bold text-secondary text-xl">Price</div>
       {saleTours.length !== 0 && (
         <div className="flex flex-row justify-between">
@@ -27,7 +27,7 @@ export const TourInfo = ({
         </div>
       )}
       <div className="flex flex-row md:flex-col gap-2">
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-3 md:grid-cols-2 gap-2">
           {tour.originalPrice.map((price, index) => (
             <div
               className="bg-[#F2F2F2] px-3 py-2 rounded border border-black/5"
