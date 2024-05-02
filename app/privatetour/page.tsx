@@ -38,7 +38,7 @@ const NewTour = () => {
     setRequestLoading(true);
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/request-private-tour",
+        "https://ttr-mongolia.vercel.app/api/request-private-tour",
         {
           ...privateTourDetail,
           startingDate: tourDate,
