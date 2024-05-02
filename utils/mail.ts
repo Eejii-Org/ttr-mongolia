@@ -12,6 +12,7 @@ export type detailType = {
   tourDetail?: {
     title: string;
     date: string;
+    duration: number;
     peopleCount: number;
     paidAmount: number;
   };
@@ -51,16 +52,19 @@ export type detailType = {
     additionalInformation: string;
   },
   privateTourDetail?: {
-    startingDate: string;
     firstName: string;
     lastName: string;
-    email: string;
     phoneNumber: string;
+    email: string;
     nationality: string;
     dateOfBirth: string;
     peopleCount: number;
     additionalInformation: string;
-    tourPlan: string;
+    destination: string;
+    accomodationPreference: string;
+    budgetConsiderations: string;
+    additionalRequests: string;
+    startingDate: string;
   }
 }
 // subject: string, body1: string, body2?: string
@@ -77,22 +81,21 @@ export const mailTemplate = (templateType: templateTypeType, detail: detailType)
   }} = {
     'requestApprove': {
       header: `Departure Request Approved! <br/> Book Your Tour Now 🎉`,
-      top: [`Dear ${name},`, `We are thrilled to inform you that your departure request has been approved! Your desired date has been successfully added to our departure schedule.`, `Admin's Note: ${adminNote}` ,`To secure your spot and confirm your booking, simply click on the button below:`],
+      top: [`Dear ${name},`, `We are thrilled to inform you that your departure request has been approved! Your desired date has been successfully added to our departure schedule.`, `Admin's Note: ${adminNote}` ,`To secure your spot and confirm your booking, simply click on the button below and folow the online booking procedure:`],
       link: {
         text: 'Book Now',
         url: bookURL
       },
       bottom: [
-        `By clicking the button above, you will be directed to our booking portal where you can complete your reservation seamlessly.`,
-        `Should you have any questions or require further assistance, feel free to reach out to our customer support team at info@ttrmongolia.com or +976 7014-1001.`,
-        `We look forward to welcoming you on this unforgettable journey!`
+        `If you have any questions or require further assitance, pleace feel free to contact our customer support team at info@ttrmongolia.com or +976 7014-1001.`,
+        `We look forward to welcoming you on this unforgettable adventure !`
       ]
     },
     'requestDeny': {
       header: `Departure Request Denied!`,
       top: [`Dear ${name},`, `Regrettably, we must inform you that your departure request has been denied. Unfortunately, we were unable to accommodate your requested departure at this time. We apologize for any inconvenience this may cause.`, `Admin's Note: ${adminNote}`],
       bottom: [
-        `Should you have any questions or require further assistance, feel free to reach out to our customer support team at info@ttrmongolia.com or +976 7014-1001.`,
+        `If you have any questions or require further assitance, pleace feel free to contact our customer support team at info@ttrmongolia.com or +976 7014-1001.`,
       ]
     },
     'requestReply': {
@@ -100,12 +103,12 @@ export const mailTemplate = (templateType: templateTypeType, detail: detailType)
       top: [
         `Dear ${name},`,
         `Thank you for requesting a new tour departure.`,
-        `We have received your request and want to assure you that our team is already working diligently to process it. Ensuring that your experience with us is seamless and enjoyable is our top priority.`
+        `We have received your message and want to assure you that our team is already working diligently to process it.`
       ],
       bottom: [
-        `Please be patient as we review your request. We will get back to you promptly with confirmation of your requested departure date or any alternative options that may be available.`,
-        `Should you have any questions or require further assistance, feel free to reach out to our customer support team at info@ttrmongolia.com or +976 7014-1001.`,
-        `Thank you for choosing us for your travel needs. We look forward to welcoming you on this unforgettable journey!`,
+        `Please be patient as we review your request. We will get back to you promptly with confirmation or any alternative options that may be available.`,
+        `If you have any questions or require further assitance, pleace feel free to contact our customer support team at info@ttrmongolia.com or +976 7014-1001.`,
+        `Thank you for choosing us for your travel needs. We look forward to welcoming you on this unforgettable adventure !`,
       ]
     },
     'requestAdmin': {
@@ -135,10 +138,10 @@ export const mailTemplate = (templateType: templateTypeType, detail: detailType)
             Tour Name: ${tourDetail?.title}
           </li>
           <li class="body-text">
-            Departure Date: ${tourDetail?.date}
+            Dates: ${getDate(tourDetail?.date, tourDetail?.duration)}
           </li>
           <li class="body-text">
-            Number of Participants: ${tourDetail?.peopleCount}
+            Number of Travelers: ${tourDetail?.peopleCount}
           </li>
           <li class="body-text">
            Total Amount Paid: ${tourDetail?.paidAmount}
@@ -146,27 +149,27 @@ export const mailTemplate = (templateType: templateTypeType, detail: detailType)
         </ul>`
       ],
       bottom: [
-        `We want to extend our heartfelt gratitude for choosing us for your travel adventure. Rest assured, we are dedicated to providing you with an exceptional experience that will leave you with unforgettable memories.`,
-        `In preparation for your tour, please keep an eye on your inbox for any important updates or additional information regarding your booking. If you have any specific requests or requirements, feel free to reach out to our customer service team, and we will be more than happy to assist you.`,
-        `Should you have any questions or require further assistance, feel free to reach out to our customer support team at info@ttrmongolia.com or +976 7014-1001.`,
-        `Thank you for choosing us for your travel needs. We look forward to welcoming you on this unforgettable journey!`
+        `Thank you for booking with us, we are thrilled that you have chosen to embark on an adventure with us. We are committed to providing you with an unforgettable experience.`,
+        `In preparation for your tour, please keep an eye on your inbox for any updates or additional information regarding your booking.`,
+        `If you have any questions or require further assitance, pleace feel free to contact our customer support team at info@ttrmongolia.com or +976 7014-1001.`,
+        `Thank you for choosing us for your travel needs. We look forward to welcoming you on this unforgettable adventure !`
       ]
     },
     'bookFail': {
       header: `Payment Failure: Tour Booking`,
       top: [
         `Dear ${name},`,
-        `We regret to inform you that we encountered an issue processing the payment for your tour booking. Unfortunately, the payment transaction was not successful.`,
-        `To proceed with your tour booking, we kindly request that you review the payment information provided and ensure that all details are accurate. If necessary, please consider using an alternative payment method.`,
-        `Once you have verified your payment information, please attempt to process the payment again by clicking the button below:`
+        `We regret to inform you that there was an issue processing the payment for your tour booking. Unfortunately, the payment transaction was not successful.`,
+        `To proceed with your tour booking, we kindly request that you review the payment information provided and ensure that all details are correct. If necessary, please consider using an alternative payment method.`,
+        `Once you have verified your payment information, please attempt to book again by clicking the button below:`
       ],
       link: {
-        text: 'Try Again',
+        text: 'Book a Tour',
         url: paymentURL
       },
       bottom: [
-        `Should you have any questions or require further assistance, feel free to reach out to our customer support team at info@ttrmongolia.com or +976 7014-1001.`,
-        `We look forward to welcoming you on this unforgettable journey!`
+        `If you have any questions or require further assitance, pleace feel free to contact our customer support team at info@ttrmongolia.com or +976 7014-1001.`,
+        `We look forward to welcoming you on this unforgettable adventure !`
       ]
     },
     "adminPaymentSuccess": {
@@ -204,15 +207,14 @@ export const mailTemplate = (templateType: templateTypeType, detail: detailType)
       bottom: []
     },
     'contact': {
-      header: `Thank You For Reaching Out To Us ❤️️`,
+      header: `Thank You For Reaching Out To Us`,
       top: [
         `Dear ${userDetail?.firstName + ' ' + userDetail?.lastName},`,
         `Thank you for reaching out to us.`,
-        `We have received your contact and want to assure you that our team is already working diligently to process it. Ensuring that your experience with us is seamless and enjoyable is our top priority.`
+        `We have received your message and our team will get back to you promptly.`
       ],
       bottom: [
-        `Please be patient as we review your contact. We will get back to you promptly.`,
-        `Thank you for choosing us for your travel needs. We look forward to welcoming you on this unforgettable journey!`,
+        `Thank you for choosing us for your travel needs. We look forward to welcoming you on this unforgettable adventure !`,
       ]
     },
     'contactAdmin': {
@@ -228,15 +230,15 @@ export const mailTemplate = (templateType: templateTypeType, detail: detailType)
       bottom: []
     },
     "privateTour": {
-      header: `Thank You For Reaching Out To Us ❤️️`,
+      header: `Thank You For Reaching Out To Us`,
       top: [
         `Dear ${name},`,
-        `Thank you for reaching out to us.`,
-        `We have received your private tour request and want to assure you that our team is already working diligently to process it. Ensuring that your experience with us is seamless and enjoyable is our top priority.`
+        `Thank you for requesting a private tour.`,
+        `We have received your message, and our team will start working on it. We will get back to you promptly with a personalized itinerary as you requested or any alternative options that may be available.`,
       ],
       bottom: [
-        `Please be patient as we review your request. We will get back to you promptly.`,
-        `Thank you for choosing us for your travel needs. We look forward to welcoming you on this unforgettable journey!`,
+        `If you have any questions or require further assitance, please feel free to contact our customer support team at info@ttrmongolia.com or +976 7014-1001`,
+        `Thank you for choosing us for your travel needs. We look forward to welcoming you on this unforgettable adventure !`,
       ]
     },
     "adminPrivateTour": {
@@ -249,7 +251,11 @@ export const mailTemplate = (templateType: templateTypeType, detail: detailType)
         `DateOfBirth: ${privateTourDetail?.dateOfBirth}`,
         `PeopleCount: ${privateTourDetail?.peopleCount}`,
         `AdditionalInformation: ${privateTourDetail?.additionalInformation}`,
-        `TourPlan: ${privateTourDetail?.tourPlan}`
+        `TourStartingDate: ${privateTourDetail?.startingDate}`,
+        `Destination: ${privateTourDetail?.destination}`,
+        `AccomodationPreference: ${privateTourDetail?.accomodationPreference}`,
+        `BudgetConsiderations: ${privateTourDetail?.budgetConsiderations}`,
+        `AdditionalRequests: ${privateTourDetail?.additionalRequests}`
       ],
       bottom: []
     }
@@ -354,4 +360,20 @@ export const mailTemplate = (templateType: templateTypeType, detail: detailType)
     text: convert(html, options),
     html: html,
   }
+}
+const getDate = (date?: string, days?: number) => {
+    if(!date || !days) return ""
+    const startingDate = new Date(date);
+    let endingDate = new Date(date);
+    endingDate.setDate(startingDate.getDate() + days);
+    return startingDate.toLocaleString("default", { month: "long" }) +
+    " " +
+    startingDate.getDate() +
+    " " +
+    startingDate.getFullYear() + " - " +
+    endingDate.toLocaleString("default", { month: "long" }) +
+    " " +
+    endingDate.getDate() +
+    " " +
+    endingDate.getFullYear();
 }

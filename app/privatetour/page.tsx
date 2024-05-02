@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { toast } from "react-toastify";
 const NewTour = () => {
-  const [personalDetail, setPersonalDetail] = useState({
+  const [privateTourDetail, setPrivateTourDetail] = useState({
     firstName: "",
     lastName: "",
     phoneNumber: "",
@@ -21,14 +21,17 @@ const NewTour = () => {
     dateOfBirth: "",
     peopleCount: 1,
     additionalInformation: "",
-    tourPlan: "",
+    destination: "",
+    accomodationPreference: "",
+    budgetConsiderations: "",
+    additionalRequests: "",
   });
   const [tourDate, setTourDate] = useState(
     new Date().toISOString().split("T")[0]
   );
 
-  const updatePersonalDetail = (key: string, value: string) => {
-    setPersonalDetail({ ...personalDetail, [key]: value });
+  const updatePrivateTourDetail = (key: string, value: string) => {
+    setPrivateTourDetail({ ...privateTourDetail, [key]: value });
   };
   const [requestLoading, setRequestLoading] = useState(false);
   const requestNewTour = async () => {
@@ -37,7 +40,7 @@ const NewTour = () => {
       const res = await axios.post(
         "http://localhost:3000/api/request-private-tour",
         {
-          ...personalDetail,
+          ...privateTourDetail,
           startingDate: tourDate,
         }
       );
@@ -48,7 +51,7 @@ const NewTour = () => {
       return;
     }
     toast.success("Request has been added successfully");
-    setPersonalDetail({
+    setPrivateTourDetail({
       firstName: "",
       lastName: "",
       phoneNumber: "",
@@ -57,7 +60,10 @@ const NewTour = () => {
       dateOfBirth: "",
       peopleCount: 1,
       additionalInformation: "",
-      tourPlan: "",
+      destination: "",
+      accomodationPreference: "",
+      budgetConsiderations: "",
+      additionalRequests: "",
     });
     setRequestLoading(false);
     setTourDate("");
@@ -67,7 +73,7 @@ const NewTour = () => {
     <MainLayout>
       <div className="w-screen flex-1 px-3 pt-16 md:pt-14 xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col gap-4 justify-center">
         <div className=" text-2xl font-semibold lg:text-4xl">
-          Request New Departure
+          Request Private Tour
         </div>
         <form
           className="flex flex-1 flex-col gap-4"
@@ -85,53 +91,53 @@ const NewTour = () => {
                 <div className="flex gap-3 md:gap-4 flex-col md:flex-row">
                   <Input
                     type="text"
-                    value={personalDetail.firstName}
+                    value={privateTourDetail.firstName}
                     placeholder="FirstName"
                     onChange={(e) => {
-                      updatePersonalDetail("firstName", e.target.value);
+                      updatePrivateTourDetail("firstName", e.target.value);
                     }}
                     required
                   />
                   <Input
                     type="text"
-                    value={personalDetail.lastName}
+                    value={privateTourDetail.lastName}
                     placeholder="LastName"
                     onChange={(e) => {
-                      updatePersonalDetail("lastName", e.target.value);
+                      updatePrivateTourDetail("lastName", e.target.value);
                     }}
                     required
                   />
                 </div>
                 <Input
                   type={"tel"}
-                  value={personalDetail.phoneNumber}
+                  value={privateTourDetail.phoneNumber}
                   placeholder="+976 9999 9999"
                   icon={<PhoneIcon />}
                   onChange={(e) => {
-                    updatePersonalDetail("phoneNumber", e.target.value);
+                    updatePrivateTourDetail("phoneNumber", e.target.value);
                   }}
                   required
                 />
                 <Input
-                  value={personalDetail.email}
+                  value={privateTourDetail.email}
                   type={"email"}
                   placeholder="example@gmail.com"
                   icon={<EmailIcon />}
                   onChange={(e) => {
-                    updatePersonalDetail("email", e.target.value);
+                    updatePrivateTourDetail("email", e.target.value);
                   }}
                   required
                 />
                 <SelectNationality
-                  value={personalDetail.nationality}
+                  value={privateTourDetail.nationality}
                   onChange={(value: string) =>
-                    updatePersonalDetail("nationality", value)
+                    updatePrivateTourDetail("nationality", value)
                   }
                 />
                 <SelectBirthday
-                  value={personalDetail.dateOfBirth}
+                  value={privateTourDetail.dateOfBirth}
                   onChange={(newDateOfBirth) =>
-                    updatePersonalDetail("dateOfBirth", newDateOfBirth)
+                    updatePrivateTourDetail("dateOfBirth", newDateOfBirth)
                   }
                 />
                 <div>
@@ -139,21 +145,21 @@ const NewTour = () => {
                     How many people will travel including you?
                   </div>
                   <Input
-                    value={personalDetail.peopleCount}
+                    value={privateTourDetail.peopleCount}
                     type={"number"}
                     placeholder="3"
                     onChange={(e) => {
-                      updatePersonalDetail("peopleCount", e.target.value);
+                      updatePrivateTourDetail("peopleCount", e.target.value);
                     }}
                     required
                   />
                 </div>
                 <textarea
                   placeholder="Additional Information"
-                  className=" min-h-32 p-4 border"
-                  value={personalDetail.additionalInformation}
+                  className="min-h-32 p-4 border flex-1"
+                  value={privateTourDetail.additionalInformation}
                   onChange={(e) => {
-                    updatePersonalDetail(
+                    updatePrivateTourDetail(
                       "additionalInformation",
                       e.target.value
                     );
@@ -164,7 +170,7 @@ const NewTour = () => {
             <div className="flex-1 flex flex-col gap-4">
               <div className=" bg-quinary p-3 md:p-4 flex flex-col gap-2">
                 <div className="text-lg font-semibold lg:text-xl">
-                  Tour Starting Date
+                  Desired Tour Starting Date
                 </div>
                 <div className="text-base font-semibold lg:text-xl text-center flex flex-row gap-4">
                   <input
@@ -176,20 +182,73 @@ const NewTour = () => {
                     className="text-base px-4 py-3 w-full outline-none border "
                   />
                 </div>
-              </div>
-              <div className=" bg-quinary p-3 md:p-4 flex flex-col gap-2">
-                <div className="text-lg font-semibold lg:text-xl">
-                  Tour Plan
+                <div className="flex flex-col">
+                  <div className="text-base md:text-lg font-semibold">
+                    Destination(s) in mind
+                  </div>
+                  <textarea
+                    placeholder="Do you have a specific location in mind, or are you open to suggestions?"
+                    className=" min-h-32 p-4 border"
+                    value={privateTourDetail.destination}
+                    required
+                    onChange={(e) => {
+                      updatePrivateTourDetail("destination", e.target.value);
+                    }}
+                  ></textarea>
                 </div>
-                <textarea
-                  placeholder="What's on your mind?"
-                  className=" min-h-32 p-4 border"
-                  value={personalDetail.tourPlan}
-                  required
-                  onChange={(e) => {
-                    updatePersonalDetail("tourPlan", e.target.value);
-                  }}
-                ></textarea>
+                <div className="flex flex-col">
+                  <div className="text-base md:text-lg font-semibold">
+                    Accomodation preference
+                  </div>
+                  <Input
+                    type={"text"}
+                    value={privateTourDetail.accomodationPreference}
+                    placeholder="More luxury or more local homestays?"
+                    onChange={(e) => {
+                      updatePrivateTourDetail(
+                        "accomodationPreference",
+                        e.target.value
+                      );
+                    }}
+                    required
+                  />
+                </div>
+
+                <div className="flex flex-col">
+                  <div className="text-base md:text-lg font-semibold">
+                    Budget considerations
+                  </div>
+                  <Input
+                    type={"text"}
+                    value={privateTourDetail.budgetConsiderations}
+                    placeholder="Do you have a specific budget in mind?"
+                    onChange={(e) => {
+                      updatePrivateTourDetail(
+                        "budgetConsiderations",
+                        e.target.value
+                      );
+                    }}
+                    required
+                  />
+                </div>
+
+                <div className="flex flex-col">
+                  <div className="text-base md:text-lg font-semibold">
+                    Additional Requests
+                  </div>
+                  <textarea
+                    placeholder="Do you have any specific or additional requests?"
+                    className=" min-h-32 p-4 border"
+                    value={privateTourDetail.additionalRequests}
+                    required
+                    onChange={(e) => {
+                      updatePrivateTourDetail(
+                        "additionalRequests",
+                        e.target.value
+                      );
+                    }}
+                  ></textarea>
+                </div>
               </div>
 
               <button

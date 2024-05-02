@@ -9,8 +9,13 @@ export const TourPlan: FC<TourPlanType> = ({ itinerary }) => {
     <div className="flex flex-col gap-4">
       <div className="text-2xl md:text-4xl font-semibold">Tour Plan</div>
       <div className="font-medium text-xl">
-        {itinerary?.map((itinerary, index) => (
-          <ListItem {...itinerary} index={index} key={index} />
+        {itinerary?.map((item, index) => (
+          <ListItem
+            {...item}
+            index={index}
+            length={itinerary.length}
+            key={index}
+          />
         ))}
       </div>
     </div>
@@ -19,21 +24,26 @@ export const TourPlan: FC<TourPlanType> = ({ itinerary }) => {
 
 interface DayType extends ItineraryType {
   index: number;
+  length: number;
 }
 
-const ListItem = ({ title, description, index }: DayType) => {
+const ListItem = ({ title, description, index, length }: DayType) => {
   const [open, setOpen] = useState(false);
   return (
-    <div className={`border ${index == 0 ? "" : "border-t-0"}`}>
+    <div
+      className={`border overflow-hidden ${
+        index == 0 ? "rounded-t-lg" : "border-t-0"
+      } ${index == length - 1 ? "rounded-b-lg" : ""}`}
+    >
       {/* <td> */}
       <div
-        className={`text-lg md:text-xl hover:bg-black/10 p-3 flex flex-row justify-between items-center ${
+        className={`text-lg md:text-xl hover:bg-black/10 p-4 cursor-pointer flex flex-row justify-between items-center ${
           open ? "border-b" : ""
         }`}
         onClick={() => setOpen(!open)}
       >
         <div>
-          <span className="font-bold text-primary pr-2">DAY {index + 1}</span>
+          <span className="font-bold text-primary pr-2">Day {index + 1} :</span>
           <span className="font-medium">{title}</span>
         </div>
         <div className={`transition-all ${open ? "rotate-180" : ""}`}>

@@ -37,7 +37,7 @@ export async function POST(request: Request) {
   if (!availableTourData) return Response.json(transaction);
   const { data: tourData} = await supabase
     .from("tours")
-    .select("title")
+    .select("title, days, nights")
     .eq("id", availableTourData.tourId).single();
   if (!tourData) return Response.json(transaction);
   const { text, html, subject } = mailTemplate(body.errorCode === "000" ? "bookSuccess" : "bookFail", {
@@ -46,6 +46,7 @@ export async function POST(request: Request) {
     tourDetail: {
       title: tourData?.title,
       date: availableTourData?.date,
+      duration: tourData?.days,
       peopleCount: transaction?.peopleCount,
       paidAmount: body.amount,
     }
