@@ -5,3 +5,4 @@ export * from "./availability";
 export * from "./tourintro";
 export * from "./tourinfo";
 export * from "./tourplan";
+export * from './similartours'

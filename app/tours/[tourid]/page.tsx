@@ -7,6 +7,7 @@ import {
   NotIncluded,
   Overview,
   Reviews,
+  SimilarTours,
   TourInfo,
   TourIntro,
   TourPlan,
@@ -23,6 +24,7 @@ const TourPage = () => {
   const params = useParams();
   const { tourid } = params;
   const [availableTours, setAvailableTours] = useState<AvailableTourType[]>([]);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
   const saleTours = useMemo<AvailableTourType[]>(() => {
     return availableTours.filter(
       (availableTour) => availableTour.salePrice !== null
@@ -61,6 +63,25 @@ const TourPage = () => {
     getTour();
   }, [tourid]);
 
+  useEffect(() => {
+    const getCategories = async () => {
+      if (!tour) return;
+      try {
+        const { data, error } = await supabase
+          .from("tourCategories")
+          .select("*")
+          .in("id", tour.categories);
+        if (error) {
+          throw error;
+        }
+        setCategories(data);
+      } catch (error: any) {
+        console.error("Error fetching tour categories:", error.message);
+      }
+    };
+    if (tour) getCategories();
+  }, [tour]);
+
   const checkAvailableDate = () => scrollToElement.current?.scrollIntoView();
 
   if (!tour) {
@@ -70,7 +91,7 @@ const TourPage = () => {
   return (
     <MainLayout headerTransparent>
       <div className="flex flex-col gap-4 md:gap-12">
-        <TourIntro tour={tour} />
+        <TourIntro tour={tour} categories={categories} />
         <div className=" w-screen px-3 xl:px-0 container mx-auto flex flex-col-reverse md:flex-row">
           <div className="w-full md:w-2/3 flex flex-col gap-12">
             <Overview tour={tour} />
@@ -82,12 +103,16 @@ const TourPage = () => {
                 <NotIncluded tour={tour} />
               </div>
             </div>
-            <div className=" z-10">
+            <div className="z-10">
               <TourPlan itinerary={tour.itinerary} />
             </div>
             <div ref={scrollToElement} className="pt-24 -mt-24">
               <Availability tour={tour} availableTours={availableTours} />
             </div>
+            <SimilarTours
+              tourId={tourid as string}
+              categories={tour.categories}
+            />
           </div>
           <div className="bg-white pb-4 md:p-0 md:bg-transparent w-full md:w-1/3 md:pl-8 md:relative">
             <div className="sticky top-16 md:max-w-96 flex flex-col gap-6">

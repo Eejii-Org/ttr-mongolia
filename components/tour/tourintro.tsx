@@ -2,32 +2,20 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { supabase } from "@/utils/supabase/client";
 
-export const TourIntro = ({ tour }: { tour: TourType }) => {
+export const TourIntro = ({
+  tour,
+  categories,
+}: {
+  tour: TourType;
+  categories: CategoryType[];
+}) => {
   const [index, setIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [categories, setCategories] = useState<CategoryType[]>([]);
   const images = useMemo<string[]>(() => {
     if (!tour || tour?.images?.length == 0) return [];
     return tour?.images;
   }, [tour]);
-  useEffect(() => {
-    const getCategories = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("tourCategories")
-          .select("*")
-          .in("id", tour.categories);
 
-        if (error) {
-          throw error;
-        }
-        setCategories(data);
-      } catch (error: any) {
-        console.error("Error fetching tour categories:", error.message);
-      }
-    };
-    getCategories();
-  }, [tour]);
   useEffect(() => {
     scrollRef.current?.scroll({
       left: 16 + (window.innerWidth - 32) / 3,
