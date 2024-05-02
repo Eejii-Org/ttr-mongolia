@@ -16,7 +16,13 @@ export const Tour = (props: { tour: CombinedToursDataType }) => {
     <div className="flex flex-col md:h-48 md:flex-row gap-2 md:gap-8 cursor-default">
       <div className="relative md:w-1/4 md:max-w-80 h-48 md:h-auto rounded overflow-hidden">
         <Link href={"/tours/" + tour.id}>
-          <Image src={images[0]} alt={title} className="object-cover" fill />
+          <Image
+            src={images[0]}
+            alt={title}
+            className="object-cover"
+            quality={5}
+            fill
+          />
         </Link>
       </div>
       <div className="flex flex-1 flex-col gap-1">

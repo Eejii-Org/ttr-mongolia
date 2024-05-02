@@ -70,6 +70,7 @@ const TourCard = (props: TourType) => {
         <Image
           src={props.images[0]}
           alt={props.title}
+          quality={5}
           fill
           className="object-cover rounded-xl"
         />
