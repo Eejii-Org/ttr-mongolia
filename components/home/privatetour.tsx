@@ -1,15 +1,21 @@
 import Link from "next/link";
 import { FC } from "react";
-
+import Image from "next/image";
 export const PrivateTour: FC = () => {
   return (
-    <div className="bg-[#1e1e1e]">
-      <div className="md:mx-auto container px-6 py-9 flex flex-col lg:flex-row items-center  gap-0 text-left md:items-end lg:gap-8">
-        <div className="flex flex-col gap-2 flex-1 text-tertiary">
-          <div className="text-lg md:text-2xl font-semibold">
+    <div className="bg-[#1e1e1e] relative">
+      <Image
+        src="/static/privatetourbg.png"
+        alt="privatetourbg"
+        fill
+        className="object-cover"
+      />
+      <div className="md:mx-auto container px-6 py-16 flex flex-col items-center gap-0 text-left lg:gap-2 relative">
+        <div className="flex flex-col items-center gap-4 flex-1 text-tertiary">
+          <div className="text-2xl md:text-3xl text-white font-semibold">
             Request a Private Tour
           </div>
-          <div className="text-base md:text-lg opacity-70">
+          <div className="text-base md:text-xl text-center">
             If you’re looking to enjoy a trip with your loves ones privately,
             fill up our form and our team will be in touch.
           </div>
@@ -17,7 +23,7 @@ export const PrivateTour: FC = () => {
 
         <Link
           href="/privatetour"
-          className="ripple bg-[#FDA403]/20 border border-primary text-primary py-3 px-12 gip mt-6 cursor-pointer font-semibold rounded"
+          className="ripple bg-[#FDA403] border border-primary text-tertiary py-3 px-12 gip mt-6 cursor-pointer font-semibold rounded"
         >
           Request Private Tour
         </Link>
