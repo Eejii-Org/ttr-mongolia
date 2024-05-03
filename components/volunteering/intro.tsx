@@ -18,7 +18,7 @@ export const VolunteeringIntro = () => {
         </div>
 
         <Link
-          href={"/tours?category=Volunteering+Tours"}
+          href={"/tours?category=9"}
           className="bg-[#2CB742] px-8 py-4 text-tertiary rounded ripple font-bold"
         >
           Explore Volunteering

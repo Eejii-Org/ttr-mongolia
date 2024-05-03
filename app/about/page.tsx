@@ -33,7 +33,7 @@ const Volunteering = () => {
   }, []);
   return (
     <MainLayout>
-      <div className="flex-1 pt-16 md:pt-14 flex flex-col gap-12">
+      <div className="flex-1 flex flex-col gap-12">
         <AboutIntro />
         <div className="container mx-auto flex flex-col gap-4 justify-center px-8 items-center">
           <div className="text-2xl md:text-4xl font-semibold">

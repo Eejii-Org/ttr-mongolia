@@ -89,7 +89,8 @@ const TourCard = (props: TourType) => {
             </div>
             <div className="bg-black/20 w-[2px] rounded my-1" />
             <div className="flex flex-row items-center gap-1 font-semibold text-2xl">
-              <DayIcon />${props.days}
+              <DayIcon />
+              {props.days}
             </div>
           </div>
           <Link

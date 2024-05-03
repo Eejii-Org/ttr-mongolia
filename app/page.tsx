@@ -10,6 +10,7 @@ import {
   Reviews,
   Footer,
   MainLayout,
+  PrivateTour,
 } from "@components";
 
 const Home: FC = () => {
@@ -25,7 +26,7 @@ const Home: FC = () => {
         <div className="container mx-auto flex flex-col gap-24">
           <OurAgency />
         </div>
-
+        <PrivateTour />
         <Reviews />
       </div>
     </MainLayout>

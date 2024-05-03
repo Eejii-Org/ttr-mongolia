@@ -4,6 +4,8 @@ import { Header } from "./header";
 import Image from "next/image";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import path from "path";
 
 export const MainLayout = ({
   children,
@@ -12,7 +14,9 @@ export const MainLayout = ({
   children: React.ReactNode;
   headerTransparent?: boolean;
 }) => {
+  const pathname = usePathname();
   const [scrolled, setIsScrolled] = useState(false);
+  const [isPrivateToursVisible, setIsPrivateToursVisible] = useState(true);
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY == 0) {
@@ -29,9 +33,24 @@ export const MainLayout = ({
   return (
     <div className="flex-1 w-full flex flex-col min-h-screen justify-between">
       <ToastContainer />
-      <div className="flex flex-col gap-16 flex-1 relative">
-        <Header transparent={headerTransparent ? !scrolled : false} />
-        <div className="flex flex-col gap-16 flex-1 h-full">{children}</div>
+      <div className="flex flex-col flex-1">
+        <Header
+          isPrivateToursVisible={isPrivateToursVisible}
+          setIsPrivateToursVisible={setIsPrivateToursVisible}
+          transparent={headerTransparent ? !scrolled : false}
+          isScrolled={scrolled}
+        />
+        <div
+          className={`flex flex-col gap-16 flex-1 ${
+            pathname == "/" ? "" : "mt-16"
+          } ${
+            isPrivateToursVisible && pathname == "/tours"
+              ? "pt-24 sm:pt-20 md:pt-16"
+              : ""
+          }`}
+        >
+          {children}
+        </div>
         <a
           className="sticky bottom-8 left-[calc(100vw-104px)] w-[72px] h-[72.45px] z-30"
           href="https://wa.me/97688113977"

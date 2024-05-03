@@ -71,7 +71,7 @@ const NewTour = () => {
 
   return (
     <MainLayout>
-      <div className="w-screen flex-1 px-3 pt-16 md:pt-14 xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col gap-4 justify-center">
+      <div className="w-screen flex-1 px-3  xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col gap-4 justify-center">
         <div className=" text-2xl font-semibold lg:text-4xl">
           Request Private Tour
         </div>
