@@ -34,19 +34,20 @@ export async function POST(request: Request) {
     return Response.json(err);
   }
   const res = await checkInvoice(transactionId);
-  const { error: er } = await supabase
+  const { data: transactionData, error: er } = await supabase
     .from("transactions")
     .update({
-      transactionDetail: res,
+      transactionDetail: res.data,
     })
-    .eq("transactionId", transactionId);
+    .eq("transactionId", transactionId)
+    .select();
 
   if (er) {
     return Response.json(er);
   }
 
   return Response.json({
-    transaction: data,
+    transaction: transactionData,
     availableTour: availableTour,
     invoice: res.data,
   });
