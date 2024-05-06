@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 export const dynamic = "force-dynamic"; // defaults to auto
 
 export async function POST(request: Request) {
-  const supabase = createClient()
+  const supabase = createClient();
   const body = await request.json();
 
   if (!body.transactionId) {
@@ -33,16 +33,18 @@ export async function POST(request: Request) {
   if (err) {
     return Response.json(err);
   }
+  const res = await checkInvoice(transactionId);
   const { error: er } = await supabase
     .from("transactions")
     .update({
-      transactionDetail: data,
+      transactionDetail: res,
     })
     .eq("transactionId", transactionId);
+
   if (er) {
     return Response.json(er);
   }
-  const res = await checkInvoice(transactionId);
+
   return Response.json({
     transaction: data,
     availableTour: availableTour,
