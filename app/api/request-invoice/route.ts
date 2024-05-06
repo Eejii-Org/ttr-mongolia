@@ -20,6 +20,7 @@ export async function POST(request: Request) {
     transactionId: res.data.transactionId,
     availableTourId: body.availableTourId,
     amount: body.amount,
+    transactionDetail: null,
   });
   if (error) {
     return Response.json({
