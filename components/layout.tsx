@@ -5,7 +5,6 @@ import Image from "next/image";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import path from "path";
 
 export const MainLayout = ({
   children,

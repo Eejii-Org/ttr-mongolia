@@ -57,7 +57,7 @@ const Booking = () => {
     }
     setBookLoading(true);
     const res = await axios.post(
-      "https://ttr-mongolia.vercel.app/api/request-invoice",
+      "https://ttrmongolia.com/api/request-invoice",
       {
         // amount: personalDetail.peopleCount * availableTour?.price,
         amount: "0.01",

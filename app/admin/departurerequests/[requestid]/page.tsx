@@ -65,7 +65,7 @@ const DepartureRequest = () => {
       const availableTourId =
         insertTourResult !== false ? insertTourResult.data[0].id : "";
       const res = await axios.post(
-        "https://ttr-mongolia.vercel.app/api/reply-departure",
+        "https://ttrmongolia.com/api/reply-departure",
         {
           departureRequest: { ...departureRequest, adminNote },
           status: newStatus == "Approve" ? "Approved" : "Denied",

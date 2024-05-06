@@ -42,7 +42,7 @@ export async function POST(request: Request) {
   if (!tourData) return Response.json(transaction);
   const { text, html, subject } = mailTemplate(body.errorCode === "000" ? "bookSuccess" : "bookFail", {
     name: transaction?.firstName + " " + transaction?.lastName,
-    paymentURL: `https://ttr-mongolia.vercel.app/book?availableTourId=${transaction.availableTourId}`,
+    paymentURL: `https://ttrmongolia.com/book?availableTourId=${transaction.availableTourId}`,
     tourDetail: {
       title: tourData?.title,
       date: availableTourData?.date,

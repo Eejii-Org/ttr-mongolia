@@ -63,7 +63,7 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
 
     try {
       const res = await axios.post(
-        "https://ttr-mongolia.vercel.app/api/request-departure",
+        "https://ttrmongolia.com/api/request-departure",
         {
           ...personalDetail,
           tourId: selectedTour,

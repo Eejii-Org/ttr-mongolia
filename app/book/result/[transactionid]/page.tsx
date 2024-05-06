@@ -53,7 +53,7 @@ const PaymentResult = () => {
     const getStatus = async () => {
       setLoading(true);
       const res = await axios.post(
-        "https://ttr-mongolia.vercel.app/api/check-transaction",
+        "https://ttrmongolia.com/api/check-transaction",
         {
           transactionId: transactionid,
         }
