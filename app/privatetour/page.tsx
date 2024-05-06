@@ -40,7 +40,7 @@ const NewTour = () => {
     setRequestLoading(true);
     try {
       const res = await axios.post(
-        "https://ttrmongolia.com/api/request-private-tour",
+        "https://www.ttrmongolia.com/api/request-private-tour",
         {
           ...privateTourDetail,
           startingDate: tourDate,

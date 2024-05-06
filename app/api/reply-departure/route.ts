@@ -27,7 +27,7 @@ export async function POST(request: Request) {
   const { firstName, lastName, adminNote } = departureRequest;
   const { text, html, subject } = mailTemplate(status == "Denied" ?"requestDeny" : "requestApprove", {
     name: firstName + " " + lastName,
-    bookURL: `https://ttrmongolia.com/book?availableTourId=${availableTourId}`,
+    bookURL: `https://www.ttrmongolia.com/book?availableTourId=${availableTourId}`,
     adminNote: adminNote,
    });
   const info = await transporter.sendMail({

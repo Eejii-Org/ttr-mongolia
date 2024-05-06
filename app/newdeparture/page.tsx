@@ -63,7 +63,7 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
 
     try {
       const res = await axios.post(
-        "https://ttrmongolia.com/api/request-departure",
+        "https://www.ttrmongolia.com/api/request-departure",
         {
           ...personalDetail,
           tourId: selectedTour,

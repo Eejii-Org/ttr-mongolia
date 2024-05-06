@@ -319,7 +319,7 @@ export const mailTemplate = (templateType: templateTypeType, detail: detailType)
               <img
                 width="204.31px"
                 height="42px"
-                src="https://ttrmongolia.com/static/ttr-row.png"
+                src="https://www.ttrmongolia.com/static/ttr-row.png"
                 alt="TTRMongolia"
               />
             </th>

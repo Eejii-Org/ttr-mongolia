@@ -52,12 +52,12 @@ const getInvoice = async (transactionId: string, amount: string) => {
     "https://ecommerce.golomtbank.com/api/invoice",
     {
       amount: amount,
-      callback: `https://ttrmongolia.com/book/result/${transactionId}`,
+      callback: `https://www.ttrmongolia.com/book/result/${transactionId}`,
       checksum: hmac256(
         transactionId +
           amount +
           "GET" +
-          `https://ttrmongolia.com/book/result/${transactionId}`
+          `https://www.ttrmongolia.com/book/result/${transactionId}`
       ),
       genToken: "Y",
       returnType: "GET",

@@ -39,7 +39,7 @@ const Value: FC<ValueProps> = (props) => {
       </div>
       <div className="font-bold text-lg md:text-2xl">{title}</div>
       <div
-        className="text-base md:text-xl"
+        className="text-base md:text-lg"
         dangerouslySetInnerHTML={{ __html: description }}
       />
     </div>

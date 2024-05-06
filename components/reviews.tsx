@@ -78,7 +78,7 @@ export const Review: FC<ReviewItemType> = ({
     <div className="p-4 bg-quinary relative flex flex-row gap-4 review-item">
       {images.length != 0 && (
         <div className="min-w-24 flex flex-col gap-3">
-          {images.slice(0, 3).map((image, index) => (
+          {images?.slice(0, 3)?.map((image, index) => (
             <div
               onClick={() => openImage(image)}
               className="flex flex-1 relative cursor-pointer"
