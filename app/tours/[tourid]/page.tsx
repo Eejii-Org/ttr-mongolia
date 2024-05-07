@@ -143,8 +143,8 @@ const TourPage = () => {
                 <div className="flex flex-col gap-2">
                   <h3 className="font-bold text-lg">Request a Private Tour</h3>
                   <p>
-                    If you’re looking to enjoy a trip with your loves ones
-                    privately, fill up our form and our team will be in touch.
+                    If you'are looking to enjoy a trip privately with your own
+                    group, fill up our form and our team will be in touch.
                   </p>
                 </div>
                 <div className="flex justify-end">

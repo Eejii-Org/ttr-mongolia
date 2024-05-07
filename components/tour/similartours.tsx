@@ -91,6 +91,9 @@ const TourCard = (props: TourType) => {
             <div className="flex flex-row items-center gap-1 font-semibold text-2xl">
               <DayIcon />
               {props.days}
+              <span className="font-medium text-xl">
+                {props.days == 1 ? " day" : " days"}
+              </span>
             </div>
           </div>
           <Link
