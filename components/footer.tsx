@@ -36,12 +36,12 @@ export const Footer = () => {
                     Request Private Tour
                   </div>
                 </Link>
-                <Link href="/">
+                <Link href="/termsandconditions">
                   <div className="text-base text-white/70">
                     Terms and Conditions
                   </div>
                 </Link>
-                <Link href="/">
+                <Link href="/privacypolicy">
                   <div className="text-base text-white/70">Privacy Policy</div>
                 </Link>
               </div>

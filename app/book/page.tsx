@@ -10,8 +10,10 @@ import {
   SelectNationality,
 } from "@components";
 import axios from "axios";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import Cookies from "js-cookie";
 
 type TourType = {
   title: string;
@@ -30,6 +32,7 @@ const Booking = () => {
   const [availableTour, setAvailableTour] = useState<AvailableTourType | null>(
     null
   );
+  const [isAgreedToPrivacy, setIsAgreedToPrivacy] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const searchParams = useSearchParams();
@@ -84,6 +87,11 @@ const Booking = () => {
     return availableTour.salePrice;
   }, [availableTour, personalDetail]);
   useEffect(() => {
+    const getIsAgreedToPrivacy = () => {
+      const isAgreed = Cookies.get("isAgreedToPrivacy");
+      setIsAgreedToPrivacy(isAgreed == "true" ? true : false);
+    };
+    getIsAgreedToPrivacy();
     const getTour = async () => {
       if (availableTourId == "") {
         // router.push("/");
@@ -324,6 +332,33 @@ const Booking = () => {
                     <div className="text-base font-semibold lg:text-xl text-center">
                       {personalDetail.peopleCount} * ${pricePerPerson} = $
                       {personalDetail.peopleCount * pricePerPerson}
+                    </div>
+                  </div>
+                  <div className="flex flex-row items-center justify-center gap-2">
+                    <input
+                      type="checkbox"
+                      required
+                      checked={isAgreedToPrivacy}
+                      onChange={(e) => {
+                        setIsAgreedToPrivacy(e.target.checked);
+                        Cookies.set("isAgreedToPrivacy", e.target.checked + "");
+                      }}
+                    />
+                    <div>
+                      I agree to the{" "}
+                      <Link
+                        href="/termsandconditions"
+                        className="underline font-medium"
+                      >
+                        Terms of Conditions
+                      </Link>{" "}
+                      and{" "}
+                      <Link
+                        href="/privacypolicy"
+                        className="underline font-medium"
+                      >
+                        Privacy Policy
+                      </Link>
                     </div>
                   </div>
                   <button
