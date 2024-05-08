@@ -6,8 +6,8 @@ export const Included = ({ tour }: { tour: TourType }) => {
         <ul>
           {tour.included.map(({ name, explanation }, index) => (
             <li key={index}>
-              <div>
-                <span className="font-bold pr-4">•</span>
+              <div className="flex flex-row items-center gap-2">
+                <CheckMark />
                 {name}
               </div>
               {explanation && explanation !== "" && (
@@ -25,3 +25,21 @@ export const Included = ({ tour }: { tour: TourType }) => {
     </div>
   );
 };
+
+const CheckMark = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M6 12L10.2426 16.2426L18.727 7.75732"
+      stroke="#2CB742"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);

@@ -65,7 +65,7 @@ const DepartureRequest = () => {
       const availableTourId =
         insertTourResult !== false ? insertTourResult.data[0].id : "";
       const res = await axios.post(
-        "https://www.ttrmongolia.com/api/reply-departure",
+        `${process.env.BACKEND_URL}/reply-departure`,
         {
           departureRequest: { ...departureRequest, adminNote },
           status: newStatus == "Approve" ? "Approved" : "Denied",

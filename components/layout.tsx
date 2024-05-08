@@ -40,7 +40,7 @@ export const MainLayout = ({
           isScrolled={scrolled}
         />
         <div
-          className={`flex flex-col gap-16 flex-1 ${
+          className={`flex flex-col gap-16 flex-1 pb-24 ${
             pathname == "/" || pathname.includes("/tours/") ? "" : "mt-16"
           } ${
             isPrivateToursVisible && pathname == "/tours"

@@ -2,13 +2,11 @@
 import { FC } from "react";
 import {
   CustomerSupport,
-  Header,
   Intro,
   OurAgency,
   TourCategories,
   Values,
   Reviews,
-  Footer,
   MainLayout,
   PrivateTour,
 } from "@components";
@@ -16,14 +14,14 @@ import {
 const Home: FC = () => {
   return (
     <MainLayout headerTransparent>
-      <div className="flex-1 w-full flex flex-col gap-24">
+      <div className="flex-1 w-full flex flex-col gap-28">
         <Intro />
-        <div className="container mx-auto flex flex-col gap-24">
+        <div className="container mx-auto flex flex-col gap-28">
           <Values />
           <TourCategories />
         </div>
         <CustomerSupport />
-        <div className="container mx-auto flex flex-col gap-24">
+        <div className="container mx-auto flex flex-col gap-28">
           <OurAgency />
         </div>
         <PrivateTour />

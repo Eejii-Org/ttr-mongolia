@@ -10,9 +10,9 @@ export const SelectBirthday = ({
   const { year, month, date } = useMemo(() => {
     const [year, month, date] = value.split("-");
     return {
-      year,
-      month,
-      date,
+      year: year || "",
+      month: month || "",
+      date: date || "",
     };
   }, [value]);
   return (

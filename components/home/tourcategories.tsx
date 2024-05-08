@@ -27,7 +27,7 @@ export const TourCategories: FC = () => {
     fetchTourCategories();
   }, []);
   return (
-    <div className="flex flex-col gap-6 mx-3 md:mx-6">
+    <div className="flex flex-col gap-6 mx-3 md:mx-0">
       <div className="flex flex-row justify-between items-end">
         <div className="text-2xl md:text-4xl font-semibold">
           Choose your tour

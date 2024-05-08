@@ -53,7 +53,7 @@ const PaymentResult = () => {
     const getStatus = async () => {
       setLoading(true);
       const res = await axios.post(
-        "https://www.ttrmongolia.com/api/check-transaction",
+        `${process.env.BACKEND_URL}/check-transaction`,
         {
           transactionId: transactionid,
         }

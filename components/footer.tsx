@@ -6,7 +6,6 @@ import {
   JCB,
   MNT,
   MasterCard,
-  TTRMongolia,
   UnionPay,
   Visa,
 } from "./icons";
@@ -31,6 +30,11 @@ export const Footer = () => {
                 </Link>
                 <Link href="/contact">
                   <div className="text-base text-white/70">About Us</div>
+                </Link>
+                <Link href="/privatetour">
+                  <div className="text-base text-primary">
+                    Request Private Tour
+                  </div>
                 </Link>
                 <Link href="/">
                   <div className="text-base text-white/70">

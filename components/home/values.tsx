@@ -2,7 +2,7 @@ import { FC } from "react";
 
 export const Values: FC = () => {
   return (
-    <div className="flex flex-col gap-6 py-4 md:py-8 px-3">
+    <div className="flex flex-col gap-6 mx-3 md:mx-0">
       <div className="text-2xl md:text-4xl font-semibold">
         Top values we offer
       </div>

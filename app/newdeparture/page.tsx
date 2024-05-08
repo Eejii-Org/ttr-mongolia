@@ -1,6 +1,8 @@
 "use client";
 import { supabase } from "@/utils/supabase/client";
 import {
+  BigErrorIcon,
+  BigSuccessIcon,
   EmailIcon,
   Input,
   MainLayout,
@@ -27,6 +29,9 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
   const [tours, setTours] = useState<TourType[] | null>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [modalMessage, setModalMessage] = useState<null | "Success" | "Fail">(
+    null
+  );
   const router = useRouter();
   const [personalDetail, setPersonalDetail] = useState({
     firstName: "",
@@ -63,7 +68,7 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
 
     try {
       const res = await axios.post(
-        "https://www.ttrmongolia.com/api/request-departure",
+        `${process.env.BACKEND_URL}/request-departure`,
         {
           ...personalDetail,
           tourId: selectedTour,
@@ -73,12 +78,12 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
         }
       );
     } catch (err: any) {
+      setModalMessage("Fail");
       console.error(err);
-      toast.error(err.message);
       setRequestLoading(false);
       return;
     }
-    toast.success("Request has been added successfully");
+    setModalMessage("Success");
     setPersonalDetail({
       firstName: "",
       lastName: "",
@@ -139,169 +144,199 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
   }
 
   return (
-    <MainLayout>
-      <div className="w-screen flex-1 px-3  xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col gap-4 justify-center">
-        <div className=" text-2xl font-semibold lg:text-4xl">
-          Request New Departure
-        </div>
-        <form
-          className="flex flex-1 flex-col gap-4"
-          onSubmit={(e) => {
-            e.preventDefault();
-            requestNewTour();
-          }}
-        >
-          <div className="flex flex-col md:flex-row gap-4 h-full">
-            <div className="bg-quinary p-3 md:p-4 flex-1 flex flex-col gap-3">
-              <div className="text-lg font-semibold lg:text-xl">
-                Personal Detail
-              </div>
-              <div className="flex flex-col gap-3 md:gap-4">
-                <div className="flex gap-3 md:gap-4 flex-col md:flex-row">
-                  <Input
-                    type="text"
-                    value={personalDetail.firstName}
-                    placeholder="FirstName"
-                    onChange={(e) => {
-                      updatePersonalDetail("firstName", e.target.value);
-                    }}
-                    required
-                  />
-                  <Input
-                    type="text"
-                    value={personalDetail.lastName}
-                    placeholder="LastName"
-                    onChange={(e) => {
-                      updatePersonalDetail("lastName", e.target.value);
-                    }}
-                    required
-                  />
-                </div>
-                <Input
-                  type={"tel"}
-                  value={personalDetail.phoneNumber}
-                  placeholder="+976 9999 9999"
-                  icon={<PhoneIcon />}
-                  onChange={(e) => {
-                    updatePersonalDetail("phoneNumber", e.target.value);
-                  }}
-                  required
-                />
-                <Input
-                  value={personalDetail.email}
-                  type={"email"}
-                  placeholder="example@gmail.com"
-                  icon={<EmailIcon />}
-                  onChange={(e) => {
-                    updatePersonalDetail("email", e.target.value);
-                  }}
-                  required
-                />
-                <SelectNationality
-                  value={personalDetail.nationality}
-                  onChange={(value: string) =>
-                    updatePersonalDetail("nationality", value)
-                  }
-                />
-                <SelectBirthday
-                  value={personalDetail.dateOfBirth}
-                  onChange={(newDateOfBirth) =>
-                    updatePersonalDetail("dateOfBirth", newDateOfBirth)
-                  }
-                />
-                <div>
-                  <div className="text-base md:text-lg font-semibold">
-                    How many people will travel including you?
-                  </div>
-                  <Input
-                    value={personalDetail.peopleCount}
-                    type={"number"}
-                    placeholder="3"
-                    onChange={(e) => {
-                      updatePersonalDetail("peopleCount", e.target.value);
-                    }}
-                    required
-                  />
-                </div>
-                <textarea
-                  placeholder="Additional Information"
-                  className=" min-h-32 p-4 border"
-                  value={personalDetail.additionalInformation}
-                  onChange={(e) => {
-                    updatePersonalDetail(
-                      "additionalInformation",
-                      e.target.value
-                    );
-                  }}
-                ></textarea>
-              </div>
-            </div>
-            <div className="flex-1 flex flex-col gap-4">
-              <div className=" bg-quinary p-3 md:p-4 flex flex-col gap-2">
-                <div className="text-lg font-semibold lg:text-xl">
-                  Choose Tour
-                </div>
-                <div>
-                  <select
-                    name="tours"
-                    required
-                    className={`text-base px-4 py-3 w-full outline-none border ${
-                      selectedTour ? "text-secondary" : "text-[#c1c1c1]"
-                    }`}
-                    onChange={(e) => setSelectedTour(Number(e.target.value))}
-                    value={selectedTour}
-                    style={{
-                      appearance: "none",
-                      WebkitAppearance: "none",
-                      MozAppearance: "none",
-                    }}
-                  >
-                    <option value="" className="text-quaternary">
-                      Select Tour
-                    </option>
-                    {tours?.map((t, key) => (
-                      <option value={t.id} key={t.id + key}>
-                        {t.title}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="flex flex-row justify-between items-center">
-                  <div className="font-medium text-[#c1c1c1]">
-                    ${pricePerPerson} Per person
-                  </div>
-                  <div className="font-medium text-[#c1c1c1]">
-                    {selectedTourData?.days} days / {selectedTourData?.nights}{" "}
-                    nights
-                  </div>
-                </div>
-              </div>
-              <div className=" bg-quinary p-3 md:p-4 flex flex-col gap-2">
-                <div className="text-lg font-semibold lg:text-xl">
-                  Tour Starting Date
-                </div>
-                <div className="text-base font-semibold lg:text-xl text-center flex flex-row gap-4">
-                  <input
-                    value={tourDate}
-                    required
-                    onChange={(e) => setTourDate(e.target.value)}
-                    type={"date"}
-                    min={new Date().toISOString().split("T")[0]}
-                    className="text-base px-4 py-3 w-full outline-none border "
-                  />
-                </div>
-              </div>
-              <button
-                type="submit"
-                className="bg-primary px-4 py-3 width-full text-center text-secondary whitespace-nowrap font-bold ripple"
-              >
-                {requestLoading ? "Loading" : "Request A New Departure"}
-              </button>
-            </div>
+    <>
+      <div className={modalMessage == null ? "hidden" : "flex"}>
+        <div
+          className={`absolute top-0 left-0 w-screen h-screen bg-black/20 z-50`}
+          onClick={() => setModalMessage(null)}
+        ></div>
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-96 p-4 pt-8 flex flex-col gap-4 rounded-2xl items-center z-50">
+          {modalMessage == "Fail" ? <BigErrorIcon /> : <BigSuccessIcon />}
+          <div className="flex flex-col items-center w-full gap-2">
+            <h2 className="text-2xl font-bold">{modalMessage}</h2>
+            <h3 className="font-medium text-center">
+              {modalMessage == "Fail"
+                ? "There was a problem sending your private tour information. Please try again later."
+                : "Your private tour request has been successfully sent."}
+            </h3>
+            <button
+              className="py-3 mt-3 bg-primary rounded w-full font-bold ripple"
+              onClick={() => {
+                if (modalMessage == "Fail") {
+                  requestNewTour();
+                }
+                setModalMessage(null);
+              }}
+            >
+              {modalMessage == "Fail" ? "Try Again" : "Done"}
+            </button>
           </div>
-        </form>
+        </div>
       </div>
-    </MainLayout>
+      <MainLayout>
+        <div className="w-screen flex-1 px-3  xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col gap-4 justify-center">
+          <div className=" text-2xl font-semibold lg:text-4xl">
+            Request New Departure
+          </div>
+          <form
+            className="flex flex-1 flex-col gap-4"
+            onSubmit={(e) => {
+              e.preventDefault();
+              requestNewTour();
+            }}
+          >
+            <div className="flex flex-col md:flex-row gap-4 h-full">
+              <div className="bg-quinary p-3 md:p-4 flex-1 flex flex-col gap-3">
+                <div className="text-lg font-semibold lg:text-xl">
+                  Personal Detail
+                </div>
+                <div className="flex flex-col gap-3 md:gap-4">
+                  <div className="flex gap-3 md:gap-4 flex-col md:flex-row">
+                    <Input
+                      type="text"
+                      value={personalDetail.firstName}
+                      placeholder="FirstName"
+                      onChange={(e) => {
+                        updatePersonalDetail("firstName", e.target.value);
+                      }}
+                      required
+                    />
+                    <Input
+                      type="text"
+                      value={personalDetail.lastName}
+                      placeholder="LastName"
+                      onChange={(e) => {
+                        updatePersonalDetail("lastName", e.target.value);
+                      }}
+                      required
+                    />
+                  </div>
+                  <Input
+                    type={"tel"}
+                    value={personalDetail.phoneNumber}
+                    placeholder="+976 9999 9999"
+                    icon={<PhoneIcon />}
+                    onChange={(e) => {
+                      updatePersonalDetail("phoneNumber", e.target.value);
+                    }}
+                    required
+                  />
+                  <Input
+                    value={personalDetail.email}
+                    type={"email"}
+                    placeholder="example@gmail.com"
+                    icon={<EmailIcon />}
+                    onChange={(e) => {
+                      updatePersonalDetail("email", e.target.value);
+                    }}
+                    required
+                  />
+                  <SelectNationality
+                    value={personalDetail.nationality}
+                    onChange={(value: string) =>
+                      updatePersonalDetail("nationality", value)
+                    }
+                  />
+                  <SelectBirthday
+                    value={personalDetail.dateOfBirth}
+                    onChange={(newDateOfBirth) =>
+                      updatePersonalDetail("dateOfBirth", newDateOfBirth)
+                    }
+                  />
+                  <div>
+                    <div className="text-base md:text-lg font-semibold">
+                      How many people will travel including you?
+                    </div>
+                    <Input
+                      value={personalDetail.peopleCount}
+                      type={"number"}
+                      placeholder="3"
+                      onChange={(e) => {
+                        updatePersonalDetail("peopleCount", e.target.value);
+                      }}
+                      required
+                    />
+                  </div>
+                  <textarea
+                    placeholder="Additional Information"
+                    className=" min-h-32 p-4 border"
+                    value={personalDetail.additionalInformation}
+                    onChange={(e) => {
+                      updatePersonalDetail(
+                        "additionalInformation",
+                        e.target.value
+                      );
+                    }}
+                  ></textarea>
+                </div>
+              </div>
+              <div className="flex-1 flex flex-col gap-4">
+                <div className=" bg-quinary p-3 md:p-4 flex flex-col gap-2">
+                  <div className="text-lg font-semibold lg:text-xl">
+                    Choose Tour
+                  </div>
+                  <div>
+                    <select
+                      name="tours"
+                      required
+                      className={`text-base px-4 py-3 w-full outline-none border ${
+                        selectedTour ? "text-secondary" : "text-[#c1c1c1]"
+                      }`}
+                      onChange={(e) => setSelectedTour(Number(e.target.value))}
+                      value={selectedTour}
+                      style={{
+                        appearance: "none",
+                        WebkitAppearance: "none",
+                        MozAppearance: "none",
+                      }}
+                    >
+                      <option value="" className="text-quaternary">
+                        Select Tour
+                      </option>
+                      {tours?.map((t) => (
+                        <option value={t.id} key={t.id}>
+                          {t.title}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="flex flex-row justify-between items-center">
+                    <div className="font-medium text-[#c1c1c1]">
+                      ${pricePerPerson} Per person
+                    </div>
+                    <div className="font-medium text-[#c1c1c1]">
+                      {selectedTourData?.days} days / {selectedTourData?.nights}{" "}
+                      nights
+                    </div>
+                  </div>
+                </div>
+                <div className=" bg-quinary p-3 md:p-4 flex flex-col gap-2">
+                  <div className="text-lg font-semibold lg:text-xl">
+                    Tour Starting Date
+                  </div>
+                  <div className="text-base font-semibold lg:text-xl text-center flex flex-row gap-4">
+                    <input
+                      value={tourDate}
+                      required
+                      onChange={(e) => setTourDate(e.target.value)}
+                      type={"date"}
+                      min={new Date().toISOString().split("T")[0]}
+                      className="text-base px-4 py-3 w-full outline-none border "
+                    />
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  className="bg-primary px-4 py-3 width-full text-center text-secondary whitespace-nowrap font-bold ripple"
+                >
+                  {requestLoading ? "Loading" : "Request A New Departure"}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </MainLayout>
+    </>
   );
 };
 

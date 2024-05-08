@@ -153,9 +153,16 @@ const Modal = ({
       <button className="absolute top-8 right-8" onClick={close}>
         <CloseIcon />
       </button>
-      <div className="w-[calc(100vw-32px)] md:container relative h-3/4 bg-white/75 lg:rounded-3xl">
-        <Image src={image || ""} objectFit="cover" fill alt={"modalimage"} />
-      </div>
+      {image && (
+        <div className="w-[calc(100vw-32px)] md:container relative h-3/4 bg-white/75 lg:rounded-3xl">
+          <Image
+            src={image || ""}
+            className="object-cover"
+            fill
+            alt={"modalimage"}
+          />
+        </div>
+      )}
     </div>
   );
 };

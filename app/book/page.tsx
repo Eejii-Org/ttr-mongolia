@@ -56,15 +56,12 @@ const Booking = () => {
       return;
     }
     setBookLoading(true);
-    const res = await axios.post(
-      "https://www.ttrmongolia.com/api/request-invoice",
-      {
-        // amount: personalDetail.peopleCount * availableTour?.price,
-        amount: "0.01",
-        availableTourId,
-        personalDetail,
-      }
-    );
+    const res = await axios.post(`${process.env.BACKEND_URL}/request-invoice`, {
+      // amount: personalDetail.peopleCount * availableTour?.price,
+      amount: "0.01",
+      availableTourId,
+      personalDetail,
+    });
     if (res.status !== 200) {
       setError(res.statusText);
     }

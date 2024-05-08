@@ -31,7 +31,7 @@ const Contact = () => {
   const contactSubmit = async () => {
     setLoading(true);
     try {
-      const response = await fetch("https://www.ttrmongolia.com/api/contact", {
+      const response = await fetch(`${process.env.BACKEND_URL}/contact`, {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached

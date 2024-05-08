@@ -21,7 +21,7 @@ export const OurAgency: FC = () => {
   }, []);
 
   return (
-    <div className="relative mx-3 md:mx-6 flex flex-col gap-4">
+    <div className="relative mx-3 md:mx-0 flex flex-col gap-4">
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 md:p-8  backdrop-blur-sm bg-white/70 rounded-3xl text-center flex flex-col gap-4 z-10"
         style={{
