@@ -1,9 +1,21 @@
-import {convert} from 'html-to-text'
+import { convert } from "html-to-text";
 
 const options = {
   wordwrap: 130,
-}
-export type templateTypeType = "requestApprove" | "requestDeny" | "requestReply" | "requestAdmin" | "bookSuccess" | "bookFail" | "adminPaymentSuccess" | "adminPaymentFailure" | "contact" | "contactAdmin" | "privateTour" | "adminPrivateTour";
+};
+export type templateTypeType =
+  | "requestApprove"
+  | "requestDeny"
+  | "requestReply"
+  | "requestAdmin"
+  | "bookSuccess"
+  | "bookFail"
+  | "adminPaymentSuccess"
+  | "adminPaymentFailure"
+  | "contact"
+  | "contactAdmin"
+  | "privateTour"
+  | "adminPrivateTour";
 export type detailType = {
   name?: string;
   paymentURL?: string;
@@ -50,7 +62,7 @@ export type detailType = {
     dateOfBirth: string;
     peopleCount: number;
     additionalInformation: string;
-  },
+  };
   privateTourDetail?: {
     firstName: string;
     lastName: string;
@@ -65,69 +77,93 @@ export type detailType = {
     budgetConsiderations: string;
     additionalRequests: string;
     startingDate: string;
-  }
-}
+  };
+};
 // subject: string, body1: string, body2?: string
-export const mailTemplate = (templateType: templateTypeType, detail: detailType) => {
-  const { name, bookURL, paymentURL, tourDetail, userDetail, departureDetail, paymentDetail, adminNote, privateTourDetail } = detail;
-  const emailDetails: { [K in templateTypeType]: {
-    header: string;
-    top: string[];
-    link?: {
-      text: string;
-      url?: string;
+export const mailTemplate = (
+  templateType: templateTypeType,
+  detail: detailType
+) => {
+  const {
+    name,
+    bookURL,
+    paymentURL,
+    tourDetail,
+    userDetail,
+    departureDetail,
+    paymentDetail,
+    adminNote,
+    privateTourDetail,
+  } = detail;
+  const emailDetails: {
+    [K in templateTypeType]: {
+      header: string;
+      top: string[];
+      link?: {
+        text: string;
+        url?: string;
+      };
+      bottom: string[];
     };
-    bottom: string[];
-  }} = {
-    'requestApprove': {
+  } = {
+    requestApprove: {
       header: `Departure Request Approved! <br/> Book Your Tour Now 🎉`,
-      top: [`Dear ${name},`, `We are thrilled to inform you that your departure request has been approved! Your desired date has been successfully added to our departure schedule.`, `Admin's Note: ${adminNote}` ,`To secure your spot and confirm your booking, simply click on the button below and folow the online booking procedure:`],
+      top: [
+        `Dear ${name},`,
+        `We are thrilled to inform you that your departure request has been approved! Your desired date has been successfully added to our departure schedule.`,
+        `Admin's Note: ${adminNote}`,
+        `To secure your spot and confirm your booking, simply click on the button below and folow the online booking procedure:`,
+      ],
       link: {
-        text: 'Book Now',
-        url: bookURL
+        text: "Book Now",
+        url: bookURL,
       },
       bottom: [
         `If you have any questions or require further assitance, pleace feel free to contact our customer support team at info@ttrmongolia.com or +976 7014-1001.`,
-        `We look forward to welcoming you on this unforgettable adventure !`
-      ]
+        `We look forward to welcoming you on this unforgettable adventure !`,
+      ],
     },
-    'requestDeny': {
+    requestDeny: {
       header: `Departure Request Denied!`,
-      top: [`Dear ${name},`, `Regrettably, we must inform you that your departure request has been denied. Unfortunately, we were unable to accommodate your requested departure at this time. We apologize for any inconvenience this may cause.`, `Admin's Note: ${adminNote}`],
+      top: [
+        `Dear ${name},`,
+        `Regrettably, we must inform you that your departure request has been denied. Unfortunately, we were unable to accommodate your requested departure at this time. We apologize for any inconvenience this may cause.`,
+        `Admin's Note: ${adminNote}`,
+      ],
       bottom: [
         `If you have any questions or require further assitance, pleace feel free to contact our customer support team at info@ttrmongolia.com or +976 7014-1001.`,
-      ]
+      ],
     },
-    'requestReply': {
+    requestReply: {
       header: `You are now one step closer 🎉`,
       top: [
         `Dear ${name},`,
         `Thank you for requesting a new tour departure.`,
-        `We have received your message and want to assure you that our team is already working diligently to process it.`
+        `We have received your message and want to assure you that our team is already working diligently to process it.`,
       ],
       bottom: [
         `Please be patient as we review your request. We will get back to you promptly with confirmation or any alternative options that may be available.`,
         `If you have any questions or require further assitance, pleace feel free to contact our customer support team at info@ttrmongolia.com or +976 7014-1001.`,
         `Thank you for choosing us for your travel needs. We look forward to welcoming you on this unforgettable adventure !`,
-      ]
+      ],
     },
-    'requestAdmin': {
+    requestAdmin: {
       header: `[Action Required] New Departure Request from ${departureDetail?.email}`,
       top: [
         `Tour: ${departureDetail?.tourTitle}`,
         `StartingDate: ${departureDetail?.startingDate}`,
         ``,
-        `Name: ${departureDetail?.firstName + ' ' + departureDetail?.lastName}`,
+        `Name: ${departureDetail?.firstName + " " + departureDetail?.lastName}`,
         `Phone: ${departureDetail?.phoneNumber}`,
         `Email: ${departureDetail?.email}`,
         `Nationality: ${departureDetail?.nationality}`,
         `DateOfBirth: ${departureDetail?.dateOfBirth}`,
         `PeopleCount: ${departureDetail?.peopleCount}`,
-        `AdditionalInformation: ${departureDetail?.additionalInformation}`
+        `AdditionalInformation: ${departureDetail?.additionalInformation}`,
       ],
-      bottom: []
+      bottom: [],
     },
-    'bookSuccess': {
+    bookSuccess: {
       header: `You have successfully booked a tour 🎉`,
       top: [
         `Dear ${name},`,
@@ -146,90 +182,90 @@ export const mailTemplate = (templateType: templateTypeType, detail: detailType)
           <li class="body-text">
            Total Amount Paid: ${tourDetail?.paidAmount}
           </li>
-        </ul>`
+        </ul>`,
       ],
       bottom: [
         `Thank you for booking with us, we are thrilled that you have chosen to embark on an adventure with us. We are committed to providing you with an unforgettable experience.`,
         `In preparation for your tour, please keep an eye on your inbox for any updates or additional information regarding your booking.`,
         `If you have any questions or require further assitance, pleace feel free to contact our customer support team at info@ttrmongolia.com or +976 7014-1001.`,
-        `Thank you for choosing us for your travel needs. We look forward to welcoming you on this unforgettable adventure !`
-      ]
+        `Thank you for choosing us for your travel needs. We look forward to welcoming you on this unforgettable adventure !`,
+      ],
     },
-    'bookFail': {
+    bookFail: {
       header: `Payment Failure: Tour Booking`,
       top: [
         `Dear ${name},`,
         `We regret to inform you that there was an issue processing the payment for your tour booking. Unfortunately, the payment transaction was not successful.`,
         `To proceed with your tour booking, we kindly request that you review the payment information provided and ensure that all details are correct. If necessary, please consider using an alternative payment method.`,
-        `Once you have verified your payment information, please attempt to book again by clicking the button below:`
+        `Once you have verified your payment information, please attempt to book again by clicking the button below:`,
       ],
       link: {
-        text: 'Book a Tour',
-        url: paymentURL
+        text: "Book a Tour",
+        url: paymentURL,
       },
       bottom: [
         `If you have any questions or require further assitance, pleace feel free to contact our customer support team at info@ttrmongolia.com or +976 7014-1001.`,
-        `We look forward to welcoming you on this unforgettable adventure !`
-      ]
+        `We look forward to welcoming you on this unforgettable adventure !`,
+      ],
     },
-    "adminPaymentSuccess": {
+    adminPaymentSuccess: {
       header: `Payment Success ${paymentDetail?.email}`,
       top: [
         `Tour: ${paymentDetail?.title}`,
         `StartingDate: ${paymentDetail?.startingDate}`,
         `Amount: ${paymentDetail?.amount}`,
         ``,
-        `Name: ${paymentDetail?.firstName + ' ' + paymentDetail?.lastName}`,
+        `Name: ${paymentDetail?.firstName + " " + paymentDetail?.lastName}`,
         `Phone: ${paymentDetail?.phoneNumber}`,
         `Email: ${paymentDetail?.email}`,
         `Nationality: ${paymentDetail?.nationality}`,
         `DateOfBirth: ${paymentDetail?.dateOfBirth}`,
         `PeopleCount: ${paymentDetail?.peopleCount}`,
-        `AdditionalInformation: ${paymentDetail?.additionalInformation}`
+        `AdditionalInformation: ${paymentDetail?.additionalInformation}`,
       ],
-      bottom: []
+      bottom: [],
     },
-    "adminPaymentFailure": {
+    adminPaymentFailure: {
       header: `[Action Required] Payment Failure ${paymentDetail?.email}`,
       top: [
         `Tour: ${paymentDetail?.title}`,
         `StartingDate: ${paymentDetail?.startingDate}`,
         `Amount: ${paymentDetail?.amount}`,
         ``,
-        `Name: ${paymentDetail?.firstName + ' ' + paymentDetail?.lastName}`,
+        `Name: ${paymentDetail?.firstName + " " + paymentDetail?.lastName}`,
         `Phone: ${paymentDetail?.phoneNumber}`,
         `Email: ${paymentDetail?.email}`,
         `Nationality: ${paymentDetail?.nationality}`,
         `DateOfBirth: ${paymentDetail?.dateOfBirth}`,
         `PeopleCount: ${paymentDetail?.peopleCount}`,
-        `AdditionalInformation: ${paymentDetail?.additionalInformation}`
+        `AdditionalInformation: ${paymentDetail?.additionalInformation}`,
       ],
-      bottom: []
+      bottom: [],
     },
-    'contact': {
+    contact: {
       header: `Thank You For Reaching Out To Us`,
       top: [
-        `Dear ${userDetail?.firstName + ' ' + userDetail?.lastName},`,
+        `Dear ${name},`,
         `Thank you for reaching out to us.`,
-        `We have received your message and our team will get back to you promptly.`
+        `We have received your message and our team will get back to you promptly.`,
       ],
       bottom: [
         `Thank you for choosing us for your travel needs. We look forward to welcoming you on this unforgettable adventure !`,
-      ]
+      ],
     },
-    'contactAdmin': {
+    contactAdmin: {
       header: `[Action Required] New Inquiry from ${userDetail?.email}`,
       top: [
-        `Name: ${userDetail?.firstName + ' ' + userDetail?.lastName}`,
+        `Name: ${userDetail?.firstName + " " + userDetail?.lastName}`,
         `Phone: ${userDetail?.phoneNumber}`,
         `Email: ${userDetail?.email}`,
         `Nationality: ${userDetail?.nationality}`,
         `DateOfBirth: ${userDetail?.dateOfBirth}`,
-        `Message: ${userDetail?.description}`
+        `Message: ${userDetail?.description}`,
       ],
-      bottom: []
+      bottom: [],
     },
-    "privateTour": {
+    privateTour: {
       header: `Thank You For Reaching Out To Us`,
       top: [
         `Dear ${name},`,
@@ -239,12 +275,14 @@ export const mailTemplate = (templateType: templateTypeType, detail: detailType)
       bottom: [
         `If you have any questions or require further assitance, please feel free to contact our customer support team at info@ttrmongolia.com or +976 7014-1001`,
         `Thank you for choosing us for your travel needs. We look forward to welcoming you on this unforgettable adventure !`,
-      ]
+      ],
     },
-    "adminPrivateTour": {
+    adminPrivateTour: {
       header: `[Action Required] New Private Tour Request from ${privateTourDetail?.email}`,
       top: [
-        `Name: ${privateTourDetail?.firstName + ' ' + privateTourDetail?.lastName}`,
+        `Name: ${
+          privateTourDetail?.firstName + " " + privateTourDetail?.lastName
+        }`,
         `Phone: ${privateTourDetail?.phoneNumber}`,
         `Email: ${privateTourDetail?.email}`,
         `Nationality: ${privateTourDetail?.nationality}`,
@@ -255,11 +293,11 @@ export const mailTemplate = (templateType: templateTypeType, detail: detailType)
         `Destination: ${privateTourDetail?.destination}`,
         `AccomodationPreference: ${privateTourDetail?.accomodationPreference}`,
         `BudgetConsiderations: ${privateTourDetail?.budgetConsiderations}`,
-        `AdditionalRequests: ${privateTourDetail?.additionalRequests}`
+        `AdditionalRequests: ${privateTourDetail?.additionalRequests}`,
       ],
-      bottom: []
-    }
-  }
+      bottom: [],
+    },
+  };
   const html = `
   <!DOCTYPE html>
   <html lang="en">
@@ -335,9 +373,17 @@ export const mailTemplate = (templateType: templateTypeType, detail: detailType)
           </tr>
           <tr>
             <td>
-              ${emailDetails[templateType].top.map((text) => `<p class="body-text">${text}</p>`).join("")}
-              ${emailDetails[templateType].link ? `<a class="button" href="${emailDetails[templateType].link?.url}">${emailDetails[templateType].link?.text}</a>` : ``}
-              ${emailDetails[templateType].bottom.map((text) => `<p class="body-text">${text}</p>`).join("")}
+              ${emailDetails[templateType].top
+                .map((text) => `<p class="body-text">${text}</p>`)
+                .join("")}
+              ${
+                emailDetails[templateType].link
+                  ? `<a class="button" href="${emailDetails[templateType].link?.url}">${emailDetails[templateType].link?.text}</a>`
+                  : ``
+              }
+              ${emailDetails[templateType].bottom
+                .map((text) => `<p class="body-text">${text}</p>`)
+                .join("")}
             </td>
           </tr>
         </tbody>
@@ -359,21 +405,24 @@ export const mailTemplate = (templateType: templateTypeType, detail: detailType)
     subject: convert(emailDetails[templateType].header),
     text: convert(html, options),
     html: html,
-  }
-}
+  };
+};
 const getDate = (date?: string, days?: number) => {
-    if(!date || !days) return ""
-    const startingDate = new Date(date);
-    let endingDate = new Date(date);
-    endingDate.setDate(startingDate.getDate() + days);
-    return startingDate.toLocaleString("default", { month: "long" }) +
+  if (!date || !days) return "";
+  const startingDate = new Date(date);
+  let endingDate = new Date(date);
+  endingDate.setDate(startingDate.getDate() + days);
+  return (
+    startingDate.toLocaleString("default", { month: "long" }) +
     " " +
     startingDate.getDate() +
     " " +
-    startingDate.getFullYear() + " - " +
+    startingDate.getFullYear() +
+    " - " +
     endingDate.toLocaleString("default", { month: "long" }) +
     " " +
     endingDate.getDate() +
     " " +
-    endingDate.getFullYear();
-}
+    endingDate.getFullYear()
+  );
+};
