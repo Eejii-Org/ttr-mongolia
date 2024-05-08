@@ -26,7 +26,7 @@ const PrivacyPolicy = () => {
           person who makes the reservation accepts these conditions on behalf of
           all participants and responsibility for all payments due.
         </p>
-        <h1 className="font-bold text-xl">CAR RENTAL SERVICE</h1>
+        <h1 className="font-bold text-xl">Car rental service</h1>
         <p className="text-black/70">
           If you only receive a car rental, 30 days prior to the beginning of
           the tour you must deposit 50% of the market value of the vehicle.
