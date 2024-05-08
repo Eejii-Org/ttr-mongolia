@@ -40,7 +40,7 @@ const NewTour = () => {
     setRequestLoading(true);
     try {
       const res = await axios.post(
-        `${process.env.BACKEND_URL}/request-private-tour`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/request-private-tour`,
         {
           ...privateTourDetail,
           startingDate: tourDate,

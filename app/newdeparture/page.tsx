@@ -68,7 +68,7 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
 
     try {
       const res = await axios.post(
-        `${process.env.BACKEND_URL}/request-departure`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/request-departure`,
         {
           ...personalDetail,
           tourId: selectedTour,

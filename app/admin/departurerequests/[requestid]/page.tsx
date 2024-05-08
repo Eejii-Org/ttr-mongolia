@@ -65,7 +65,7 @@ const DepartureRequest = () => {
       const availableTourId =
         insertTourResult !== false ? insertTourResult.data[0].id : "";
       const res = await axios.post(
-        `${process.env.BACKEND_URL}/reply-departure`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/reply-departure`,
         {
           departureRequest: { ...departureRequest, adminNote },
           status: newStatus == "Approve" ? "Approved" : "Denied",
