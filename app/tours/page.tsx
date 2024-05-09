@@ -40,14 +40,16 @@ const Tours = () => {
   const [scheduledOpened, setScheduledOpened] = useState(false);
   const combinedToursData = useMemo<CombinedToursDataType[]>(() => {
     if (!tours) return [];
-    return tours.map((tour) => {
-      return {
-        ...tour,
-        availableTours: availableTours.filter(
-          (availableTours) => availableTours.tourId === tour.id
-        ),
-      };
-    });
+    return tours
+      .map((tour) => {
+        return {
+          ...tour,
+          availableTours: availableTours.filter(
+            (availableTours) => availableTours.tourId === tour.id
+          ),
+        };
+      })
+      .sort((a, b) => b?.availableTours?.length - a?.availableTours?.length);
   }, [tours, availableTours]);
   const combinedAvailableToursData = useMemo<
     CombinedAvailableToursDataType[]
