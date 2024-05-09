@@ -15,10 +15,11 @@ export const SimilarTours = ({
   useEffect(() => {
     const getSimilarTours = async () => {
       try {
-        const { data: dataWithSameCategory, error } = await supabase
+        const { data: dataWithSameCategory } = await supabase
           .from("random_tours")
           .select(`*`)
           .neq("id", tourId)
+          .eq("status", "active")
           .overlaps("categories", categories)
           .limit(2);
         if (dataWithSameCategory?.length == 2) {
