@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import { createClient } from "@/utils/supabase/server";
 import { mailTemplate } from "@/utils";
+import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic"; // defaults to auto
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -26,10 +27,16 @@ export async function POST(request: Request) {
     !body.tourId ||
     !body.startingDate
   ) {
-    return Response.json({
-      status: 400,
-      message: "Bad Request",
-    });
+    return NextResponse.json(
+      {
+        error: {
+          message: "Bad Request",
+        },
+      },
+      {
+        status: 400,
+      }
+    );
   }
   const {
     firstName,
@@ -42,34 +49,41 @@ export async function POST(request: Request) {
     additionalInformation,
     tourId,
     startingDate,
-    tourTitle,
+    price,
   } = body;
-  const { data, error } = await supabase
-    .from("departureRequests")
-    .insert({
-      firstName,
-      lastName,
-      phoneNumber,
-      email,
-      nationality,
-      dateOfBirth,
-      peopleCount,
-      additionalInformation,
-      tourId,
-      startingDate,
-      status: "Pending",
-    })
-    .select()
-    .single();
+  const { error } = await supabase.from("departureRequests").insert({
+    firstName,
+    lastName,
+    phoneNumber,
+    email,
+    nationality,
+    dateOfBirth,
+    peopleCount,
+    additionalInformation,
+    tourId,
+    startingDate,
+    price,
+    status: "Pending",
+  });
   if (error) {
-    return Response.json(error);
+    return NextResponse.json(
+      {
+        error,
+      },
+      {
+        status: 400,
+      }
+    );
   }
   const { text, html, subject } = mailTemplate("requestReply", {
     name: firstName + " " + lastName,
-    
   });
-  const { text: adminText, html: adminHTML, subject: adminSubject } = mailTemplate("requestAdmin", {
-    departureDetail:body,
+  const {
+    text: adminText,
+    html: adminHTML,
+    subject: adminSubject,
+  } = mailTemplate("requestAdmin", {
+    departureDetail: body,
   });
   const info = await transporter.sendMail({
     from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`, // sender address
@@ -85,8 +99,13 @@ export async function POST(request: Request) {
     text: adminText,
     html: adminHTML,
   });
-  return Response.json({
-    info,
-    adminInfo
-  });
+  return NextResponse.json(
+    {
+      info,
+      adminInfo,
+    },
+    {
+      status: 200,
+    }
+  );
 }

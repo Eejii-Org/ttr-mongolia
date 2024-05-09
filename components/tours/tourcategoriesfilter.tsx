@@ -1,3 +1,4 @@
+"use client";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useSearchParams } from "next/navigation";

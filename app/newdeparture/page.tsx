@@ -73,7 +73,6 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
           ...personalDetail,
           tourId: selectedTour,
           startingDate: tourDate,
-          tourTitle: selectedTourData?.title,
           price: selectedTourData?.displayPrice,
         }
       );

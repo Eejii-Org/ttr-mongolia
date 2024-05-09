@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { Dispatch, FC, SetStateAction, useState } from "react";
 import { CloseIcon, Hamburger } from "./icons";
