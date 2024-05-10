@@ -146,7 +146,13 @@ export async function POST(request: Request) {
     }
 
     if (!availableTourData) {
-      return new Response(JSON.stringify(transaction));
+      return new Response(
+        JSON.stringify({
+          errorMessage: "No available tour found",
+          errorCode: 404,
+        }),
+        { status: 404 }
+      );
     }
 
     const { data: tourData, error: tourError } = await supabase
@@ -160,7 +166,13 @@ export async function POST(request: Request) {
     }
 
     if (!tourData) {
-      return new Response(JSON.stringify(transaction));
+      return new Response(
+        JSON.stringify({
+          errorMessage: "No tour found",
+          errorCode: 404,
+        }),
+        { status: 404 }
+      );
     }
 
     // Compose email templates
@@ -212,7 +224,13 @@ export async function POST(request: Request) {
       html: adminHTML,
     });
 
-    return new Response(JSON.stringify(transaction));
+    return new Response(
+      JSON.stringify({
+        errorMessage: "Success",
+        errorCode: 200,
+      }),
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error:", error);
     return new Response(
