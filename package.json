@@ -6,8 +6,8 @@
     "start": "next start"
   },
   "dependencies": {
-    "@supabase/ssr": "latest",
-    "@supabase/supabase-js": "latest",
+    "@supabase/ssr": "^0.3.0",
+    "@supabase/supabase-js": "^2.43.1",
     "@vercel/analytics": "^1.2.2",
     "autoprefixer": "10.4.17",
     "axios": "^1.6.8",

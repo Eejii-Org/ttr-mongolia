@@ -119,110 +119,110 @@ export async function POST(request: Request) {
       .select("*")
       .single();
 
-    // if (transactionError) {
-    //   throw new Error("Failed to update transaction");
-    // }
+    if (transactionError) {
+      throw new Error("Failed to update transaction");
+    }
 
-    // if (!transaction) {
-    //   return new Response(
-    //     JSON.stringify({
-    //       errorMessage: "No transaction found",
-    //       errorCode: 404,
-    //     }),
-    //     { status: 404 }
-    //   );
-    // }
+    if (!transaction) {
+      return new Response(
+        JSON.stringify({
+          errorMessage: "No transaction found",
+          errorCode: 404,
+        }),
+        { status: 404 }
+      );
+    }
 
-    // // Fetch tour and available tour data
-    // const { data: availableTourData, error: availableTourError } =
-    //   await supabase
-    //     .from("availableTours")
-    //     .select("tourId, date")
-    //     .eq("id", transaction.availableTourId)
-    //     .single();
+    // Fetch tour and available tour data
+    const { data: availableTourData, error: availableTourError } =
+      await supabase
+        .from("availableTours")
+        .select("tourId, date")
+        .eq("id", transaction.availableTourId)
+        .single();
 
-    // if (availableTourError) {
-    //   throw new Error("Failed to fetch available tour data");
-    // }
+    if (availableTourError) {
+      throw new Error("Failed to fetch available tour data");
+    }
 
-    // if (!availableTourData) {
-    //   return new Response(
-    //     JSON.stringify({
-    //       errorMessage: "No available tour found",
-    //       errorCode: 404,
-    //     }),
-    //     { status: 404 }
-    //   );
-    // }
+    if (!availableTourData) {
+      return new Response(
+        JSON.stringify({
+          errorMessage: "No available tour found",
+          errorCode: 404,
+        }),
+        { status: 404 }
+      );
+    }
 
-    // const { data: tourData, error: tourError } = await supabase
-    //   .from("tours")
-    //   .select("title, days, nights")
-    //   .eq("id", availableTourData.tourId)
-    //   .single();
+    const { data: tourData, error: tourError } = await supabase
+      .from("tours")
+      .select("title, days, nights")
+      .eq("id", availableTourData.tourId)
+      .single();
 
-    // if (tourError) {
-    //   throw new Error("Failed to fetch tour data");
-    // }
+    if (tourError) {
+      throw new Error("Failed to fetch tour data");
+    }
 
-    // if (!tourData) {
-    //   return new Response(
-    //     JSON.stringify({
-    //       errorMessage: "No tour found",
-    //       errorCode: 404,
-    //     }),
-    //     { status: 404 }
-    //   );
-    // }
+    if (!tourData) {
+      return new Response(
+        JSON.stringify({
+          errorMessage: "No tour found",
+          errorCode: 404,
+        }),
+        { status: 404 }
+      );
+    }
 
-    // // Compose email templates
-    // const { text, html, subject } = mailTemplate(
-    //   body.errorCode === "000" ? "bookSuccess" : "bookFail",
-    //   {
-    //     name: transaction.firstName + " " + transaction.lastName,
-    //     paymentURL: `https://www.ttrmongolia.com/book?availableTourId=${transaction.availableTourId}`,
-    //     tourDetail: {
-    //       title: tourData.title,
-    //       date: availableTourData.date,
-    //       duration: tourData.days,
-    //       peopleCount: transaction.peopleCount,
-    //       paidAmount: body.amount,
-    //     },
-    //   }
-    // );
+    // Compose email templates
+    const { text, html, subject } = mailTemplate(
+      body.errorCode === "000" ? "bookSuccess" : "bookFail",
+      {
+        name: transaction.firstName + " " + transaction.lastName,
+        paymentURL: `https://www.ttrmongolia.com/book?availableTourId=${transaction.availableTourId}`,
+        tourDetail: {
+          title: tourData.title,
+          date: availableTourData.date,
+          duration: tourData.days,
+          peopleCount: transaction.peopleCount,
+          paidAmount: body.amount,
+        },
+      }
+    );
 
-    // const {
-    //   text: adminText,
-    //   html: adminHTML,
-    //   subject: adminSubject,
-    // } = mailTemplate(
-    //   body.errorCode === "000" ? "adminPaymentSuccess" : "adminPaymentFailure",
-    //   {
-    //     paymentDetail: {
-    //       title: tourData.title,
-    //       startingDate: availableTourData.date,
-    //       amount: body.amount,
-    //       ...transaction,
-    //     },
-    //   }
-    // );
+    const {
+      text: adminText,
+      html: adminHTML,
+      subject: adminSubject,
+    } = mailTemplate(
+      body.errorCode === "000" ? "adminPaymentSuccess" : "adminPaymentFailure",
+      {
+        paymentDetail: {
+          title: tourData.title,
+          startingDate: availableTourData.date,
+          amount: body.amount,
+          ...transaction,
+        },
+      }
+    );
 
-    // // Send emails
-    // await transporter.sendMail({
-    //   from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`,
-    //   to: transaction.email,
-    //   subject,
-    //   text,
-    //   html,
-    // });
+    // Send emails
+    await transporter.sendMail({
+      from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`,
+      to: transaction.email,
+      subject,
+      text,
+      html,
+    });
 
-    // await transporter.sendMail({
-    //   from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`,
-    //   to: process.env.ADMIN_EMAIL,
-    //   subject: adminSubject,
-    //   text: adminText,
-    //   html: adminHTML,
-    // });
+    await transporter.sendMail({
+      from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`,
+      to: process.env.ADMIN_EMAIL,
+      subject: adminSubject,
+      text: adminText,
+      html: adminHTML,
+    });
 
     return new Response(
       JSON.stringify({

@@ -1,36 +1,9 @@
 "use client";
-import { supabase } from "@/utils/supabase/client";
-import {
-  ArrowCircleIcon,
-  ArrowDown,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ScrollCorner,
-} from "@components";
+
+import { ChevronLeftIcon, ChevronRightIcon } from "@components";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-export const Intro = () => {
-  const [intro, setIntro] = useState<IntroType[]>([]);
-  useEffect(() => {
-    const fetchIntro = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("intro")
-          .select("*")
-          .eq("status", "active")
-          .order("order", { ascending: true });
-        if (error) {
-          throw error;
-        }
-        setIntro(data);
-      } catch (error: any) {
-        console.error("Error fetching intro:", error.message);
-      }
-    };
-
-    fetchIntro();
-  }, []);
-
+export const Intro = ({ intro }: { intro: IntroType[] }) => {
   const [index, setIndex] = useState(0);
   const carouselClick = (direction: "left" | "right") => {
     if (direction == "left") {

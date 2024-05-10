@@ -1,31 +1,14 @@
+"use client";
 import { FC, useEffect, useState } from "react";
 import { ArrowCircleIcon } from "../icons";
 import Image from "next/image";
-import { supabase } from "@/utils/supabase/client";
 import Link from "next/link";
 
-export const TourCategories: FC = () => {
-  const [categories, setCategories] = useState<CategoryType[]>([]);
-
-  useEffect(() => {
-    const fetchTourCategories = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("tourCategories")
-          .select("*")
-          .order("count")
-          .limit(3);
-        if (error) {
-          throw error;
-        }
-        setCategories(data);
-      } catch (error: any) {
-        console.error("Error fetching tour categories:", error.message);
-      }
-    };
-
-    fetchTourCategories();
-  }, []);
+export const TourCategories = ({
+  categories,
+}: {
+  categories: CategoryType[];
+}) => {
   return (
     <div className="flex flex-col gap-6 mx-3 md:mx-0">
       <div className="flex flex-row justify-between items-end">

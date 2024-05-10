@@ -1,3 +1,4 @@
+"use client";
 import { supabase } from "@/utils/supabase/client";
 import { FC, use, useEffect, useMemo, useState } from "react";
 import { CloseIcon, StarsIcon } from "./icons";

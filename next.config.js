@@ -26,7 +26,7 @@ const nextConfig = {
           { key: "Access-Control-Allow-Credentials", value: "true" },
           {
             key: "Access-Control-Allow-Origin",
-            value: "https://www.ttrmongolia.com",
+            value: "*",
           }, // replace this your actual origin
           {
             key: "Access-Control-Allow-Methods",

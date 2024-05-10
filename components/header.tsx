@@ -51,7 +51,7 @@ export const Header: FC<HeaderPropsType> = ({
       ${transparent ? "text-tertiary" : "bg-tertiary  text-secondary "}`}
       >
         <Link href="/">
-          <div className="font-semibold text-2xl cursor-pointer">
+          <div className="font-semibold text-xl md:text-2xl cursor-pointer">
             TTR Mongolia
           </div>
         </Link>

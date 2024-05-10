@@ -1,3 +1,4 @@
+"use client";
 import { useEffect } from "react";
 import { CloseIcon } from "./icons";
 type ModalProps = {

@@ -1,8 +1,12 @@
-// import { GeistSans } from "geist/font/sans";
-
-import Head from "next/head";
 import { AdminHeader } from "./header";
 import { AdminSidebar } from "./sidebar";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Admin",
+  icons: ["/favicon.ico"],
+  robots: "noindex,nofollow",
+};
 
 export default function DashboardLayout({
   children,
@@ -11,10 +15,6 @@ export default function DashboardLayout({
 }) {
   return (
     <>
-      <Head>
-        <title>Admin</title>
-        <meta name="robots" content="noindex,nofollow" />
-      </Head>
       <AdminHeader />
       <div className="flex-1 bg-quaternary w-full h-full max-h-[calc(100vh-56px) mt-14 flex flex-row">
         <AdminSidebar />

@@ -14,12 +14,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     const getUser = async () => {
       setLoading(true);
       try {
-        const {
-          data: { session },
-          error,
-        } = await supabase.auth.getSession();
+        const { data, error } = await supabase.auth.getUser();
         if (error) throw error;
-        if (session?.user) {
+        if (data?.user) {
           setIsAuthenticated(true);
           setLoading(false);
           return;

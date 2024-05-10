@@ -1,3 +1,4 @@
+"use client";
 import { ToastContainer } from "react-toastify";
 import { Footer } from "./footer";
 import { Header } from "./header";

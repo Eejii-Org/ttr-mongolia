@@ -37,13 +37,10 @@ const Auth = () => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const {
-          data: { session },
-          error,
-        } = await supabase.auth.getSession();
+        const { data, error } = await supabase.auth.getUser();
         if (error) throw error;
-        if (session?.user) {
-          setUser(session?.user);
+        if (data?.user) {
+          setUser(data?.user);
           console.log("we have user");
           return;
         }

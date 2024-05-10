@@ -28,7 +28,7 @@ type ValueProps = {
 const Value: FC<ValueProps> = (props) => {
   const { icon, title, description, color } = props;
   return (
-    <div className="flex flex-col items-start w-full gap-2 bg-quaternary p-6">
+    <div className="flex flex-col items-start w-full gap-2 bg-quaternary p-4 md:p-6">
       <div
         className={`p-4 rounded-full`}
         style={{
@@ -39,7 +39,7 @@ const Value: FC<ValueProps> = (props) => {
       </div>
       <div className="font-bold text-lg md:text-2xl">{title}</div>
       <div
-        className="text-base md:text-lg"
+        className="text-sm md:text-lg"
         dangerouslySetInnerHTML={{ __html: description }}
       />
     </div>
