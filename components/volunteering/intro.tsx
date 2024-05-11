@@ -44,7 +44,7 @@ export const VolunteeringIntro = () => {
 
       <div className="flex-1 relative min-h-80 w-full md:h-[min(596px,70vh)] rounded-lg overflow-hidden">
         <Image
-          src="https://qgowfgocgbsonbpypbvu.supabase.co/storage/v1/object/public/ourAgencyImages/IMG3449.jpg"
+          src="https://qgowfgocgbsonbpypbvu.supabase.co/storage/v1/object/public/images/volunteering-intro.jpg"
           alt="intro"
           fill
           className="object-cover"
