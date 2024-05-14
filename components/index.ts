@@ -14,5 +14,6 @@ export * from "./customersupport";
 export * from "./reviews";
 export * from "./layout";
 export * from "./modal";
-export * from './selectbirthday'
-export * from "./selectnationality"
+export * from "./selectbirthday";
+export * from "./selectnationality";
+export * from "./storageimage";

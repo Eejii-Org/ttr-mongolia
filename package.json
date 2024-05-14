@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.575.0",
     "@supabase/ssr": "^0.3.0",
     "@supabase/supabase-js": "^2.43.1",
     "@vercel/analytics": "^1.2.2",
@@ -22,7 +23,8 @@
     "react-dom": "18.2.0",
     "react-toastify": "^10.0.5",
     "tailwindcss": "3.4.1",
-    "typescript": "5.3.3"
+    "typescript": "5.3.3",
+    "webp-converter": "^2.3.3"
   },
   "devDependencies": {
     "@types/html-to-text": "^9.0.4",

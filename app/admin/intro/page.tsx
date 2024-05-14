@@ -1,10 +1,15 @@
 "use client";
+import { deleteImage } from "@/utils";
 import { supabase } from "@/utils/supabase/client";
-import { ArrowRight, CaretDownIcon, CaretUpIcon, TrashIcon } from "@components";
+import {
+  ArrowRight,
+  CaretDownIcon,
+  CaretUpIcon,
+  TrashIcon,
+  StorageImage,
+} from "@components";
 import _ from "lodash";
-import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -19,24 +24,14 @@ const AdminIntro = () => {
     image: string | null
   ) => {
     if (introId == undefined) return;
+    if (image) {
+      await deleteImage(image);
+    }
     const { error } = await supabase.from("intro").delete().eq("id", introId);
     if (error) {
       toast.error("Error While Deleting");
       console.error(error);
       return;
-    }
-    if (image) {
-      const name = image?.split("/").pop();
-      if (name) {
-        const { error: err } = await supabase.storage
-          .from("introImages")
-          .remove([name]);
-        if (err) {
-          toast.error("Error While Deleting");
-          console.error(err);
-          return;
-        }
-      }
     }
     setNewIntro([...intro.filter(({ id }) => id !== introId)]);
     setIntro([...intro.filter(({ id }) => id !== introId)]);
@@ -183,7 +178,7 @@ const AdminIntro = () => {
             </td>
             <td className="py-2 px-3 font-semibold w-[300px]">
               <div className="w-[256px] h-[128px] relative">
-                <Image src={image ? image : ""} fill alt={title + i} />
+                <StorageImage src={image ? image : ""} fill alt={title + i} />
               </div>
             </td>
             <td className="py-2 px-3 font-semibold w-80">{title}</td>
