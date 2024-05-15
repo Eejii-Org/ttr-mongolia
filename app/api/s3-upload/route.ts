@@ -11,21 +11,44 @@ const client = new S3Client({
 
 const uploadFileToS3 = async (
   fileBuffer: Buffer,
-  folder: string,
+  path: string,
   fileType: string
 ) => {
   const uniqueId = Math.random().toString(36).substring(2, 9);
-  const path = `${folder}/${uniqueId}.${fileType}`;
+  const filePath = `${path}/${uniqueId}.${fileType}`;
   const params = {
     Bucket: process.env.AWS_S3_BUCKET_NAME,
-    Key: path,
+    Key: filePath,
     Body: fileBuffer,
-    ContentType: "image/jpg",
+    ContentType: `image/${fileType}`,
   };
   const command = new PutObjectCommand(params);
   await client.send(command);
-  return path;
+  return filePath;
 };
+// const uploadFilesToS3 = async (
+//   fileBuffers: Buffer[],
+//   path: string,
+//   fileTypes: string[]
+// ) => {
+//   const filePaths = fileBuffers.map((_, index) => {
+//     const uniqueId = Math.random().toString(36).substring(2, 9);
+//     const filePath = `${path}/${uniqueId}.${fileTypes[index]}`;
+//     return filePath;
+//   });
+//   const commands = fileBuffers.map((fileBuffer, index) => {
+//     const params = {
+//       Bucket: process.env.AWS_S3_BUCKET_NAME,
+//       Key: filePaths[index],
+//       Body: fileBuffer,
+//       ContentType: `image/${fileTypes[index]}`,
+//     };
+//     return new PutObjectCommand(params);
+//   });
+//   const promises = commands.map(async (command) => await client.send(command));
+//   await Promise.all(promises);
+//   return filePaths;
+// };
 
 export async function POST(request: Request) {
   try {

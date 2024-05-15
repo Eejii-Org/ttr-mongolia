@@ -17,3 +17,4 @@ export * from "./modal";
 export * from "./selectbirthday";
 export * from "./selectnationality";
 export * from "./storageimage";
+export * from "./imagesEditor";

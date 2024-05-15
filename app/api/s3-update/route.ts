@@ -9,7 +9,7 @@ const client = new S3Client({
   },
 });
 
-const uploadFileToS3 = async (fileBuffer: Buffer, path: string) => {
+const updateFileToS3 = async (fileBuffer: Buffer, path: string) => {
   const params = {
     Bucket: process.env.AWS_S3_BUCKET_NAME,
     Key: path,
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
       );
     }
     const buffer = Buffer.from(await file.arrayBuffer());
-    const fileName = await uploadFileToS3(buffer, path);
+    const fileName = await updateFileToS3(buffer, path);
     return NextResponse.json({
       success: true,
       fileName: fileName,

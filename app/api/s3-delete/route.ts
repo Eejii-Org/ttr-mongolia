@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
-import { S3Client, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import {
+  S3Client,
+  DeleteObjectCommand,
+  DeleteObjectsCommand,
+} from "@aws-sdk/client-s3";
 
 const client = new S3Client({
   region: process.env.AWS_S3_REGION!,
@@ -17,10 +21,21 @@ const deleteFileFromS3 = async (path: string) => {
   const command = new DeleteObjectCommand(params);
   await client.send(command);
 };
+const deleteFilesFromS3 = async (paths: string[]) => {
+  const params = {
+    Bucket: process.env.AWS_S3_BUCKET_NAME,
+    Delete: {
+      Objects: paths.map((path) => ({ Key: path })),
+    },
+  };
+  const command = new DeleteObjectsCommand(params);
+  await client.send(command);
+};
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+
     const filePath = body?.filePath;
     if (!filePath) {
       return NextResponse.json(
@@ -32,7 +47,11 @@ export async function POST(request: Request) {
         }
       );
     }
-    await deleteFileFromS3(filePath);
+    if (Array.isArray(body?.filePath)) {
+      await deleteFilesFromS3(filePath);
+    } else {
+      await deleteFileFromS3(filePath);
+    }
     return NextResponse.json({
       success: true,
     });

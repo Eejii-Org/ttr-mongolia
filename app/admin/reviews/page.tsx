@@ -4,15 +4,14 @@ import { useEffect, useState } from "react";
 import { ArrowRight, StarsIcon, TrashIcon } from "@components";
 import Link from "next/link";
 import { toast } from "react-toastify";
-import { toDateText } from "@/utils";
+import { deleteImagesInS3, toDateText } from "@/utils";
 
 const AdminReviews = () => {
   const [loading, setLoading] = useState(false);
-
-  const [open, setOpen] = useState(false);
   const [reviews, setReviews] = useState<ReviewType[]>([]);
-  const deleteTour = async (reviewId?: number) => {
+  const deleteReview = async (reviewId?: number, images?: string[]) => {
     if (reviewId == undefined) return;
+    if (images) await deleteImagesInS3(images);
     const { error } = await supabase
       .from("reviews")
       .delete()
@@ -26,7 +25,7 @@ const AdminReviews = () => {
     toast.success("Successfully Deleted");
   };
   useEffect(() => {
-    const fetchTours = async () => {
+    const fetchReviews = async () => {
       setLoading(true);
       try {
         const { data, error } = await supabase.from("reviews").select("*");
@@ -39,7 +38,7 @@ const AdminReviews = () => {
       }
       setLoading(false);
     };
-    fetchTours();
+    fetchReviews();
   }, []);
   return (
     <div className="flex-1 flex flex-col">
@@ -47,10 +46,10 @@ const AdminReviews = () => {
         <div className="flex flex-row justify-between pb-4">
           <div className="text-2xl md:text-4xl font-semibold">Reviews</div>
           <Link
-            href={"/admin/tours/new"}
+            href={"/admin/reviews/new"}
             className="cursor-pointer ripple bg-primary px-4 py-2 flex-row text-tertiary  rounded-xl hidden md:flex"
           >
-            Add Tour
+            Add Review
           </Link>
         </div>
         <table className="border overflow-scroll w-full bg-white rounded-md">
@@ -75,7 +74,7 @@ const AdminReviews = () => {
               <td className="max-w-12 w-12">
                 <button
                   className="font-bold rounded-full ripple p-3"
-                  onClick={() => deleteTour(review.id)}
+                  onClick={() => deleteReview(review.id, review.images)}
                 >
                   <TrashIcon />
                 </button>

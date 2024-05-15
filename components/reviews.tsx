@@ -3,6 +3,7 @@ import { supabase } from "@/utils/supabase/client";
 import { FC, use, useEffect, useMemo, useState } from "react";
 import { CloseIcon, StarsIcon } from "./icons";
 import Image from "next/image";
+import StorageImage from "./storageimage";
 
 export const Reviews: FC = () => {
   const [reviews, setReviews] = useState<ReviewType[]>([]);
@@ -85,7 +86,7 @@ export const Review: FC<ReviewItemType> = ({
               className="flex flex-1 relative cursor-pointer"
               key={index}
             >
-              <Image
+              <StorageImage
                 src={image}
                 alt={firstName + " " + lastName + index}
                 objectFit="cover"
@@ -156,7 +157,7 @@ const Modal = ({
       </button>
       {image && (
         <div className="w-[calc(100vw-32px)] md:container relative h-3/4 bg-white/75 lg:rounded-3xl">
-          <Image
+          <StorageImage
             src={image || ""}
             className="object-cover"
             fill

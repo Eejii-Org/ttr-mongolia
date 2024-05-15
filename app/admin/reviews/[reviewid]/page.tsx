@@ -1,6 +1,12 @@
 "use client";
 import { supabase } from "@/utils/supabase/client";
-import { ArrowLeft, CloseIcon, Input, PlusIcon } from "@components";
+import {
+  ArrowLeft,
+  CloseIcon,
+  ImagesEditor,
+  Input,
+  PlusIcon,
+} from "@components";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import {
@@ -13,11 +19,15 @@ import {
 } from "react";
 import { toast } from "react-toastify";
 import _ from "lodash";
-import Image from "next/image";
+import { deleteImagesInS3, uploadImagesToS3 } from "@/utils";
+
+type ModifiedReviewType = Omit<ReviewType, "images"> & {
+  images: (Blob | string)[];
+};
 
 const Review = () => {
   const router = useRouter();
-  const [review, setReview] = useState<ReviewType | null>(null);
+  const [review, setReview] = useState<ModifiedReviewType | null>(null);
   const [originalReview, setOriginalReview] = useState<ReviewType | null>(null);
   const [loading, setLoading] = useState(true);
   const [saveLoading, setSaveLoading] = useState(false);
@@ -25,12 +35,18 @@ const Review = () => {
   const { reviewid } = params;
   const [isNew, setIsNew] = useState(false);
   const [isNotFound, setIsNotFound] = useState(false);
-
   const save = async () => {
     setSaveLoading(true);
-    const newReview = review;
+    let newReview = review;
     if (isNew) {
       // new
+      const paths = await uploadImagesToS3(
+        review?.images as Blob[],
+        "reviewImages"
+      );
+      if (newReview) {
+        newReview.images = paths as string[];
+      }
       const { data, error } = await supabase
         .from("reviews")
         .insert(newReview)
@@ -47,6 +63,38 @@ const Review = () => {
       router.push(`/admin/reviews/${data[0].id}`);
       return;
     }
+    const uploadablePictures = review?.images.filter((image) =>
+      typeof image === "string" || image instanceof String ? false : true
+    );
+    const deletedPictures = originalReview?.images.filter(
+      (image) => !review?.images.includes(image)
+    );
+    if (deletedPictures && deletedPictures.length > 0) {
+      await deleteImagesInS3(deletedPictures);
+    }
+    const paths = await uploadImagesToS3(
+      uploadablePictures as Blob[],
+      "reviewImages"
+    );
+    let newImages = [];
+    if (review?.images) {
+      for (let i = 0, j = 0; i < review?.images.length; i++) {
+        if (
+          typeof review.images[i] === "string" ||
+          review.images[i] instanceof String
+        ) {
+          newImages.push(review.images[i]);
+        } else {
+          if (paths?.[j]) {
+            newImages.push(paths[j]);
+            j++;
+          }
+        }
+      }
+    }
+    if (newReview) {
+      newReview.images = newImages;
+    }
     const { error } = await supabase
       .from("reviews")
       .update(newReview)
@@ -58,7 +106,8 @@ const Review = () => {
       setSaveLoading(false);
       return;
     }
-    setOriginalReview({ ...originalReview, ...(newReview as ReviewType) });
+    setReview(newReview);
+    setOriginalReview(newReview as ReviewType);
     toast.success("Successfully Saved");
     setSaveLoading(false);
   };
@@ -136,11 +185,7 @@ const Review = () => {
         <>
           <div className="border overflow-scroll h-full w-full bg-white rounded-md flex-1 flex flex-col relative">
             <div className="flex-1 p-4">
-              <Detail
-                review={review}
-                originalReview={originalReview}
-                setReview={setReview}
-              />
+              <Detail review={review} setReview={setReview} />
             </div>
             <div className="p-4 flex items-end justify-end bg-white border-t">
               <button
@@ -162,41 +207,12 @@ const Review = () => {
   );
 };
 
-const Tabs = ({
-  selectedTab,
-  setSelectedTab,
-}: {
-  selectedTab: string;
-  setSelectedTab: Dispatch<SetStateAction<string>>;
-}) => {
-  const tabs = ["detail", "reviews"];
-  return (
-    <div className="flex flex-row">
-      {tabs.map((tab, index) => (
-        <button
-          key={index}
-          className={`capitalize text-lg px-6 py-2 ${
-            selectedTab == tab
-              ? "text-secondary border-b-2 border-primary"
-              : " text-[#c1c1c1]"
-          }`}
-          onClick={() => setSelectedTab(tab)}
-        >
-          {tab}
-        </button>
-      ))}
-    </div>
-  );
-};
-
 const Detail = ({
   review,
-  originalReview,
   setReview,
 }: {
-  review: ReviewType;
-  originalReview: ReviewType | null;
-  setReview: Dispatch<SetStateAction<ReviewType | null>>;
+  review: ModifiedReviewType;
+  setReview: Dispatch<SetStateAction<ModifiedReviewType | null>>;
 }) => {
   return (
     <div className="flex flex-col gap-4">
@@ -259,187 +275,11 @@ const Detail = ({
       </div>
       <div>
         <label className="pl-2 font-medium">Images:</label>
-        <ReviewImages
-          review={review}
-          originalReview={originalReview}
-          setReview={setReview}
+        <ImagesEditor
+          images={review.images}
+          setImages={(newImages) => setReview({ ...review, images: newImages })}
         />
       </div>
-    </div>
-  );
-};
-
-const ReviewImages = ({
-  review,
-  originalReview,
-  setReview,
-}: {
-  review: ReviewType;
-  originalReview: ReviewType | null;
-  setReview: Dispatch<SetStateAction<ReviewType | null>>;
-}) => {
-  const [loading, setLoading] = useState(false);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const uploadImage = async (file: File) => {
-    setLoading(true);
-    const uniqueId = Math.random().toString(36).substring(2, 9);
-    const fileType = file.type.split("/").pop();
-    const fileName = `${uniqueId}.${fileType}`;
-    const { data, error } = await supabase.storage
-      .from("reviewImages")
-      .upload(fileName, file, {
-        upsert: false,
-      });
-    const { data: publicData } = supabase.storage
-      .from("reviewImages")
-      .getPublicUrl(fileName);
-    if (error) {
-      toast.error("Error Uploading Image");
-      console.error(error);
-      setLoading(false);
-      return;
-    }
-    const { error: err } = await supabase
-      .from("reviews")
-      .update({ images: [...review.images, publicData.publicUrl] })
-      .eq("id", originalReview?.id);
-    if (err) {
-      toast.error("Error Uploading Image");
-      console.error(error);
-      setLoading(false);
-      return;
-    }
-    toast.success("Successfully Uploaded an Image");
-    setReview({ ...review, images: [...review.images, publicData.publicUrl] });
-    setImageFile(null);
-    setLoading(false);
-  };
-
-  return (
-    <div className="flex flex-row flex-wrap gap-4">
-      {review?.images.map((imageUrl, index) => (
-        <ReviewImage
-          imageUrl={imageUrl}
-          originalReview={originalReview}
-          review={review}
-          setReview={setReview}
-          key={index}
-        />
-      ))}
-      {imageFile && (
-        <div className=" w-[300px] h-[200px] relative">
-          <img
-            src={URL.createObjectURL(imageFile)}
-            alt={"selectedImage"}
-            className="object-contain w-[300px] h-[200px]"
-          />
-          {loading ? (
-            <div className="z-20 absolute top-0 left-0 w-full h-full flex items-center justify-center bg-white/20 backdrop-blur">
-              <div className="font-medium text-lg">Uploading</div>
-            </div>
-          ) : (
-            <div className="absolute top-2 right-2">
-              <button
-                className="bg-white/50 rounded-full ripple p-1 backdrop-blur border"
-                onClick={() => {
-                  setImageFile(null);
-                }}
-              >
-                <CloseIcon width={24} height={24} color="black" />
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-      {review?.images.length < 3 && (
-        <div className="w-[300px] h-[200px] relative bg-quinary flex items-center justify-center gap-1 flex-col">
-          <input
-            type="file"
-            onChange={(e) => {
-              if (!e.target.files || e.target.files?.length == 0) return;
-              setImageFile(e.target.files[0]);
-              uploadImage(e.target.files[0]);
-            }}
-            accept="image/*"
-            className="w-[300px] h-[200px] absolute left-0 top-0 opacity-0"
-          />
-
-          <div className="p-2 bg-white rounded-full">
-            <PlusIcon color="black" width={32} height={32} />
-          </div>
-          <div>Add Image</div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-const ReviewImage = ({
-  imageUrl,
-  setReview,
-  originalReview,
-  review,
-}: {
-  imageUrl: string;
-  review: ReviewType;
-  originalReview: ReviewType | null;
-  setReview: Dispatch<SetStateAction<ReviewType | null>>;
-}) => {
-  const [loading, setLoading] = useState(false);
-  const imageName = useMemo(() => {
-    const name = imageUrl.split("/").pop();
-    return name ? name : "Unidentified Image";
-  }, [imageUrl]);
-
-  const deleteImage = async () => {
-    setLoading(true);
-    if (!imageName) {
-      toast.error("Error Deleting Image");
-      setLoading(false);
-      return;
-    }
-    const { error: err } = await supabase
-      .from("reviews")
-      .update({ images: review.images.filter((url) => url !== imageUrl) })
-      .eq("id", originalReview?.id);
-    if (err) {
-      toast.error("Error Updating Review");
-      console.error(err);
-      setLoading(false);
-      return;
-    }
-    const { error } = await supabase.storage
-      .from("reviewImages")
-      .remove([imageName]);
-    if (error) {
-      toast.error("Error");
-      console.error(error);
-      setLoading(false);
-      return;
-    }
-    setReview({
-      ...review,
-      images: review.images.filter((url) => url !== imageUrl),
-    });
-    setLoading(false);
-  };
-  return (
-    <div className=" w-[300px] h-[200px] relative">
-      <Image src={imageUrl} fill alt={imageName} />
-      {loading ? (
-        <div className="z-20 absolute top-0 left-0 w-full h-full flex items-center justify-center bg-white/20 backdrop-blur">
-          <div className="font-medium text-lg">Deleting</div>
-        </div>
-      ) : (
-        <div className="absolute top-2 right-2">
-          <button
-            className="bg-white/50 rounded-full ripple p-1 backdrop-blur border"
-            onClick={deleteImage}
-          >
-            <CloseIcon width={24} height={24} color="black" />
-          </button>
-        </div>
-      )}
     </div>
   );
 };
