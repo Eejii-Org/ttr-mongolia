@@ -1,10 +1,16 @@
 "use client";
+import { deleteImageInS3 } from "@/utils";
 import { supabase } from "@/utils/supabase/client";
-import { ArrowRight, CaretDownIcon, CaretUpIcon, TrashIcon } from "@components";
+import {
+  ArrowRight,
+  CaretDownIcon,
+  CaretUpIcon,
+  StorageImage,
+  TrashIcon,
+} from "@components";
 import _ from "lodash";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -19,6 +25,9 @@ const AdminMembers = () => {
     image: string | null
   ) => {
     if (memberId == undefined) return;
+    if (image) {
+      await deleteImageInS3(image);
+    }
     const { error } = await supabase
       .from("members")
       .delete()
@@ -27,19 +36,6 @@ const AdminMembers = () => {
       toast.error("Error While Deleting");
       console.error(error);
       return;
-    }
-    if (image) {
-      const name = image?.split("/").pop();
-      if (name) {
-        const { error: err } = await supabase.storage
-          .from("memberImages")
-          .remove([name]);
-        if (err) {
-          toast.error("Error While Deleting");
-          console.error(err);
-          return;
-        }
-      }
     }
     setNewMembers([...members.filter(({ id }) => id !== memberId)]);
     setMembers([...members.filter(({ id }) => id !== memberId)]);
@@ -192,7 +188,7 @@ const AdminMembers = () => {
               </td> */}
               <td className="py-2 px-3 font-semibold w-[300px]">
                 <div className="w-[256px] h-[128px] relative">
-                  <Image
+                  <StorageImage
                     src={image ? image : ""}
                     fill
                     alt={firstName + i}

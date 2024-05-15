@@ -2,24 +2,14 @@
 import { supabase } from "@/utils/supabase/client";
 import {
   ArrowLeft,
-  CaretDownIcon,
-  CaretUpIcon,
-  ChevronDownIcon,
-  CloseIcon,
-  DayIcon,
   Input,
-  MinusIcon,
-  NightIcon,
   PlusIcon,
-  PriceIcon,
   ReloadIcon,
+  StorageImage,
 } from "@components";
-import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import {
   Dispatch,
-  FC,
-  LegacyRef,
   SetStateAction,
   useEffect,
   useMemo,
@@ -28,7 +18,7 @@ import {
 } from "react";
 import { toast } from "react-toastify";
 import _ from "lodash";
-import Image from "next/image";
+import { updateImageInS3, uploadImageToS3 } from "@/utils";
 
 const Category = () => {
   const router = useRouter();
@@ -36,6 +26,7 @@ const Category = () => {
   const [originalCategory, setOriginalCategory] = useState<CategoryType | null>(
     null
   );
+  const [imageFile, setImageFile] = useState<Blob | null>(null);
   const [loading, setLoading] = useState(true);
   const [saveLoading, setSaveLoading] = useState(false);
   const params = useParams();
@@ -45,8 +36,14 @@ const Category = () => {
 
   const save = async () => {
     setSaveLoading(true);
-    const newCategory = category;
     if (isNew) {
+      const newCategory = category;
+      if (imageFile) {
+        const filePath = await uploadImageToS3(imageFile, "images");
+        if (newCategory) {
+          newCategory.image = filePath;
+        }
+      }
       // new
       const { data, error } = await supabase
         .from("tourCategories")
@@ -58,15 +55,25 @@ const Category = () => {
         setSaveLoading(false);
         return;
       }
+      setCategory(newCategory);
       setOriginalCategory(newCategory as CategoryType);
       toast.success("Successfully Saved");
       setSaveLoading(false);
+      setImageFile(null);
       router.push(`/admin/categories/${data[0].id}`);
       return;
     }
-    // const { error } = await supabase.from('tours').update({
 
-    // })
+    let newCategory = category;
+    if (imageFile) {
+      const filePath = await updateImageInS3(
+        imageFile,
+        category?.image as string
+      );
+      if (newCategory) {
+        newCategory.image = filePath;
+      }
+    }
     const { error } = await supabase
       .from("tourCategories")
       .update(newCategory)
@@ -78,27 +85,19 @@ const Category = () => {
       setSaveLoading(false);
       return;
     }
-    setOriginalCategory({
-      ...originalCategory,
-      ...(newCategory as CategoryType),
-    });
+    setImageFile(null);
+    setOriginalCategory(newCategory);
+    setCategory(newCategory);
     toast.success("Successfully Saved");
     setSaveLoading(false);
   };
   const isChanged = useMemo(() => {
     if (category == null) return false;
-    if (originalCategory == null) return true;
+    if (originalCategory == null || imageFile !== null) return true;
     return !_.isEqual(originalCategory, category);
-  }, [originalCategory, category]);
+  }, [originalCategory, category, imageFile]);
+
   const leave = async () => {
-    // const imageName = category?.image?.split("/").pop();
-    // if (!imageName) {
-    //   router.push("/admin/categories");
-    //   return;
-    // }
-    // const { data, error } = await supabase.storage
-    //   .from("images")
-    //   .remove([imageName]);
     router.push("/admin/categories");
     return;
   };
@@ -164,21 +163,24 @@ const Category = () => {
             <div className="flex-1 p-4">
               <Detail
                 category={category}
-                originalCategory={originalCategory}
+                imageFile={imageFile}
+                setImageFile={setImageFile}
                 setCategory={setCategory}
               />
             </div>
             <div className="p-4 flex items-end justify-end bg-white border-t">
               <button
-                disabled={!isChanged}
+                disabled={!isChanged || saveLoading}
                 className={`px-12 py-2 font-semibold rounded-xl hover:bg-opacity-50 ${
-                  isChanged
+                  saveLoading
+                    ? "bg-quinary text-secondary"
+                    : isChanged
                     ? "bg-primary text-tertiary ripple"
                     : "bg-quinary text-secondary"
                 }`}
                 onClick={save}
               >
-                Save
+                {saveLoading ? "Loading" : "Save"}
               </button>
             </div>
           </div>
@@ -190,11 +192,13 @@ const Category = () => {
 
 const Detail = ({
   category,
-  originalCategory,
   setCategory,
+  imageFile,
+  setImageFile,
 }: {
+  imageFile: Blob | null;
+  setImageFile: Dispatch<SetStateAction<Blob | null>>;
   category: CategoryType;
-  originalCategory: CategoryType | null;
   setCategory: Dispatch<SetStateAction<CategoryType | null>>;
 }) => {
   return (
@@ -214,8 +218,8 @@ const Detail = ({
         <label className="pl-2 font-medium">Images:</label>
         <CategoryImage
           category={category}
-          originalCategory={originalCategory}
-          setCategory={setCategory}
+          imageFile={imageFile}
+          setImageFile={setImageFile}
         />
       </div>
     </div>
@@ -224,114 +228,47 @@ const Detail = ({
 
 const CategoryImage = ({
   category,
-  originalCategory,
-  setCategory,
+  imageFile,
+  setImageFile,
 }: {
   category: CategoryType;
-  originalCategory: CategoryType | null;
-  setCategory: Dispatch<SetStateAction<CategoryType | null>>;
+  imageFile: Blob | null;
+  setImageFile: Dispatch<SetStateAction<Blob | null>>;
 }) => {
-  const [loading, setLoading] = useState(false);
-  const [imageFile, setImageFile] = useState<File | null>(null);
   const inputRef = useRef(null);
-  const imageName = useMemo(() => {
-    const name = category.image?.split("/").pop();
-    return name ? name : null;
-  }, [category]);
-  const uploadImage = async (file: File) => {
-    setLoading(true);
-    if (imageName) {
-      const { data, error } = await supabase.storage
-        .from("images")
-        .remove([imageName]);
-      if (error) {
-        toast.error("Error Updating Image");
-        console.error(error);
-        setLoading(false);
-        return;
-      }
-    }
-    const uniqueId = Math.random().toString(36).substring(2, 9);
-    const fileType = file.type.split("/").pop();
-    const fileName = `${uniqueId}.${fileType}`;
-    const { data, error } = await supabase.storage
-      .from("images")
-      .upload(fileName, file, {
-        upsert: false,
-        cacheControl: "300",
-      });
-    const { data: publicData } = supabase.storage
-      .from("images")
-      .getPublicUrl(fileName);
-    if (error) {
-      toast.error("Error Uploading Image");
-      console.error(error);
-      setLoading(false);
-      return;
-    }
-    // if (originalIntro == null) {
-    //   const { error: err } = await supabase
-    //     .from("intro")
-    //     .insert({ ...intro, image: publicData.publicUrl })
-    //   console.log(publicData.publicUrl, err);
-    //   if (err) {
-    //     toast.error("Error Updating ImageUrl after Uploading");
-    //     console.error(error);
-    //     setLoading(false);
-    //     return;
-    //   }
-    //   toast.success("Successfully Uploaded an Image");
-    // } else {
-    //   const { error: err } = await supabase
-    //     .from("intro")
-    //     .update({ image: publicData.publicUrl })
-    //     .eq("id", originalIntro?.id);
-    //   console.log(publicData.publicUrl, err);
-    //   if (err) {
-    //     toast.error("Error Updating ImageUrl after Uploading");
-    //     console.error(error);
-    //     setLoading(false);
-    //     return;
-    //   }
-
-    // }
-    toast.success("Successfully Uploaded an Image");
-    setCategory({ ...category, image: publicData.publicUrl });
-    setImageFile(null);
-    setLoading(false);
-  };
+  const imageSrc = useMemo(() => {
+    return imageFile ? URL.createObjectURL(imageFile) : category.image || "";
+  }, [imageFile, category]);
   return (
     <div className="flex flex-row flex-wrap gap-4">
-      <div className=" w-[300px] h-[200px] relative">
-        <Image
-          src={
-            imageFile ? URL.createObjectURL(imageFile) : category.image || ""
-          }
-          fill
-          alt={category.name}
-        />
-        {loading ? (
-          <div className="z-20 absolute top-0 left-0 w-full h-full flex items-center justify-center bg-white/20 backdrop-blur">
-            <div className="font-medium text-lg">Uploading</div>
-          </div>
+      <div className="w-[300px] h-[200px] relative bg-quinary flex items-center justify-center">
+        {imageSrc ? (
+          <StorageImage
+            noPrefix={imageFile ? true : false}
+            src={imageSrc}
+            fill
+            alt={category.name}
+          />
         ) : (
-          <div className="absolute top-2 right-2">
-            <button
-              className="bg-white/50 rounded-full ripple p-1 backdrop-blur border"
-              onClick={() => {
-                if (inputRef.current) {
-                  (inputRef.current as HTMLElement).click();
-                }
-              }}
-            >
-              {category.image ? (
-                <ReloadIcon width={24} height={24} color="black" />
-              ) : (
-                <PlusIcon width={24} height={24} color="black" />
-              )}
-            </button>
-          </div>
+          "No Image"
         )}
+
+        <div className="absolute top-2 right-2">
+          <button
+            className="bg-white/50 rounded-full ripple p-1 backdrop-blur border"
+            onClick={() => {
+              if (inputRef.current) {
+                (inputRef.current as HTMLElement).click();
+              }
+            }}
+          >
+            {category.image ? (
+              <ReloadIcon width={24} height={24} color="black" />
+            ) : (
+              <PlusIcon width={24} height={24} color="black" />
+            )}
+          </button>
+        </div>
       </div>
       <input
         ref={inputRef}
@@ -339,19 +276,11 @@ const CategoryImage = ({
         onChange={(e) => {
           if (!e.target.files || e.target.files?.length == 0) return;
           setImageFile(e.target.files[0]);
-          uploadImage(e.target.files[0]);
+          // uploadImage(e.target.files[0]);
         }}
         accept="image/*"
         className="w-[0px] h-[0px] absolute left-0 top-0 opacity-0"
       />
-
-      {/* <div className="w-[300px] h-[200px] relative bg-quinary flex items-center justify-center gap-1 flex-col">
-        
-        <div className="p-2 bg-white rounded-full">
-          <PlusIcon color="black" width={32} height={32} />
-        </div>
-        <div>Add Image</div>
-      </div> */}
     </div>
   );
 };

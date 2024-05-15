@@ -1,6 +1,6 @@
 "use client";
 import { supabase } from "@/utils/supabase/client";
-import { MainLayout, AboutIntro } from "@components";
+import { MainLayout, AboutIntro, StorageImage } from "@components";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 
@@ -46,7 +46,7 @@ const Volunteering = () => {
                 key={index}
               >
                 <div className="h-64 relative">
-                  <Image
+                  <StorageImage
                     src={member.image || ""}
                     alt={"image" + member.id}
                     fill
@@ -75,7 +75,7 @@ const Volunteering = () => {
                   key={index}
                 >
                   <div className="h-64 relative">
-                    <Image
+                    <StorageImage
                       src={member.image || ""}
                       alt={"image" + member.id}
                       fill
@@ -105,7 +105,7 @@ const Volunteering = () => {
                   key={index}
                 >
                   <div className="h-64 relative">
-                    <Image
+                    <StorageImage
                       src={member.image || ""}
                       alt={"image" + member.id}
                       fill

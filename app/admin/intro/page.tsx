@@ -1,5 +1,5 @@
 "use client";
-import { deleteImage } from "@/utils";
+import { deleteImageInS3 } from "@/utils";
 import { supabase } from "@/utils/supabase/client";
 import {
   ArrowRight,
@@ -25,7 +25,7 @@ const AdminIntro = () => {
   ) => {
     if (introId == undefined) return;
     if (image) {
-      await deleteImage(image);
+      await deleteImageInS3(image);
     }
     const { error } = await supabase.from("intro").delete().eq("id", introId);
     if (error) {

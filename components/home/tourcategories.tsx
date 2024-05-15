@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from "react";
 import { ArrowCircleIcon } from "../icons";
 import Image from "next/image";
 import Link from "next/link";
+import StorageImage from "../storageimage";
 
 export const TourCategories = ({
   categories,
@@ -42,7 +43,7 @@ const TourCategory: FC<CategoryType> = (props) => {
       className="flex-auto md:flex-1"
     >
       <div className="flex h-56 md:h-80 lg:h-72 bg-yellow-300 p-3 items-end relative rounded-[32px] overflow-hidden">
-        <Image
+        <StorageImage
           src={image || ""}
           fill
           alt={name}

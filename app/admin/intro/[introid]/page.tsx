@@ -18,7 +18,7 @@ import {
 } from "react";
 import { toast } from "react-toastify";
 import _ from "lodash";
-import { updateImage, uploadImage } from "@/utils";
+import { updateImageInS3, uploadImageToS3 } from "@/utils";
 
 const Intro = () => {
   const router = useRouter();
@@ -37,7 +37,7 @@ const Intro = () => {
     if (isNew) {
       const newIntro = intro;
       if (imageFile) {
-        const filePath = await uploadImage(imageFile, "introImages");
+        const filePath = await uploadImageToS3(imageFile, "introImages");
         if (newIntro) {
           newIntro.image = filePath;
         }
@@ -63,12 +63,12 @@ const Intro = () => {
     }
     let newIntro = intro;
     if (imageFile) {
-      const filePath = await updateImage(imageFile, intro?.image as string);
+      const filePath = await updateImageInS3(imageFile, intro?.image as string);
       if (newIntro) {
         newIntro.image = filePath;
       }
     }
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from("intro")
       .update(newIntro)
       .eq("id", originalIntro?.id);
@@ -80,8 +80,8 @@ const Intro = () => {
       return;
     }
     setImageFile(null);
-    setOriginalIntro(data);
-    setIntro(data);
+    setOriginalIntro(newIntro);
+    setIntro(newIntro);
     toast.success("Successfully Saved");
     setSaveLoading(false);
   };
@@ -164,7 +164,6 @@ const Intro = () => {
             <div className="flex-1 p-4">
               <Detail
                 intro={intro}
-                originalIntro={originalIntro}
                 setIntro={setIntro}
                 imageFile={imageFile}
                 setImageFile={setImageFile}
@@ -194,13 +193,11 @@ const Intro = () => {
 
 const Detail = ({
   intro,
-  originalIntro,
   setIntro,
   imageFile,
   setImageFile,
 }: {
   intro: IntroType;
-  originalIntro: IntroType | null;
   setIntro: Dispatch<SetStateAction<IntroType | null>>;
   imageFile: Blob | null;
   setImageFile: Dispatch<SetStateAction<Blob | null>>;
@@ -278,6 +275,7 @@ const IntroImages = ({
           src={imageSrc}
           fill
           alt={intro.title}
+          className="object-contain bg-quinary"
         />
         <div className="absolute top-2 right-2">
           <button
@@ -307,14 +305,6 @@ const IntroImages = ({
         accept="image/*"
         className="w-[0px] h-[0px] absolute left-0 top-0 opacity-0"
       />
-
-      {/* <div className="w-[300px] h-[200px] relative bg-quinary flex items-center justify-center gap-1 flex-col">
-        
-        <div className="p-2 bg-white rounded-full">
-          <PlusIcon color="black" width={32} height={32} />
-        </div>
-        <div>Add Image</div>
-      </div> */}
     </div>
   );
 };

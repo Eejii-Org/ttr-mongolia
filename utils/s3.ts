@@ -1,11 +1,11 @@
 import axios from "axios";
 
-export const uploadImage = async (file: Blob, path: string) => {
+export const uploadImageToS3 = async (file: Blob, path: string) => {
   if (!file) {
     return;
   }
   try {
-    var formData = new FormData();
+    let formData = new FormData();
     formData.append("file", file);
     formData.append("path", path);
     const res = await axios.post("/api/s3-upload", formData, {
@@ -19,7 +19,7 @@ export const uploadImage = async (file: Blob, path: string) => {
   }
 };
 
-export const updateImage = async (file: Blob, path: string) => {
+export const updateImageInS3 = async (file: Blob, path: string) => {
   if (!file) {
     return;
   }
@@ -38,7 +38,7 @@ export const updateImage = async (file: Blob, path: string) => {
   }
 };
 
-export const deleteImage = async (path: string) => {
+export const deleteImageInS3 = async (path: string) => {
   try {
     var formData = new FormData();
     formData.append("filePath", path);

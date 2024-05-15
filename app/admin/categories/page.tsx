@@ -1,6 +1,7 @@
 "use client";
+import { deleteImageInS3 } from "@/utils";
 import { supabase } from "@/utils/supabase/client";
-import { ArrowRight, TrashIcon } from "@components";
+import { ArrowRight, StorageImage, TrashIcon } from "@components";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -13,25 +14,13 @@ const AdminCategories = () => {
     image: string | null
   ) => {
     if (categoryId == undefined) return;
+    if (image) {
+      await deleteImageInS3(image);
+    }
     const { error } = await supabase
       .from("tourCategories")
       .delete()
       .eq("id", categoryId);
-
-    if (image) {
-      const name = image?.split("/").pop();
-      if (name) {
-        const { error: err } = await supabase.storage
-          .from("images")
-          .remove([name]);
-        if (err) {
-          toast.error("Error While Deleting");
-          console.error(err);
-          return;
-        }
-      }
-    }
-
     if (error) {
       toast.error("Error While Deleting");
       console.error(error);
@@ -118,8 +107,14 @@ const AdminCategories = () => {
               </button>
             </td>
             <td className="py-2 px-3 font-semibold w-[300px]">
-              <div className="w-[256px] h-[128px] relative">
-                <Image src={image ? image : ""} fill alt={name + i} />
+              <div
+                className={`w-[256px] h-[128px] relative bg-quinary flex items-center justify-center`}
+              >
+                {image ? (
+                  <StorageImage src={image} fill alt={name + i} />
+                ) : (
+                  "No Image"
+                )}
               </div>
             </td>
             <td className="py-2 px-3 font-semibold w-80">{name}</td>
