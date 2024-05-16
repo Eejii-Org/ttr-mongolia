@@ -24,9 +24,9 @@ export const TourIntro = ({
   return (
     <div className="w-fill mt-0 relative overflow-hidden flex items-center justify-center intro-section">
       <div className="z-30 gip text-white flex flex-col gap-4 text-center items-center justify-center">
-        <div className="font-bold text-2xl md:text-3xl lg:text-7xl md:font-semibold">
+        <h1 className="font-bold text-2xl md:text-3xl lg:text-7xl md:font-semibold">
           {tour?.title}
-        </div>
+        </h1>
         <div className=" w-16 h-1 bg-white/40 rounded" />
         <div className="font-medium text-base md:text-lg text-center flex flex-row items-center justify-center gap-3 bg-black/25 px-3 py-1 rounded-full">
           {/* <div className="text-xl">{tour.reviews.length} Reviews</div> */}
@@ -39,7 +39,7 @@ export const TourIntro = ({
                 {index != 0 && (
                   <div className="w-[calc(2px)] h-4 bg-white rounded" />
                 )}
-                <div>{category.name}</div>
+                <h3>{category.name}</h3>
               </div>
             ))}
           </div>

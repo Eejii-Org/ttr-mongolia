@@ -43,9 +43,9 @@ const ListItem = ({ title, description, index, length }: DayType) => {
         }`}
         onClick={() => setOpen(!open)}
       >
-        <div>
+        <div className="flex flex-row items-center">
           <span className="font-bold text-primary pr-2">Day {index + 1} :</span>
-          <span className="font-medium">{title}</span>
+          <h3 className="font-medium">{title}</h3>
         </div>
         <div className={`transition-all ${open ? "rotate-180" : ""}`}>
           <ChevronDownIcon />
