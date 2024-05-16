@@ -49,7 +49,7 @@ export default async function sitemap() {
       priority: 0.8,
     },
     {
-      url: "http://localhost:3000/privatetour",
+      url: "https://www.ttrmongolia.com/privatetour",
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.9,
