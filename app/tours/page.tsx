@@ -1,12 +1,5 @@
-"use client";
-import {
-  AvailableDates,
-  MainLayout,
-  Tour,
-  TourCategoriesFilter,
-} from "@components";
-import { useState, useEffect, useMemo, Suspense } from "react";
-import { supabase } from "@/utils/supabase/client";
+import { MainLayout, ToursFilter } from "@components";
+import { createClient } from "@/utils/supabase/server";
 
 export interface CombinedToursDataType extends TType {
   availableTours: AvailableTourType[];
@@ -26,135 +19,81 @@ type TType = {
   displayPrice: number | null;
 };
 
-const SearchBarFallback = () => {
-  return <>SearchBar</>;
+const getTours = async () => {
+  const supabase = createClient();
+
+  try {
+    const { data: tours, error } = await supabase
+      .from("tours")
+      .select(
+        "id, title, overview, days, nights, images, categories, displayPrice"
+      )
+      .eq("status", "active");
+    if (error) {
+      throw error;
+    }
+    const { data: availableTours, error: err } = await supabase
+      .from("availableTours")
+      .select("*")
+      .eq("status", "active")
+      .gte("date", new Date().toISOString())
+      .order("date");
+    if (err) {
+      throw error;
+    }
+    const combinedToursData = tours
+      ? tours
+          .map((tour) => {
+            return {
+              ...tour,
+              availableTours: availableTours.filter(
+                (availableTours) => availableTours.tourId === tour.id
+              ),
+            };
+          })
+          .sort((a, b) => b?.availableTours?.length - a?.availableTours?.length)
+      : [];
+    const combinedAvailableToursData =
+      !tours || !availableTours
+        ? []
+        : availableTours.map((availableTour) => {
+            return {
+              ...availableTour,
+              tourData:
+                tours.find((tour) => tour.id == availableTour.tourId) || null,
+            };
+          });
+    const { data: tourCategories, error: er } = await supabase
+      .from("tourCategories")
+      .select("*");
+    if (er) throw er;
+
+    return {
+      combinedToursData,
+      combinedAvailableToursData,
+      tourCategories,
+    };
+  } catch (error: any) {
+    console.error("Error fetching tour categories:", error.message);
+    return {
+      combinedToursData: [],
+      combinedAvailableToursData: [],
+      tourCategories: [],
+    };
+  }
 };
 
-const Tours = () => {
-  const [selectedCategory, setSelectedCategory] = useState<number | "All">(
-    "All"
-  );
-  const [tours, setTours] = useState<TType[]>([]);
-  const [availableTours, setAvailableTours] = useState<AvailableTourType[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [scheduledOpened, setScheduledOpened] = useState(false);
-  const combinedToursData = useMemo<CombinedToursDataType[]>(() => {
-    if (!tours) return [];
-    return tours
-      .map((tour) => {
-        return {
-          ...tour,
-          availableTours: availableTours.filter(
-            (availableTours) => availableTours.tourId === tour.id
-          ),
-        };
-      })
-      .sort((a, b) => b?.availableTours?.length - a?.availableTours?.length);
-  }, [tours, availableTours]);
-  const combinedAvailableToursData = useMemo<
-    CombinedAvailableToursDataType[]
-  >(() => {
-    if (!tours || !availableTours) return [];
-    return availableTours.map((availableTour) => {
-      return {
-        ...availableTour,
-        tourData: tours.find((tour) => tour.id == availableTour.tourId) || null,
-      };
-    });
-  }, [tours, availableTours]);
-
-  const selectedTours = useMemo<CombinedToursDataType[]>(() => {
-    if (selectedCategory == "All") return combinedToursData;
-    return combinedToursData.filter((tour) =>
-      tour.categories.includes(Number(selectedCategory))
-    );
-  }, [selectedCategory, combinedToursData]);
-
-  useEffect(() => {
-    const fetchTours = async () => {
-      setLoading(true);
-      try {
-        const { data, error } = await supabase
-          .from("tours")
-          .select(
-            "id, title, overview, days, nights, images, categories, displayPrice"
-          )
-          .eq("status", "active");
-        if (error) {
-          throw error;
-        }
-        const { data: availableToursData, error: err } = await supabase
-          .from("availableTours")
-          .select("*")
-          .eq("status", "active")
-          .gte("date", new Date().toISOString())
-          .order("date");
-        if (err) {
-          throw error;
-        }
-        setAvailableTours(availableToursData);
-        setTours(data);
-      } catch (error: any) {
-        console.error("Error fetching tour categories:", error.message);
-      }
-      setLoading(false);
-    };
-    fetchTours();
-  }, []);
-
+const Tours = async () => {
+  const { combinedToursData, combinedAvailableToursData, tourCategories } =
+    await getTours();
   return (
     <MainLayout>
-      <AvailableDates
-        open={scheduledOpened}
-        setOpen={setScheduledOpened}
-        combinedAvailableToursData={combinedAvailableToursData}
-      />
       <div className="flex flex-col gap-8 px-3 md:p-0  md:mx-auto container">
-        <div className="flex flex-col gap-4 md:gap-8">
-          <div className="flex flex-col gap-4 md:flex-row justify-between md:items-center">
-            <div className="text-2xl md:text-4xl font-semibold">
-              Our Tour Packages
-            </div>
-            <button
-              data-modal-target="default-modal"
-              data-modal-toggle="default-modal"
-              className="cursor-pointer ripple bg-primary px-4 py-3 rounded flex-row text-tertiary md:flex"
-              onClick={() => {
-                if (!scheduledOpened) {
-                  document.body.style.cssText = `overflow: hidden`;
-                } else {
-                  document.body.style.cssText = `overflow: auto`;
-                }
-                setScheduledOpened(!scheduledOpened);
-              }}
-            >
-              Check Available Tour Schedules
-            </button>
-          </div>
-          <Suspense fallback={<SearchBarFallback />}>
-            <TourCategoriesFilter
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
-            />
-          </Suspense>
-        </div>
-        <div className="flex flex-col gap-12">
-          {loading ? (
-            <div>Loading...</div>
-          ) : (
-            <>
-              {selectedTours?.length == 0 ? (
-                <div>There is currently no tours with this category</div>
-              ) : (
-                <>
-                  {selectedTours.map((tour, index) => (
-                    <Tour tour={tour} key={index} />
-                  ))}
-                </>
-              )}
-            </>
-          )}
-        </div>
+        <ToursFilter
+          combinedToursData={combinedToursData}
+          combinedAvailableToursData={combinedAvailableToursData}
+          tourCategories={tourCategories}
+        />
       </div>
     </MainLayout>
   );

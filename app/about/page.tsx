@@ -1,35 +1,28 @@
-"use client";
 import { supabase } from "@/utils/supabase/client";
 import { MainLayout, AboutIntro, StorageImage } from "@components";
-import { useEffect, useMemo, useState } from "react";
 
-const Volunteering = () => {
-  const [members, setMembers] = useState<MemberType[]>([]);
-  const administrativeStaffs = useMemo<MemberType[]>(() => {
-    return members.filter(
+const getMembers = async () => {
+  const { data: members, error } = await supabase
+    .from("members")
+    .select("*")
+    .order("order", { ascending: true });
+  const administrativeStaffs: MemberType[] =
+    members?.filter(
       (member) => member.positionType == "Administrative Staff"
-    );
-  }, [members]);
-  const guides = useMemo<MemberType[]>(() => {
-    return members.filter((member) => member.positionType == "Guide");
-  }, [members]);
-  const drivers = useMemo<MemberType[]>(() => {
-    return members.filter((member) => member.positionType == "Driver");
-  }, [members]);
-  useEffect(() => {
-    const getMembers = async () => {
-      const { data, error } = await supabase
-        .from("members")
-        .select("*")
-        .order("order", { ascending: true });
-      if (error) {
-        console.error(error);
-        return;
-      }
-      setMembers(data);
-    };
-    getMembers();
-  }, []);
+    ) || [];
+  const guides: MemberType[] =
+    members?.filter((member) => member.positionType == "Guide") || [];
+  const drivers: MemberType[] =
+    members?.filter((member) => member.positionType == "Driver") || [];
+  if (error) {
+    console.error(error);
+    return { drivers: [], guides: [], administrativeStaffs: [] };
+  }
+  return { drivers, guides, administrativeStaffs };
+};
+
+const About = async () => {
+  const { administrativeStaffs, drivers, guides } = await getMembers();
   return (
     <MainLayout>
       <div className="flex-1 flex flex-col gap-12">
@@ -128,4 +121,4 @@ const Volunteering = () => {
     </MainLayout>
   );
 };
-export default Volunteering;
+export default About;

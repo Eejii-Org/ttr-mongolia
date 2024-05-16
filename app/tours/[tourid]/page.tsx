@@ -1,5 +1,3 @@
-"use client";
-import { supabase } from "@/utils/supabase/client";
 import {
   ArrowRight,
   Included,
@@ -12,82 +10,121 @@ import {
   TourIntro,
   TourPlan,
 } from "@components";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useParams } from "next/navigation";
 import _ from "lodash";
 import { Availability } from "@/components/tour/availability";
 import Link from "next/link";
-const TourPage = () => {
-  const [tour, setTour] = useState<TourType | null>(null);
-  const scrollToElement = useRef<HTMLDivElement>(null);
-  const [loading, setLoading] = useState(false);
-  const params = useParams();
-  const { tourid } = params;
-  const [availableTours, setAvailableTours] = useState<AvailableTourType[]>([]);
-  const [categories, setCategories] = useState<CategoryType[]>([]);
-  const saleTours = useMemo<AvailableTourType[]>(() => {
-    return availableTours.filter(
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
+
+const getTourPageDetails = async (tourid: string) => {
+  const supabase = createClient();
+  try {
+    const { data: tour, error } = await supabase
+      .from("tours")
+      .select("*")
+      .eq("id", tourid)
+      .maybeSingle();
+    if (error || !tour) {
+      throw error;
+    }
+    const { data: availableTours, error: err } = await supabase
+      .from("availableTours")
+      .select("*")
+      .eq("tourId", tour.id)
+      .eq("status", "active")
+      .gte("date", new Date().toISOString())
+      .order("date");
+    if (err) {
+      throw err;
+    }
+    const saleTours = availableTours?.filter(
       (availableTour) => availableTour.salePrice !== null
     );
-  }, [availableTours]);
-  useEffect(() => {
-    const getTour = async () => {
-      setLoading(true);
-      try {
-        const { data, error } = await supabase
-          .from("tours")
-          .select("*")
-          .eq("id", tourid)
-          .maybeSingle();
-        if (error || !data) {
-          throw error;
+    const { data: categories, error: e } = await supabase
+      .from("tourCategories")
+      .select("*")
+      .in("id", tour.categories);
+    if (e) {
+      throw e;
+    }
+    const minimumPrice = _.min(saleTours.map((t) => t.salePrice));
+    let similarTours: TourType[] = [];
+    const { data: dataWithSameCategory } = await supabase
+      .from("random_tours")
+      .select(`*`)
+      .neq("id", tourid)
+      .eq("status", "active")
+      .overlaps("categories", categories)
+      .limit(2);
+    if (dataWithSameCategory) {
+      if (dataWithSameCategory?.length == 2) {
+        similarTours = [...dataWithSameCategory];
+      } else {
+        const { data } = await supabase
+          .from("random_tours")
+          .select(`*`)
+          .neq("id", tourid)
+          .neq(
+            "id",
+            dataWithSameCategory?.length == 1
+              ? dataWithSameCategory[0].id
+              : "-1"
+          )
+          .limit(2 - (dataWithSameCategory?.length || 0));
+        if (data) {
+          similarTours = [...dataWithSameCategory, ...data];
+        } else {
+          similarTours = [...dataWithSameCategory];
         }
-        const { data: availableToursData, error: err } = await supabase
-          .from("availableTours")
-          .select("*")
-          .eq("tourId", data.id)
-          .eq("status", "active")
-          .gte("date", new Date().toISOString())
-          .order("date");
-        if (err) {
-          throw err;
-        }
-        setAvailableTours(availableToursData);
-        setTour(data as TourType);
-        setLoading(false);
-      } catch (error: any) {
-        console.error("Error fetching tour categories:", error.message);
       }
-      setLoading(false);
-    };
-    getTour();
-  }, [tourid]);
-
-  useEffect(() => {
-    const getCategories = async () => {
-      if (!tour) return;
-      try {
-        const { data, error } = await supabase
-          .from("tourCategories")
-          .select("*")
-          .in("id", tour.categories);
-        if (error) {
-          throw error;
-        }
-        setCategories(data);
-      } catch (error: any) {
-        console.error("Error fetching tour categories:", error.message);
+    } else {
+      const { data } = await supabase
+        .from("random_tours")
+        .select(`*`)
+        .neq("id", tourid)
+        .eq("status", "active")
+        .limit(2);
+      if (data) {
+        similarTours = [...data];
       }
+    }
+
+    return {
+      tour: tour as TourType,
+      availableTours: availableTours as AvailableTourType[],
+      saleTours: saleTours as AvailableTourType[],
+      categories: categories as CategoryType[],
+      minimumPrice: minimumPrice as number,
+      similarTours: similarTours as TourType[],
     };
-    if (tour) getCategories();
-  }, [tour]);
-
-  const checkAvailableDate = () => scrollToElement.current?.scrollIntoView();
-
-  if (!tour) {
-    return <div>Loading</div>;
+  } catch (error: any) {
+    console.error("Error fetching tour categories:", error.message);
+    return {
+      tour: null,
+      availableTours: [],
+      saleTours: [],
+      categories: [],
+      minimumPrice: 0,
+      similarTours: [],
+    };
   }
+};
 
+const TourPage = async ({ params }: { params: { tourid: string } }) => {
+  const { tourid } = params;
+  const pageDetails = await getTourPageDetails(params.tourid);
+  const {
+    tour,
+    availableTours,
+    saleTours,
+    categories,
+    minimumPrice,
+    similarTours,
+  } = pageDetails;
+  if (!tour) {
+    redirect("/tours");
+    return;
+  }
   return (
     <MainLayout headerTransparent>
       <div className="flex flex-col gap-4 md:gap-12">
@@ -106,20 +143,17 @@ const TourPage = () => {
             <div className="z-10">
               <TourPlan itinerary={tour.itinerary} />
             </div>
-            <div ref={scrollToElement} className="pt-24 -mt-24">
+            <div id="availableTours" className="pt-24 -mt-24">
               <Availability tour={tour} availableTours={availableTours} />
             </div>
-            <SimilarTours
-              tourId={tourid as string}
-              categories={tour.categories}
-            />
+            <SimilarTours similarTours={similarTours} />
           </div>
           <div className="bg-white pb-4 md:p-0 md:bg-transparent w-full md:w-1/3 md:pl-8 md:relative">
             <div className="sticky top-16 md:max-w-96 flex flex-col gap-6">
               <TourInfo
+                minimumPrice={minimumPrice}
                 tour={tour}
                 saleTours={saleTours}
-                checkAvailableDate={checkAvailableDate}
               />
               <div className="bg-[#FFF5E5]  flex flex-col gap-8 px-4 py-3 rounded-lg">
                 <div className="flex flex-col gap-2">

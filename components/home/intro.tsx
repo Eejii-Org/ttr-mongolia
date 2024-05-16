@@ -1,7 +1,6 @@
 "use client";
 
 import { ChevronLeftIcon, ChevronRightIcon, StorageImage } from "@components";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 export const Intro = ({ intro }: { intro: IntroType[] }) => {
   const [index, setIndex] = useState(0);

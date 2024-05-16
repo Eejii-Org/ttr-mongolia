@@ -1,50 +1,25 @@
 "use client";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { supabase } from "@/utils/supabase/client";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 
 type ToursPropsType = {
   selectedCategory: number | "All";
   setSelectedCategory: Dispatch<SetStateAction<number | "All">>;
+  tourCategories: CategoryType[];
 };
 
 export const TourCategoriesFilter = ({
   selectedCategory,
   setSelectedCategory,
+  tourCategories,
 }: ToursPropsType) => {
   const searchParams = useSearchParams();
   const searchCategory = searchParams.get("category");
-
-  const [loading, setLoading] = useState(true);
-  const [tourCategories, setTourCategories] = useState<CategoryType[]>([]);
-  useEffect(() => {
-    const fetchTourCategories = async () => {
-      setLoading(true);
-      try {
-        const { data, error } = await supabase
-          .from("tourCategories")
-          .select("*");
-        if (error) {
-          throw error;
-        }
-        setTourCategories(data);
-        setLoading(false);
-      } catch (error: any) {
-        console.error("Error fetching tour categories:", error.message);
-        setLoading(false);
-      }
-    };
-
-    fetchTourCategories();
-  }, []);
   useEffect(() => {
     if (searchCategory) {
       setSelectedCategory(Number(searchCategory));
     }
   }, [searchCategory]);
-  if (loading) {
-    return <></>;
-  }
   return (
     <div className="flex flex-row gap-4 overflow-scroll no-scroll-bar w-full">
       <div

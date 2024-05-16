@@ -1,58 +1,11 @@
-"use client";
-import supabase from "@/utils/supabase/client";
-import { useEffect, useState } from "react";
 import { ArrowRight, DayIcon, PriceIcon } from "../icons";
 import Link from "next/link";
 import StorageImage from "../storageimage";
 export const SimilarTours = ({
-  categories,
-  tourId,
+  similarTours,
 }: {
-  categories: number[];
-  tourId: string;
+  similarTours: TourType[];
 }) => {
-  const [similarTours, setSimilarTours] = useState<TourType[]>([]);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const getSimilarTours = async () => {
-      try {
-        const { data: dataWithSameCategory } = await supabase
-          .from("random_tours")
-          .select(`*`)
-          .neq("id", tourId)
-          .eq("status", "active")
-          .overlaps("categories", categories)
-          .limit(2);
-        if (dataWithSameCategory?.length == 2) {
-          setSimilarTours(dataWithSameCategory);
-          return;
-        }
-        const { data, error: err } = await supabase
-          .from("random_tours")
-          .select(`*`)
-          .neq("id", tourId)
-          .neq(
-            "id",
-            dataWithSameCategory?.length == 1
-              ? dataWithSameCategory[0].id
-              : "-1"
-          )
-          .limit(2 - (dataWithSameCategory?.length || 0));
-        setSimilarTours(
-          dataWithSameCategory
-            ? data
-              ? [...dataWithSameCategory, ...data]
-              : [...dataWithSameCategory]
-            : []
-        );
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
-    };
-    getSimilarTours();
-  }, [categories, tourId]);
   return (
     <div className="flex flex-col gap-4">
       <div className="text-2xl md:text-4xl font-semibold">Similar Tours</div>
@@ -84,7 +37,7 @@ const TourCard = (props: TourType) => {
             {props.overview}
           </p>
         </div>
-        <div className="flex flex-row gap-4 justify-between">
+        <div className="flex flex-row flex-wrap gap-4 justify-between">
           <div className="flex flex-row gap-4">
             <div className="flex flex-row items-center gap-1 font-semibold text-2xl">
               <PriceIcon />${props.displayPrice}
@@ -98,13 +51,15 @@ const TourCard = (props: TourType) => {
               </span>
             </div>
           </div>
-          <Link
-            href={`/tours/${props.id}`}
-            className="flex flex-row items-center gap-2"
-          >
-            <div className="font-semibold md:text-xl">Learn More</div>
-            <ArrowRight color="black" />
-          </Link>
+          <div className="flex-1 flex items-end justify-end">
+            <Link
+              href={`/tours/${props.id}`}
+              className="flex flex-row items-center gap-2"
+            >
+              <div className="font-semibold md:text-lg">Learn More</div>
+              <ArrowRight color="black" />
+            </Link>
+          </div>
         </div>
       </div>
     </div>

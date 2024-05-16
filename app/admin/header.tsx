@@ -1,15 +1,13 @@
-"use client";
 import Link from "next/link";
 import { SignOutIcon } from "../../components/icons";
-import { useRouter } from "next/navigation";
 import { supabase } from "@/utils/supabase/client";
+import { redirect } from "next/navigation";
 
 export const AdminHeader = () => {
-  const router = useRouter();
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     console.error(error);
-    router.push("/auth");
+    redirect("/auth");
   };
   return (
     <div

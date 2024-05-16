@@ -87,7 +87,7 @@ export const Review: FC<ReviewItemType> = ({
               <StorageImage
                 src={image}
                 alt={firstName + " " + lastName + index}
-                objectFit="cover"
+                className="object-cover"
                 fill
               />
             </div>

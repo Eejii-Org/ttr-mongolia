@@ -1,17 +1,18 @@
-import { useMemo } from "react";
+"use client";
 import _ from "lodash";
 export const TourInfo = ({
   tour,
-  checkAvailableDate,
   saleTours,
+  minimumPrice,
 }: {
   tour: TourType;
-  checkAvailableDate: () => void;
   saleTours: AvailableTourType[];
+  minimumPrice: number;
 }) => {
-  const minimumPrice = useMemo(() => {
-    return _.min(saleTours.map((t) => t.salePrice));
-  }, [saleTours]);
+  const checkAvailableDate = () =>
+    document
+      .getElementById("availableTours")
+      ?.scrollIntoView({ behavior: "smooth" });
   return (
     <div className="flex justify-center md:justify-normal flex-col gap-2">
       <div className="font-bold text-secondary text-xl">Price</div>
