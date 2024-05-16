@@ -59,15 +59,12 @@ const Booking = () => {
       return;
     }
     setBookLoading(true);
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/request-invoice`,
-      {
-        // amount: personalDetail.peopleCount * availableTour?.price,
-        amount: "0.01",
-        availableTourId,
-        personalDetail,
-      }
-    );
+    const res = await axios.post(`/api/request-invoice`, {
+      // amount: personalDetail.peopleCount * availableTour?.price,
+      amount: "0.01",
+      availableTourId,
+      personalDetail,
+    });
     if (res.status !== 200) {
       setError(res.statusText);
     }

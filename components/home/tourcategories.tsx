@@ -1,7 +1,6 @@
 "use client";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { ArrowCircleIcon } from "../icons";
-import Image from "next/image";
 import Link from "next/link";
 import StorageImage from "../storageimage";
 

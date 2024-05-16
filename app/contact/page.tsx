@@ -9,6 +9,7 @@ import {
   SelectBirthday,
   SelectNationality,
 } from "@components";
+import axios from "axios";
 import { useState } from "react";
 
 const Contact = () => {
@@ -31,24 +32,8 @@ const Contact = () => {
   const contactSubmit = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/contact`,
-        {
-          method: "POST", // *GET, POST, PUT, DELETE, etc.
-          mode: "cors", // no-cors, *cors, same-origin
-          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          credentials: "same-origin", // include, *same-origin, omit
-          headers: {
-            "Content-Type": "application/json",
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          redirect: "follow", // manual, *follow, error
-          referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-          body: JSON.stringify(contact), // body data type must match "Content-Type" header
-        }
-      );
-      const result = await response.json();
-      if (result.adminInfo.response.includes("OK")) {
+      const result = await axios.post(`api/contact`, contact);
+      if (result.data.adminInfo.response.includes("OK")) {
         setModalMessage("Success");
       } else {
         setModalMessage("Fail");

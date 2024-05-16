@@ -1,7 +1,6 @@
 "use client";
 import supabase from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { ArrowRight, DayIcon, PriceIcon } from "../icons";
 import Link from "next/link";
 import StorageImage from "../storageimage";

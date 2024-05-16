@@ -39,13 +39,10 @@ const NewTour = () => {
   const requestNewTour = async () => {
     setRequestLoading(true);
     try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/request-private-tour`,
-        {
-          ...privateTourDetail,
-          startingDate: tourDate,
-        }
-      );
+      const res = await axios.post(`/api/request-private-tour`, {
+        ...privateTourDetail,
+        startingDate: tourDate,
+      });
     } catch (err: any) {
       console.error(err);
       setModalMessage("Fail");

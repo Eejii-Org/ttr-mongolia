@@ -67,15 +67,12 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
     setRequestLoading(true);
 
     try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/request-departure`,
-        {
-          ...personalDetail,
-          tourId: selectedTour,
-          startingDate: tourDate,
-          price: selectedTourData?.displayPrice,
-        }
-      );
+      const res = await axios.post(`/api/request-departure`, {
+        ...personalDetail,
+        tourId: selectedTour,
+        startingDate: tourDate,
+        price: selectedTourData?.displayPrice,
+      });
     } catch (err: any) {
       setModalMessage("Fail");
       console.error(err);

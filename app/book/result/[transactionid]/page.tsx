@@ -52,12 +52,9 @@ const PaymentResult = () => {
   useEffect(() => {
     const getStatus = async () => {
       setLoading(true);
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/check-transaction`,
-        {
-          transactionId: transactionid,
-        }
-      );
+      const res = await axios.post(`/api/check-transaction`, {
+        transactionId: transactionid,
+      });
       setTransactionDetail(res.data);
       setLoading(false);
     };

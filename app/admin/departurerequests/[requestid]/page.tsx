@@ -64,14 +64,11 @@ const DepartureRequest = () => {
       }
       const availableTourId =
         insertTourResult !== false ? insertTourResult.data[0].id : "";
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/reply-departure`,
-        {
-          departureRequest: { ...departureRequest, adminNote },
-          status: newStatus == "Approve" ? "Approved" : "Denied",
-          availableTourId,
-        }
-      );
+      const res = await axios.post(`/api/reply-departure`, {
+        departureRequest: { ...departureRequest, adminNote },
+        status: newStatus == "Approve" ? "Approved" : "Denied",
+        availableTourId,
+      });
       if (res.status == 400) {
         console.error(res);
         toast.error(res.statusText);

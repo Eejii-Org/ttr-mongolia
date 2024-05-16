@@ -1,7 +1,6 @@
 "use client";
 import { supabase } from "@/utils/supabase/client";
 import { MainLayout, AboutIntro, StorageImage } from "@components";
-import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 
 const Volunteering = () => {
