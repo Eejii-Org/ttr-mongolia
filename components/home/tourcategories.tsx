@@ -45,7 +45,7 @@ const TourCategory: FC<CategoryType> = (props) => {
         <StorageImage
           src={image || ""}
           fill
-          alt={name}
+          alt={`category-${id}`}
           priority
           // unoptimized={true}
           className={`object-cover select-none`}

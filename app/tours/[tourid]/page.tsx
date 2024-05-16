@@ -15,6 +15,50 @@ import { Availability } from "@/components/tour/availability";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import { Metadata, ResolvingMetadata } from "next";
+
+type Props = {
+  params: { tourid: string };
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const supabase = createClient();
+  const tourid = params.tourid;
+  const { data, error } = await supabase
+    .from("tours")
+    .select("*")
+    .eq("id", tourid)
+    .maybeSingle();
+  if (error || !data) {
+    throw error;
+  }
+  const { data: dt, error: e } = await supabase
+    .from("tourCategories")
+    .select("*")
+    .in("id", data.categories);
+  const tour = data as TourType;
+  const categories = dt as CategoryType[];
+  return {
+    title: tour.title,
+    description: tour.overview,
+    keywords: categories.map((category) => category.name),
+    category: categories?.[0].name || "travel",
+    openGraph: {
+      title: tour.title,
+      description: tour.overview,
+      url: `https://www.ttrmongolia.com/tours/${tour.id}`,
+      siteName: "TTR Mongolia",
+      images: tour.images,
+      locale: "en_US",
+      type: "website",
+    },
+    twitter: {
+      title: tour.title,
+      description: tour.overview,
+      images: tour.images,
+    },
+  };
+}
 
 const getTourPageDetails = async (tourid: string) => {
   const supabase = createClient();
@@ -111,7 +155,6 @@ const getTourPageDetails = async (tourid: string) => {
 };
 
 const TourPage = async ({ params }: { params: { tourid: string } }) => {
-  const { tourid } = params;
   const pageDetails = await getTourPageDetails(params.tourid);
   const {
     tour,
