@@ -1,25 +1,7 @@
-"use client";
-import { supabase } from "@/utils/supabase/client";
-import Image from "next/image";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
+import StorageImage from "../storageimage";
 
 export const OurAgency: FC = () => {
-  const [pictures, setPictures] = useState<string[]>([]);
-  useEffect(() => {
-    const getPictures = async () => {
-      const list = await supabase.storage.from("ourAgencyImages").list();
-      if (!list.data) {
-        return;
-      }
-      const publicUrls = list.data.map((file) => {
-        return supabase.storage.from("ourAgencyImages").getPublicUrl(file.name);
-      });
-      const images = await Promise.all(publicUrls);
-      setPictures(images.map((image) => image.data.publicUrl));
-    };
-    getPictures();
-  }, []);
-
   return (
     <div className="relative mx-3 md:mx-0 flex flex-col gap-4">
       <div
@@ -51,46 +33,38 @@ export const OurAgency: FC = () => {
       </div>
       <div className="flex flex-row gap-4">
         <div className="h-72 bg-quinary flex-1 rounded-3xl relative overflow-hidden">
-          {pictures[0] && (
-            <Image
-              src={pictures[0]}
-              fill
-              alt="ourAgencyPicture0"
-              className="object-cover"
-            />
-          )}
+          <StorageImage
+            src={"images/our-agency-1.webp"}
+            fill
+            alt="ourAgencyPicture1"
+            className="object-cover"
+          />
         </div>
         <div className="h-72 bg-quinary flex-1 rounded-3xl relative overflow-hidden">
-          {pictures[1] && (
-            <Image
-              src={pictures[1]}
-              fill
-              alt="ourAgencyPicture1"
-              className="object-cover"
-            />
-          )}
+          <StorageImage
+            src={"images/our-agency-2.webp"}
+            fill
+            alt="ourAgencyPicture2"
+            className="object-cover"
+          />
         </div>
       </div>
       <div className="flex flex-row  gap-4">
         <div className="h-72 bg-quinary flex-1 rounded-3xl relative overflow-hidden">
-          {pictures[2] && (
-            <Image
-              src={pictures[2]}
-              fill
-              alt="ourAgencyPicture2"
-              className="object-cover"
-            />
-          )}
+          <StorageImage
+            src={"images/our-agency-3.webp"}
+            fill
+            alt="ourAgencyPicture3"
+            className="object-cover"
+          />
         </div>
         <div className="h-72 bg-quinary flex-1 rounded-3xl relative overflow-hidden">
-          {pictures[2] && (
-            <Image
-              src={pictures[3]}
-              fill
-              alt="ourAgencyPicture3"
-              className="object-cover"
-            />
-          )}
+          <StorageImage
+            src={"images/our-agency-4.webp"}
+            fill
+            alt="ourAgencyPicture4"
+            className="object-cover"
+          />
         </div>
       </div>
     </div>
