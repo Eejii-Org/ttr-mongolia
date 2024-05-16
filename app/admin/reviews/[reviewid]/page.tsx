@@ -189,15 +189,17 @@ const Review = () => {
             </div>
             <div className="p-4 flex items-end justify-end bg-white border-t">
               <button
-                disabled={!isChanged}
-                className={`px-12 py-2 font-semibold hover:bg-opacity-50 ${
-                  isChanged
+                disabled={!isChanged || saveLoading}
+                className={`px-12 py-2 font-semibold rounded-xl hover:bg-opacity-50 ${
+                  saveLoading
+                    ? "bg-quinary text-secondary"
+                    : isChanged
                     ? "bg-primary text-tertiary ripple"
                     : "bg-quinary text-secondary"
                 }`}
                 onClick={save}
               >
-                Save
+                {saveLoading ? "Loading" : "Save"}
               </button>
             </div>
           </div>

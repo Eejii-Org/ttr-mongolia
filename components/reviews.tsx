@@ -1,8 +1,7 @@
 "use client";
 import { supabase } from "@/utils/supabase/client";
-import { FC, use, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { CloseIcon, StarsIcon } from "./icons";
-import Image from "next/image";
 import StorageImage from "./storageimage";
 
 export const Reviews: FC = () => {
@@ -14,8 +13,7 @@ export const Reviews: FC = () => {
         const { data, error } = await supabase
           .from("reviews")
           .select("*")
-          .order("date", { ascending: true })
-          .limit(5);
+          .order("date", { ascending: true });
         if (error) {
           throw error;
         }
@@ -156,10 +154,10 @@ const Modal = ({
         <CloseIcon />
       </button>
       {image && (
-        <div className="w-[calc(100vw-32px)] md:container relative h-3/4 bg-white/75 lg:rounded-3xl">
+        <div className="w-[calc(100vw-32px)] md:container relative h-3/4 bg-white/75">
           <StorageImage
             src={image || ""}
-            className="object-cover"
+            className="object-contain"
             fill
             alt={"modalimage"}
           />

@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { useMemo } from "react";
-import Image from "next/image";
 import { DayIcon, PriceIcon } from "../icons";
 import { CombinedToursDataType } from "@/app/tours/page";
+import StorageImage from "../storageimage";
 
 export const Tour = (props: { tour: CombinedToursDataType }) => {
   const { tour } = props;
@@ -16,7 +16,7 @@ export const Tour = (props: { tour: CombinedToursDataType }) => {
     <div className="flex flex-col md:h-48 md:flex-row gap-2 md:gap-8 cursor-default">
       <div className="relative md:w-1/4 md:max-w-80 h-48 md:h-auto rounded overflow-hidden">
         <Link href={"/tours/" + tour.id}>
-          <Image
+          <StorageImage
             src={images[0]}
             alt={title}
             className="object-cover"

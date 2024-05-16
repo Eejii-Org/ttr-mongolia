@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { ArrowRight, DayIcon, PriceIcon } from "../icons";
 import Link from "next/link";
+import StorageImage from "../storageimage";
 export const SimilarTours = ({
   categories,
   tourId,
@@ -69,7 +70,7 @@ const TourCard = (props: TourType) => {
   return (
     <div className="flex-1 shadow rounded-xl">
       <div className="relative h-64">
-        <Image
+        <StorageImage
           src={props.images[0]}
           alt={props.title}
           quality={5}

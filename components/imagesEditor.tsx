@@ -67,6 +67,7 @@ const ImageItem = ({
         src={imageSrc}
         fill
         alt={index + "reviewImage"}
+        className="object-contain bg-quinary"
       />
       <div className="absolute top-2 right-2">
         <button

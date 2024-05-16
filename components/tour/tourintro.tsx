@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
-import { supabase } from "@/utils/supabase/client";
+import StorageImage from "../storageimage";
 
 export const TourIntro = ({
   tour,
@@ -52,7 +51,7 @@ export const TourIntro = ({
             key={i}
             className={`relative min-w-[100vw] md:min-w-[calc(100vw/3)]  h-full select-none snap-end`}
           >
-            <Image
+            <StorageImage
               src={image}
               fill
               alt={image + i}

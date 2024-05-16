@@ -39,7 +39,7 @@ const Category = () => {
     if (isNew) {
       const newCategory = category;
       if (imageFile) {
-        const filePath = await uploadImageToS3(imageFile, "images");
+        const filePath = await uploadImageToS3(imageFile, "categoryImages");
         if (newCategory) {
           newCategory.image = filePath;
         }

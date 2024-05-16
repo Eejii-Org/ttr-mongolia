@@ -1,6 +1,13 @@
 "use client";
 import { supabase } from "@/utils/supabase/client";
-import { ArrowLeft, DayIcon, Input, NightIcon, PriceIcon } from "@components";
+import {
+  ArrowLeft,
+  DayIcon,
+  ImagesEditor,
+  Input,
+  NightIcon,
+  PriceIcon,
+} from "@components";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
@@ -8,13 +15,17 @@ import { toast } from "react-toastify";
 import _ from "lodash";
 import { ScheduledTours } from "./scheduledtours";
 import { List } from "./list";
-import { TourImages } from "./tourimages";
 import { SelectTourCategories } from "./selecttourcategories";
 import { Prices } from "./prices";
+import { deleteImagesInS3, uploadImagesToS3 } from "@/utils";
+
+type ModifiedTourType = Omit<TourType, "images"> & {
+  images: (Blob | string)[];
+};
 
 const Tour = () => {
   const router = useRouter();
-  const [tour, setTour] = useState<TourType | null>(null);
+  const [tour, setTour] = useState<ModifiedTourType | null>(null);
   const [originalTour, setOriginalTour] = useState<TourType | null>(null);
   const [loading, setLoading] = useState(true);
   const [saveLoading, setSaveLoading] = useState(false);
@@ -28,7 +39,13 @@ const Tour = () => {
     setSaveLoading(true);
     const newTour = tour;
     if (isNew) {
-      // new
+      const paths = await uploadImagesToS3(
+        tour?.images as Blob[],
+        "tourImages"
+      );
+      if (newTour) {
+        newTour.images = paths as string[];
+      }
       const { data, error } = await supabase
         .from("tours")
         .insert(newTour)
@@ -42,8 +59,40 @@ const Tour = () => {
       setOriginalTour(newTour as TourType);
       toast.success("Successfully Saved");
       setSaveLoading(false);
-      router.push(`/admin/intro/${data[0].id}`);
+      router.push(`/admin/tours/${data[0].id}`);
       return;
+    }
+    const uploadablePictures = tour?.images.filter((image) =>
+      typeof image === "string" || image instanceof String ? false : true
+    );
+    const deletedPictures = originalTour?.images.filter(
+      (image) => !tour?.images.includes(image)
+    );
+    if (deletedPictures && deletedPictures.length > 0) {
+      await deleteImagesInS3(deletedPictures);
+    }
+    const paths = await uploadImagesToS3(
+      uploadablePictures as Blob[],
+      "tourImages"
+    );
+    let newImages = [];
+    if (tour?.images) {
+      for (let i = 0, j = 0; i < tour?.images.length; i++) {
+        if (
+          typeof tour.images[i] === "string" ||
+          tour.images[i] instanceof String
+        ) {
+          newImages.push(tour.images[i]);
+        } else {
+          if (paths?.[j]) {
+            newImages.push(paths[j]);
+            j++;
+          }
+        }
+      }
+    }
+    if (newTour) {
+      newTour.images = newImages;
     }
     const { error } = await supabase
       .from("tours")
@@ -56,7 +105,8 @@ const Tour = () => {
       setSaveLoading(false);
       return;
     }
-    setOriginalTour({ ...originalTour, ...(newTour as TourType) });
+    setTour(newTour);
+    setOriginalTour(newTour as TourType);
     toast.success("Successfully Saved");
     setSaveLoading(false);
   };
@@ -152,11 +202,7 @@ const Tour = () => {
           <div className="border overflow-scroll h-full w-full bg-white rounded-md flex-1 flex flex-col relative">
             <div className="flex-1 p-4">
               {selectedTab == "detail" ? (
-                <Detail
-                  tour={tour}
-                  originalTour={originalTour}
-                  setTour={setTour}
-                />
+                <Detail tour={tour} setTour={setTour} />
               ) : (
                 <ScheduledTours tourId={Number(tourid)} />
               )}
@@ -164,15 +210,17 @@ const Tour = () => {
             {selectedTab == "detail" && (
               <div className="p-4 flex items-end justify-end bg-white border-t">
                 <button
-                  disabled={!isChanged}
-                  className={`px-12 py-2 font-semibold hover:bg-opacity-50 ${
-                    isChanged
+                  disabled={!isChanged || saveLoading}
+                  className={`px-12 py-2 font-semibold rounded-xl hover:bg-opacity-50 ${
+                    saveLoading
+                      ? "bg-quinary text-secondary"
+                      : isChanged
                       ? "bg-primary text-tertiary ripple"
                       : "bg-quinary text-secondary"
                   }`}
                   onClick={save}
                 >
-                  Save
+                  {saveLoading ? "Loading" : "Save"}
                 </button>
               </div>
             )}
@@ -212,12 +260,10 @@ const Tabs = ({
 
 const Detail = ({
   tour,
-  originalTour,
   setTour,
 }: {
-  tour: TourType;
-  originalTour: TourType | null;
-  setTour: Dispatch<SetStateAction<TourType | null>>;
+  tour: ModifiedTourType;
+  setTour: Dispatch<SetStateAction<ModifiedTourType | null>>;
 }) => {
   return (
     <div className="flex flex-col gap-4">
@@ -347,7 +393,10 @@ const Detail = ({
       </div>
       <div>
         <label className="pl-2 font-medium">Images:</label>
-        <TourImages tour={tour} originalTour={originalTour} setTour={setTour} />
+        <ImagesEditor
+          images={tour.images}
+          setImages={(newImages) => setTour({ ...tour, images: newImages })}
+        />
       </div>
     </div>
   );

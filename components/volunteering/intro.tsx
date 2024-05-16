@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import StorageImage from "../storageimage";
 export const VolunteeringIntro = () => {
   return (
     <div className="container m-auto flex flex-col-reverse md:flex-row gap-6 pt-8 items-center px-8">
@@ -43,8 +43,8 @@ export const VolunteeringIntro = () => {
       </div>
 
       <div className="flex-1 relative min-h-80 w-full md:h-[min(596px,70vh)] rounded-lg overflow-hidden">
-        <Image
-          src="https://qgowfgocgbsonbpypbvu.supabase.co/storage/v1/object/public/images/volunteering-intro.jpg"
+        <StorageImage
+          src="images/volunteering-intro.jpg"
           alt="intro"
           fill
           className="object-cover"
