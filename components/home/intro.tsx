@@ -6,9 +6,9 @@ export const Intro = ({ intro }: { intro: IntroType[] }) => {
   const [index, setIndex] = useState(0);
   const carouselClick = (direction: "left" | "right") => {
     if (direction == "left") {
-      setIndex((prev) => (prev == 0 ? intro.length - 1 : prev - 1));
+      setIndex((prev) => (prev == 0 ? intro?.length - 1 : prev - 1));
     } else {
-      setIndex((prev) => (prev + 1 == intro.length ? 0 : prev + 1));
+      setIndex((prev) => (prev + 1 == intro?.length ? 0 : prev + 1));
     }
   };
   useEffect(() => {
@@ -43,7 +43,7 @@ export const Intro = ({ intro }: { intro: IntroType[] }) => {
               <ChevronLeftIcon />
             </button>
             <div className="font-medium">
-              {index + 1} / {intro.length}
+              {index + 1} / {intro?.length}
             </div>
             <button
               className="p-3 ripple"

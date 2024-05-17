@@ -45,7 +45,7 @@ const AdminIntro = () => {
       setNewIntro([...list]);
       return;
     }
-    if (index == newIntro.length - 1) return;
+    if (index == newIntro?.length - 1) return;
     [list[index], list[index + 1]] = [list[index + 1], list[index]];
     setNewIntro([...list]);
   };
@@ -155,7 +155,9 @@ const AdminIntro = () => {
                 <CaretUpIcon color="black" />
               </button>
               <button
-                className={`${i == intro.length - 1 ? "opacity-50" : "ripple"}`}
+                className={`${
+                  i == intro?.length - 1 ? "opacity-50" : "ripple"
+                }`}
                 onClick={() => moveList(i, "down")}
               >
                 <CaretDownIcon color="black" />

@@ -9,6 +9,21 @@ export const Availability = ({
   tour: TourType;
   availableTours: AvailableTourType[];
 }) => {
+  const getNearAndOtherTours = () => {
+    const today = new Date();
+    const nearTours: AvailableTourType[] = [];
+    const otherTours: AvailableTourType[] = [];
+    availableTours.forEach((tour) => {
+      const checkDate = new Date(tour.date);
+      const timeDifference = Math.abs(today.valueOf() - checkDate.valueOf());
+      const dayDifference = timeDifference / (1000 * 60 * 60 * 24);
+      if (dayDifference <= 3) nearTours.push(tour);
+      else otherTours.push(tour);
+    });
+    return { nearTours, otherTours };
+  };
+  const { nearTours, otherTours } = getNearAndOtherTours();
+
   return (
     <div className="flex flex-col gap-4">
       <div className="text-2xl md:text-4xl font-semibold">Available Tours</div>
@@ -19,13 +34,27 @@ export const Availability = ({
             new departure date.
           </div>
         )}
-        {availableTours.map((tourDate, index) => (
+        {otherTours.map((tourDate, index) => (
           <AvailabilityItem
             {...tourDate}
             displayPrice={tour.displayPrice}
             originalPrice={tour.originalPrice}
             days={tour.days}
             nights={tour.nights}
+            key={index}
+          />
+        ))}
+        <h3 className="font-semibold text-xl">
+          Following tours are departing soon
+        </h3>
+        {nearTours.map((tourDate, index) => (
+          <AvailabilityItem
+            {...tourDate}
+            displayPrice={tour.displayPrice}
+            originalPrice={tour.originalPrice}
+            days={tour.days}
+            nights={tour.nights}
+            type="near"
             key={index}
           />
         ))}
@@ -54,16 +83,16 @@ interface AvailabilityItemPropsType extends AvailableTourType {
   displayPrice: number;
   days: number;
   nights: number;
+  type?: "near";
 }
 
 const AvailabilityItem: FC<AvailabilityItemPropsType> = ({
   date,
-  originalPrice,
   salePrice,
   displayPrice,
   days,
-  nights,
   id,
+  type,
 }) => {
   const dates = useMemo(() => {
     const startingDate = new Date(date);
@@ -139,13 +168,13 @@ const AvailabilityItem: FC<AvailabilityItemPropsType> = ({
         <Link
           className="ripple py-3 px-8 bg-primary text-center font-bold text-secondary rounded flex-1 md:flex-auto"
           href={{
-            pathname: "/book",
+            pathname: type == "near" ? "/contact" : "/book",
             query: {
               availableTourId: id,
             },
           }}
         >
-          Book Now
+          {type == "near" ? "Contact Us" : "Book Now"}
         </Link>
       </div>
     </div>

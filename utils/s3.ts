@@ -20,7 +20,7 @@ export const uploadImageToS3 = async (file: Blob, path: string) => {
 };
 
 export const uploadImagesToS3 = async (files: Blob[], path: string) => {
-  if (files.length == 0) {
+  if (files?.length == 0) {
     return;
   }
   try {

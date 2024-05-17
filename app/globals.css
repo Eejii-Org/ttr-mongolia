@@ -133,3 +133,7 @@ textarea:disabled {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+#nprogress .bar {
+  background: var(--primary) !important;
+}

@@ -20,7 +20,7 @@ export const SimilarTours = ({
 
 const TourCard = (props: TourType) => {
   return (
-    <div className="flex-1 shadow rounded-xl">
+    <div className="shadow rounded-xl flex-1">
       <div className="relative h-64">
         <StorageImage
           src={props.images[0]}
@@ -39,11 +39,11 @@ const TourCard = (props: TourType) => {
         </div>
         <div className="flex flex-row flex-wrap gap-4 justify-between">
           <div className="flex flex-row gap-4">
-            <div className="flex flex-row items-center gap-1 font-semibold text-2xl">
+            <div className="flex flex-row items-center gap-1 font-semibold text-lg">
               <PriceIcon />${props.displayPrice}
             </div>
             <div className="bg-black/20 w-[2px] rounded my-1" />
-            <div className="flex flex-row items-center gap-1 font-semibold text-2xl">
+            <div className="flex flex-row items-center gap-1 font-semibold text-lg">
               <DayIcon />
               {props.days}
               <span className="font-medium text-xl">
@@ -56,12 +56,42 @@ const TourCard = (props: TourType) => {
               href={`/tours/${props.id}`}
               className="flex flex-row items-center gap-2"
             >
-              <div className="font-semibold md:text-lg">Learn More</div>
-              <ArrowRight color="black" />
+              <Arrow />
             </Link>
           </div>
         </div>
       </div>
     </div>
+  );
+};
+
+const Arrow = () => {
+  return (
+    <svg
+      width="48"
+      height="48"
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="48" height="48" rx="24" fill="#FFF5E5" />
+      <rect
+        x="0.5"
+        y="0.5"
+        width="47"
+        height="47"
+        rx="23.5"
+        stroke="black"
+        strokeOpacity="0.05"
+      />
+      <path
+        d="M17.332 24.0001H30.6654M30.6654 24.0001L25.332 18.6667M30.6654 24.0001L25.332 29.3334"
+        stroke="black"
+        strokeOpacity="0.7"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 };
