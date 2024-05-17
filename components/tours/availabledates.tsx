@@ -3,13 +3,14 @@ import { useEffect, useMemo, useState } from "react";
 import { CloseIcon } from "../icons";
 import Link from "next/link";
 import { CombinedAvailableToursDataType } from "@/app/tours/page";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export const AvailableDates = ({
   combinedAvailableToursData,
 }: {
   combinedAvailableToursData: CombinedAvailableToursDataType[];
 }) => {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const searchParams = useSearchParams();
   // const [tableIndex, setTableIndex] = useState(0);
@@ -64,10 +65,10 @@ export const AvailableDates = ({
               </button>
             </div>
             <div className="p-3 lg:p-8 pt-0 lg:pt-0 md:w-full">
-              <table className="table-auto border overflow-scroll w-[calc(100vw-24px)] lg:w-full bg-white rounded-md">
+              <table className="table-fixed md:table-auto border w-[calc(100vw-24px)] lg:w-full bg-white rounded-md text-xs md:text-base">
                 <thead>
                   <tr>
-                    <th className="px-3 border-b"></th>
+                    {/* <th className="px-3 border-b"></th> */}
                     <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
                       Tour
                     </th>
@@ -75,32 +76,38 @@ export const AvailableDates = ({
                       Duration
                     </th>
                     <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
-                      Tour Date
+                      Date
                     </th>
                     <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
                       Price
                     </th>
-                    <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b flex justify-end">
+                    {/* <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b flex justify-end">
                       Booking
-                    </th>
+                    </th> */}
                   </tr>
                 </thead>
                 <tbody>
                   {availableTours.map((availableTour, i) => (
-                    <tr className="hover:bg-black/5" key={i}>
-                      <td className="px-3  items-center">{i + 1}</td>
-                      <td className="flex-1 py-2 px-3 font-semibold text-nowrap">
-                        <Link
+                    <tr
+                      className="hover:bg-black/5 cursor-pointer"
+                      onClick={() =>
+                        router.push(`/book?availableTourId=${availableTour.id}`)
+                      }
+                      key={i}
+                    >
+                      {/* <td className="px-3  items-center">{i + 1}</td> */}
+                      <td className="flex-1 py-2 px-3 font-semibold">
+                        {/* <Link
                           href={`/tours/${availableTour.tourId}`}
                           className=" flex-1"
-                        >
-                          {availableTour.tourData?.title}
-                        </Link>
+                        > */}
+                        {availableTour.tourData?.title}
+                        {/* </Link> */}
                       </td>
                       <td className="px-3 py-2">
                         {availableTour.tourData?.days} days
                       </td>
-                      <td className="px-3 font-semibold py-2 text-nowrap">
+                      <td className="px-3 font-semibold py-2">
                         {new Date(availableTour.date).toDateString()}
                       </td>
                       <td className="px-3 font-bold py-2">
@@ -120,7 +127,7 @@ export const AvailableDates = ({
                           </>
                         )}
                       </td>
-                      <td className="px-3 py-2 flex justify-end">
+                      {/* <td className="px-3 py-2 flex justify-end">
                         <Link
                           className="bg-primary px-4 py-2 whitespace-nowrap font-semibold rounded"
                           href={{
@@ -130,9 +137,9 @@ export const AvailableDates = ({
                             },
                           }}
                         >
-                          Book Now
+                          Book
                         </Link>
-                      </td>
+                      </td> */}
                     </tr>
                   ))}
                 </tbody>
