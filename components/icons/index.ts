@@ -30,5 +30,6 @@ export * from "./labelicon";
 export * from "./hamburger";
 export * from "./companyicons";
 export * from "./ttrmongoliaicon";
-export * from './bigsuccessicon'
-export * from './bigerroricon'
+export * from "./bigsuccessicon";
+export * from "./bigerroricon";
+export * from "./arrowuprighticon";

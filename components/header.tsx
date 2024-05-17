@@ -26,8 +26,8 @@ export const Header: FC<HeaderPropsType> = ({
       }`}
     >
       {pathName == "/tours" && isPrivateToursVisible && (
-        <div className="bg-[#1e1e1e] text-white flex flex-row items-center text-base px-3 md:px-6 py-4">
-          <div className="flex-1 text-center md:pl-6 text-sm md:text-base">
+        <div className="bg-[#1e1e1e] text-white flex flex-row items-center text-base px-3 md:px-6 py-2">
+          <div className="flex-1 text-center md:pl-6 text-sm md:text-md">
             If you'are looking to enjoy a trip privately with your own group,{" "}
             <Link
               href="/privatetour"

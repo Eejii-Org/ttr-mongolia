@@ -1,8 +1,9 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CloseIcon } from "../icons";
 import Link from "next/link";
 import { CombinedAvailableToursDataType } from "@/app/tours/page";
+import { useSearchParams } from "next/navigation";
 
 export const AvailableDates = ({
   combinedAvailableToursData,
@@ -10,10 +11,17 @@ export const AvailableDates = ({
   combinedAvailableToursData: CombinedAvailableToursDataType[];
 }) => {
   const [open, setOpen] = useState(false);
+  const searchParams = useSearchParams();
   // const [tableIndex, setTableIndex] = useState(0);
   const availableTours = useMemo(() => {
     return combinedAvailableToursData.filter((t) => t.tourData !== null);
   }, [combinedAvailableToursData]);
+  const availableDatesOpen = searchParams.get("availableDatesOpen");
+  useEffect(() => {
+    if (availableDatesOpen) {
+      setOpen(availableDatesOpen == "true");
+    }
+  }, [availableDatesOpen]);
   return (
     <>
       <div className="relative flex md:flex-none">

@@ -137,3 +137,14 @@ textarea:disabled {
 #nprogress .bar {
   background: var(--primary) !important;
 }
+
+.infscroll {
+  position: absolute;
+  animation: scroll linear 30s infinite;
+}
+
+@keyframes scroll {
+  to {
+    transform: translate(calc(-50% - 8px));
+  }
+}
