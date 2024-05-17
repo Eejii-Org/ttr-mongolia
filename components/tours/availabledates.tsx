@@ -39,7 +39,7 @@ export const AvailableDates = ({
         <div className="w-full h-full overflow-scroll lg:h-auto lg:w-3/4 bg-white/75 lg:rounded-3xl">
           <div>
             <div className="flex flex-row justify-between items-start p-6">
-              <div className="text-3xl lg:text-5xl font-semibold ">
+              <div className="text-xl lg:text-2xl font-semibold ">
                 Available Tour Schedules
               </div>
               <button
@@ -53,7 +53,7 @@ export const AvailableDates = ({
             </div>
 
             <div className="p-3 lg:p-8 pt-0 lg:pt-0 md:w-full">
-              <table className="flex flex-1 flex-col border overflow-scroll w-[calc(100vw-24px)] lg:min-h-[calc(560px)] lg:w-full bg-white rounded-md">
+              <table className="flex flex-1 flex-col border overflow-scroll w-[calc(100vw-24px)] lg:w-full bg-white rounded-md">
                 <tbody>
                   <tr className="flex">
                     <th className="px-3 border-b min-w-10"></th>
@@ -76,7 +76,7 @@ export const AvailableDates = ({
                   {availableTours
                     .slice(tableIndex * 8, (tableIndex + 1) * 8)
                     .map((availableTour, i) => (
-                      <tr className="hover:bg-black/5 hidden md:flex" key={i}>
+                      <tr className="hover:bg-black/5 flex" key={i}>
                         <td className="px-3 flex items-center min-w-10">
                           {tableIndex * 8 + i + 1}
                         </td>
