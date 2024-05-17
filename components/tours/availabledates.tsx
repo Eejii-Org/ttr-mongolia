@@ -89,8 +89,7 @@ export const AvailableDates = ({
                           </Link>
                         </td>
                         <td className="flex-1 min-w-36 md:min-w-min px-3 py-2">
-                          {availableTour.tourData?.days} days /{" "}
-                          {availableTour.tourData?.nights} nights
+                          {availableTour.tourData?.days} days
                         </td>
                         <td className="flex-1 min-w-36 md:min-w-min px-3 font-semibold py-2">
                           {new Date(availableTour.date).toDateString()}
