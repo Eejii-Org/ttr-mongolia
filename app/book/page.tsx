@@ -60,8 +60,8 @@ const Booking = () => {
     }
     setBookLoading(true);
     const res = await axios.post(`/api/request-invoice`, {
-      // amount: personalDetail.peopleCount * availableTour?.price,
-      amount: "0.01",
+      amount: personalDetail.peopleCount * (pricePerPerson || 1000),
+      // amount: "0.01",
       availableTourId,
       personalDetail,
     });
