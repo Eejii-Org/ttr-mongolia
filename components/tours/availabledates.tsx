@@ -39,7 +39,7 @@ export const AvailableDates = ({
             setOpen(!open);
           }}
         >
-          Check Available Tour Schedules
+          Check Nex Tour Departures
         </button>
         <span className="  bg-red-500 w-4 h-4 absolute -right-[6px] -top-[6px] border-2 border-white rounded-full" />
       </div>
@@ -76,7 +76,7 @@ export const AvailableDates = ({
                       Duration
                     </th>
                     <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
-                      Date
+                      Starting Date
                     </th>
                     <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
                       Price
@@ -91,7 +91,7 @@ export const AvailableDates = ({
                     <tr
                       className="hover:bg-black/5 cursor-pointer"
                       onClick={() =>
-                        router.push(`/book?availableTourId=${availableTour.id}`)
+                        router.push(`/tours/${availableTour.tourId}`)
                       }
                       key={i}
                     >
@@ -108,7 +108,11 @@ export const AvailableDates = ({
                         {availableTour.tourData?.days} days
                       </td>
                       <td className="px-3 font-semibold py-2">
-                        {new Date(availableTour.date).toDateString()}
+                        {new Date(availableTour.date)
+                          .toDateString()
+                          .split(" ")
+                          .slice(1)
+                          .join(" ")}
                       </td>
                       <td className="px-3 font-bold py-2">
                         <span

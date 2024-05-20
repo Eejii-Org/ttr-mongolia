@@ -140,7 +140,7 @@ textarea:disabled {
 
 .infscroll {
   position: absolute;
-  animation: scroll linear 30s infinite;
+  animation: scroll linear 60s infinite;
 }
 
 @keyframes scroll {

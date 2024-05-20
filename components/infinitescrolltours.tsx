@@ -27,7 +27,7 @@ export const InfiniteScrollingTours = ({
   const texts = getTexts();
 
   return (
-    <div className="relative w-full cursor-pointer overflow-hidden h-10">
+    <div className="relative w-full cursor-pointer overflow-hidden h-10 md:hidden">
       <div className="flex flex-row gap-4 py-2 w-min items-center infscroll bg-primary text-white">
         {texts.map((text, index) => (
           <div className="flex flex-row gap-4 items-center" key={index}>
