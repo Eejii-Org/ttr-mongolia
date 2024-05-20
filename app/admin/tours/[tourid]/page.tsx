@@ -5,7 +5,6 @@ import {
   DayIcon,
   ImagesEditor,
   Input,
-  NightIcon,
   PriceIcon,
 } from "@components";
 import Link from "next/link";
@@ -125,7 +124,6 @@ const Tour = () => {
           overview: "",
           originalPrice: [],
           days: 0,
-          nights: 0,
           minimumRequired: 0,
           categories: [],
           included: [],
@@ -141,7 +139,6 @@ const Tour = () => {
           overview: "",
           originalPrice: [],
           days: 0,
-          nights: 0,
           minimumRequired: 0,
           categories: [],
           included: [],
@@ -316,19 +313,6 @@ const Detail = ({
             icon={<DayIcon />}
             min={0}
             onChange={(e) => setTour({ ...tour, days: Number(e.target.value) })}
-          />
-        </div>
-        <div className="max-w-80">
-          <label className="pl-2 font-medium">Tour Nights:</label>
-          <Input
-            type="number"
-            placeholder="3"
-            min={0}
-            value={tour.nights}
-            icon={<NightIcon />}
-            onChange={(e) =>
-              setTour({ ...tour, nights: Number(e.target.value) })
-            }
           />
         </div>
       </div>

@@ -6,9 +6,7 @@ export default async function sitemap() {
   const supabase = createClient();
   const { data: tours } = await supabase
     .from("tours")
-    .select(
-      "id, title, overview, days, nights, images, categories, displayPrice"
-    )
+    .select("id, title, overview, days, images, categories, displayPrice")
     .eq("status", "active");
   const siteMapPosts =
     tours?.map((tour) => ({

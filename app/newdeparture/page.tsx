@@ -20,7 +20,6 @@ type TourType = {
   title: string;
   originalPrice: PriceType[];
   days: number;
-  nights: number;
   minimumRequired: number;
   displayPrice: number;
 };
@@ -99,7 +98,7 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
       const { data, error } = await supabase
         .from("tours")
         .select(
-          "id, title, originalPrice, days, nights, minimumRequired, displayPrice"
+          "id, title, originalPrice, days, minimumRequired, displayPrice"
         );
       if (error) {
         console.error(error);
@@ -301,8 +300,7 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
                       ${pricePerPerson} Per person
                     </div>
                     <div className="font-medium text-[#c1c1c1]">
-                      {selectedTourData?.days} days / {selectedTourData?.nights}{" "}
-                      nights
+                      {selectedTourData?.days} days
                     </div>
                   </div>
                 </div>

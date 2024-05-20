@@ -40,7 +40,6 @@ export const Availability = ({
             displayPrice={tour.displayPrice}
             originalPrice={tour.originalPrice}
             days={tour.days}
-            nights={tour.nights}
             key={index}
           />
         ))}
@@ -53,7 +52,6 @@ export const Availability = ({
             displayPrice={tour.displayPrice}
             originalPrice={tour.originalPrice}
             days={tour.days}
-            nights={tour.nights}
             type="near"
             key={index}
           />
@@ -82,7 +80,6 @@ interface AvailabilityItemPropsType extends AvailableTourType {
   originalPrice: PriceType[];
   displayPrice: number;
   days: number;
-  nights: number;
   type?: "near";
 }
 

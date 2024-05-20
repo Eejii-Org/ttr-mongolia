@@ -67,12 +67,6 @@ export const Tour = (props: { tour: CombinedToursDataType }) => {
               <span className="font-bold">{days}</span> days
             </div>
           </div>
-          {/* <div className="flex flex-row gap-2 items-center">
-            <NightIcon />
-            <div className="text-base lg:text-xl">
-              <span className="font-bold">{nights}</span> nights
-            </div>
-          </div> */}
         </div>
         <div className="flex md:flex-col lg:flex-row gap-4">
           {/* <button className="ripple flex-1 py-2 md:py-3 bg-primary text-center font-bold text-tertiary rounded-xl">

@@ -6,7 +6,6 @@ type TourType = {
   overview: string;
   originalPrice: PriceType[];
   days: number;
-  nights: number;
   minimumRequired: number;
   categories: number[];
   included: AssetType[];

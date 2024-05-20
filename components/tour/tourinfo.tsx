@@ -74,12 +74,6 @@ export const TourInfo = ({
             <span className="font-bold">{tour.days}</span> days
           </div>
         </div> */}
-        {/* <div className="flex flex-row gap-2 items-center">
-          <NightIcon />
-          <div className="text-base lg:text-xl">
-            <span className="font-bold">{tour.nights}</span> nights
-          </div>
-        </div> */}
       </div>
 
       <button

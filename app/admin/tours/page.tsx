@@ -98,9 +98,7 @@ const AdminTours = () => {
               <td className="px-3 py-2 whitespace-nowrap text-ellipsis max-w-64 overflow-hidden">
                 {tour.overview}
               </td>
-              <td className="px-3 py-2">
-                {tour.days} days / {tour.nights} nights
-              </td>
+              <td className="px-3 py-2">{tour.days} days</td>
               <td className=" px-3 font-bold py-2">${tour.displayPrice}</td>
               <td className="flex justify-end max-w-12 w-12">
                 <Link

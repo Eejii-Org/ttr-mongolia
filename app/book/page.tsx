@@ -19,7 +19,6 @@ type TourType = {
   title: string;
   originalPrice: PriceType[];
   days: number;
-  nights: number;
 };
 type AvailableTourType = {
   tourId: number;
@@ -115,7 +114,7 @@ const Booking = () => {
       }
       const { data: tourData, error: err } = await supabase
         .from("tours")
-        .select("title, originalPrice, days, nights")
+        .select("title, originalPrice, days")
         .eq("id", data[0].tourId);
       if (err) {
         console.error(err);
@@ -316,7 +315,7 @@ const Booking = () => {
                     </div>
                   </div>
                   <div className="font-medium text-[#c1c1c1]">
-                    {tour?.days} days / {tour?.nights} nights
+                    {tour?.days} days
                   </div>
                 </div>
               </div>

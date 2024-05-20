@@ -14,7 +14,6 @@ type TType = {
   title: string;
   overview: string;
   days: number;
-  nights: number;
   categories: number[];
   displayPrice: number | null;
 };
@@ -25,9 +24,7 @@ const getTours = async () => {
   try {
     const { data: tours, error } = await supabase
       .from("tours")
-      .select(
-        "id, title, overview, days, nights, images, categories, displayPrice"
-      )
+      .select("id, title, overview, days, images, categories, displayPrice")
       .eq("status", "active");
     if (error) {
       throw error;
