@@ -1,4 +1,4 @@
-import { ArrowRight, DayIcon, PriceIcon } from "../icons";
+import { DayIcon, PriceIcon } from "../icons";
 import Link from "next/link";
 import StorageImage from "../storageimage";
 export const SimilarTours = ({
@@ -20,48 +20,45 @@ export const SimilarTours = ({
 
 const TourCard = (props: TourType) => {
   return (
-    <div className="shadow rounded-xl flex-1">
-      <div className="relative h-64">
-        <StorageImage
-          src={props.images[0]}
-          alt={props.title}
-          quality={5}
-          fill
-          className="object-cover rounded-xl"
-        />
-      </div>
-      <div className="p-4 flex flex-col gap-4">
-        <div className="flex flex-col gap-2">
-          <h5 className="text-xl md:text-2xl font-bold">{props.title}</h5>
-          <p className="tour-item-description-3 text-[#6D6D6D]">
-            {props.overview}
-          </p>
+    <Link href={`/tours/${props.id}`} className="flex-1 flex">
+      <div className="shadow rounded-xl flex-1">
+        <div className="relative h-64">
+          <StorageImage
+            src={props.images[0]}
+            alt={props.title}
+            quality={5}
+            fill
+            className="object-cover rounded-xl"
+          />
         </div>
-        <div className="flex flex-row flex-wrap gap-4 justify-between">
-          <div className="flex flex-row gap-4">
-            <div className="flex flex-row items-center gap-1 font-semibold text-lg">
-              <PriceIcon />${props.displayPrice}
-            </div>
-            <div className="bg-black/20 w-[2px] rounded my-1" />
-            <div className="flex flex-row items-center gap-1 font-semibold text-lg">
-              <DayIcon />
-              {props.days}
-              <span className="font-medium text-xl">
-                {props.days == 1 ? " day" : " days"}
-              </span>
-            </div>
+        <div className="p-4 flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <h5 className="text-xl md:text-2xl font-bold">{props.title}</h5>
+            <p className="tour-item-description-3 text-[#6D6D6D]">
+              {props.overview}
+            </p>
           </div>
-          <div className="flex-1 flex items-end justify-end">
-            <Link
-              href={`/tours/${props.id}`}
-              className="flex flex-row items-center gap-2"
-            >
+          <div className="flex flex-row flex-wrap gap-4 justify-between">
+            <div className="flex flex-row gap-4">
+              <div className="flex flex-row items-center gap-1 font-semibold text-lg">
+                <PriceIcon />${props.displayPrice}
+              </div>
+              <div className="bg-black/20 w-[2px] rounded my-1" />
+              <div className="flex flex-row items-center gap-1 font-semibold text-lg">
+                <DayIcon />
+                {props.days}
+                <span className="font-medium text-xl">
+                  {props.days == 1 ? " day" : " days"}
+                </span>
+              </div>
+            </div>
+            <div className="flex-1 flex items-end justify-end">
               <Arrow />
-            </Link>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

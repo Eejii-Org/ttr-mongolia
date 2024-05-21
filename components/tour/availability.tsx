@@ -28,7 +28,7 @@ export const Availability = ({
     <div className="flex flex-col gap-4">
       <div className="text-2xl md:text-4xl font-semibold">Available Tours</div>
       <div className="flex flex-col gap-4">
-        {availableTours.length == 0 && (
+        {otherTours.length == 0 && (
           <div>
             There are currently no scheduled departures but you can request a
             new departure date.
@@ -43,19 +43,24 @@ export const Availability = ({
             key={index}
           />
         ))}
-        <h3 className="font-semibold text-xl">
-          Following tours are departing soon
-        </h3>
-        {nearTours.map((tourDate, index) => (
-          <AvailabilityItem
-            {...tourDate}
-            displayPrice={tour.displayPrice}
-            originalPrice={tour.originalPrice}
-            days={tour.days}
-            type="near"
-            key={index}
-          />
-        ))}
+        {nearTours.length != 0 && (
+          <>
+            <h3 className="font-semibold text-xl">
+              Following tours are departing soon
+            </h3>
+            {nearTours.map((tourDate, index) => (
+              <AvailabilityItem
+                {...tourDate}
+                displayPrice={tour.displayPrice}
+                originalPrice={tour.originalPrice}
+                days={tour.days}
+                type="near"
+                key={index}
+              />
+            ))}
+          </>
+        )}
+
         <div className="flex flex-row justify-between gap-4 items-center pt-2">
           <div className="text-xl font-semibold">
             Or you can request for a new tour
