@@ -411,7 +411,7 @@ const getDate = (date?: string, days?: number) => {
   if (!date || !days) return "";
   const startingDate = new Date(date);
   let endingDate = new Date(date);
-  endingDate.setDate(startingDate.getDate() + days);
+  endingDate.setDate(startingDate.getDate() + days - 1);
   return (
     startingDate.toLocaleString("default", { month: "long" }) +
     " " +

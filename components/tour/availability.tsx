@@ -99,7 +99,7 @@ const AvailabilityItem: FC<AvailabilityItemPropsType> = ({
   const dates = useMemo(() => {
     const startingDate = new Date(date);
     let endingDate = new Date(date);
-    endingDate.setDate(startingDate.getDate() + days);
+    endingDate.setDate(startingDate.getDate() + days - 1);
     return {
       startingDate: {
         day: startingDate.toLocaleString("default", { weekday: "short" }),

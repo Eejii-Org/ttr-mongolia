@@ -138,7 +138,7 @@ const Booking = () => {
     if (!availableTour || !tour) return null;
     const startingDate = new Date(availableTour.date);
     let endingDate = new Date(availableTour.date);
-    endingDate.setDate(startingDate.getDate() + tour?.days);
+    endingDate.setDate(startingDate.getDate() + tour?.days - 1);
     return {
       startingDate: {
         day: startingDate.toLocaleString("default", { weekday: "short" }),
