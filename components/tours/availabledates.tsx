@@ -20,6 +20,7 @@ export const AvailableDates = ({
   const availableDatesOpen = searchParams.get("availableDatesOpen");
   useEffect(() => {
     if (availableDatesOpen) {
+      document.body.style.cssText = `overflow: hidden`;
       setOpen(availableDatesOpen == "true");
     }
   }, [availableDatesOpen]);
@@ -39,7 +40,7 @@ export const AvailableDates = ({
             setOpen(!open);
           }}
         >
-          Check Nex Tour Departures
+          Check Next Tour Departures
         </button>
         <span className="  bg-red-500 w-4 h-4 absolute -right-[6px] -top-[6px] border-2 border-white rounded-full" />
       </div>

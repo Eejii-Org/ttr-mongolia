@@ -41,7 +41,7 @@ const TourCategory: FC<CategoryType> = (props) => {
       }}
       className="flex-auto md:flex-1"
     >
-      <div className="flex h-56 md:h-80 lg:h-72 bg-yellow-300 p-3 items-end relative rounded-[32px] overflow-hidden">
+      <div className="flex h-56 md:h-[300px] bg-yellow-300 p-3 items-end relative rounded-[32px] overflow-hidden">
         <StorageImage
           src={image || ""}
           fill

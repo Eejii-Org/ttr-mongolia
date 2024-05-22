@@ -90,13 +90,13 @@ const Home: FC = async () => {
         {/* <InfiniteScrollingTours
           tours={availableTours as ModifiedAvailableTourType[]}
         /> */}
-        <div className="container mx-auto flex flex-col gap-28">
+        <div className="container px-4 mx-auto flex flex-col gap-28">
           <SaleDepartures data={availableTours as TourCardDataType[]} />
           <Values />
           <TourCategories categories={categories as CategoryType[]} />
         </div>
         <CustomerSupport />
-        <div className="container mx-auto flex flex-col gap-28">
+        <div className="container px-4 mx-auto flex flex-col gap-28">
           <OurAgency />
         </div>
         <PrivateTour />

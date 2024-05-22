@@ -14,7 +14,8 @@ export const Tour = (props: { tour: CombinedToursDataType }) => {
   }, [tour]);
   return (
     <div className="flex flex-col md:h-48 md:flex-row gap-2 md:gap-8 cursor-default">
-      <div className="relative md:w-1/4 md:max-w-80 h-48 md:h-auto rounded overflow-hidden">
+      <div className="relative md:w-[30%] h-48 md:h-56 rounded-2xl overflow-hidden">
+        {/* <div className="relative md:w-1/4 md:max-w-80 h-48 md:h-auto rounded overflow-hidden"> */}
         <Link href={"/tours/" + tour.id}>
           <StorageImage
             src={images[0]}

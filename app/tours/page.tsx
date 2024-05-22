@@ -85,7 +85,7 @@ const Tours = async () => {
     await getTours();
   return (
     <MainLayout>
-      <div className="flex flex-col gap-8 px-3 md:p-0  md:mx-auto container">
+      <div className="flex flex-col gap-8 px-3 lg:p-0 lg:mx-auto lg:container lg:px-4">
         <ToursFilter
           combinedToursData={combinedToursData}
           combinedAvailableToursData={combinedAvailableToursData}
