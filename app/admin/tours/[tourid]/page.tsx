@@ -61,12 +61,13 @@ const Tour = () => {
       router.push(`/admin/tours/${data[0].id}`);
       return;
     }
-    const uploadablePictures = tour?.images.filter((image) =>
-      typeof image === "string" || image instanceof String ? false : true
-    );
-    const deletedPictures = originalTour?.images.filter(
-      (image) => !tour?.images.includes(image)
-    );
+    const uploadablePictures =
+      tour?.images?.filter((image) =>
+        typeof image === "string" || image instanceof String ? false : true
+      ) || [];
+    const deletedPictures =
+      originalTour?.images?.filter((image) => !tour?.images.includes(image)) ||
+      [];
     if (deletedPictures && deletedPictures.length > 0) {
       await deleteImagesInS3(deletedPictures);
     }

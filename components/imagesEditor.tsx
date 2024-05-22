@@ -17,7 +17,7 @@ export const ImagesEditor = ({
   };
   return (
     <div className="flex flex-row flex-wrap gap-4">
-      {images.map((image: string | Blob, index: number) => (
+      {images?.map((image: string | Blob, index: number) => (
         <ImageItem
           image={image}
           index={index}
