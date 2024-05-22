@@ -10,6 +10,9 @@ const Transaction = () => {
   const router = useRouter();
   const [transaction, setTransaction] = useState<TransactionType | null>(null);
   const [tourData, setTourData] = useState<TourType | null>(null);
+  const [departureData, setDepartureData] = useState<AvailableTourType | null>(
+    null
+  );
   const [loading, setLoading] = useState(true);
   const params = useParams();
   const { transactionid } = params;
@@ -36,7 +39,7 @@ const Transaction = () => {
         }
         const { data: availableTourData, error: err } = await supabase
           .from("availableTours")
-          .select("tourId")
+          .select("tourId, date")
           .eq("id", data[0].availableTourId)
           .limit(1)
           .single();
@@ -57,6 +60,7 @@ const Transaction = () => {
         }
         setTourData(tourData[0] as TourType);
         setTransaction(data[0] as TransactionType);
+        // setDepartureData(availableTourData as Depart);
       } catch (error: any) {
         console.error("Error fetching transaction:", error.message);
         toast.error("Error fetching transaction:", error.message);
@@ -109,7 +113,7 @@ const Detail = ({
     <div className="flex flex-col gap-4">
       <div className="flex flex-row gap-4 items-center justify-between">
         <div className="text-2xl md:text-4xl font-semibold">
-          {tourData?.title}
+          {tourData?.title} {}
         </div>
         <div>
           {transaction?.transactionDetail &&

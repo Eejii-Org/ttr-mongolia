@@ -32,3 +32,4 @@ export * from "./ttrmongoliaicon";
 export * from "./bigsuccessicon";
 export * from "./bigerroricon";
 export * from "./arrowuprighticon";
+export * from "./staricon";

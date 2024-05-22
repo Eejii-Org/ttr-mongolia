@@ -30,7 +30,7 @@ type AvailableTourType = {
   id?: number;
   date: string;
   salePrice: number | null;
-  status: "active" | "inactive";
+  status?: "active" | "inactive";
   tourId: number;
   // tourId: string;
   // title: string;

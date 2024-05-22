@@ -1,15 +1,30 @@
 "use client";
 import { supabase } from "@/utils/supabase/client";
-import { ArrowRight } from "@components";
+import { ArrowRight, Input, SearchIcon } from "@components";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const AdminTransactions = () => {
   const [transactions, setTransactions] = useState<TransactionType[]>([]);
+  const [input, setInput] = useState("");
+  const results = useMemo(() => {
+    if (input == "") return transactions;
+    return transactions.filter(
+      (transaction) =>
+        (transaction.firstName + " " + transaction.lastName).includes(input) ||
+        transaction.email.includes(input) ||
+        transaction.phoneNumber.includes(input)
+    );
+  }, [input]);
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const { data, error } = await supabase.from("transactions").select("*");
+        const { data, error } = await supabase
+          .from("transactions")
+          .select("*")
+          .order("id", {
+            ascending: false,
+          });
         if (error) {
           throw error;
         }
@@ -18,13 +33,23 @@ const AdminTransactions = () => {
         console.error("Error fetching tour transactions:", error.message);
       }
     };
-
     fetchTransactions();
   }, []);
   return (
     <div className="p-4 flex-1">
       <div className="flex flex-row justify-between pb-4">
         <div className="text-2xl md:text-4xl font-semibold">Transactions</div>
+        <div className="flex flex-1 justify-end items-end">
+          <div className="min-w-64">
+            <Input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Search"
+              type="text"
+              icon={<SearchIcon />}
+            />
+          </div>
+        </div>
       </div>
       <table className="border overflow-scroll w-full bg-white rounded-md">
         <tr>
@@ -55,7 +80,7 @@ const AdminTransactions = () => {
 
           <th className="text-left px-3 py-2 font-semibold md:text-lg max-w-12 border-b w-12"></th>
         </tr>
-        {transactions.map(
+        {results.map(
           (
             {
               id,

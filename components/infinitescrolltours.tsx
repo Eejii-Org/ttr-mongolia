@@ -3,6 +3,14 @@ import { ArrowUpRightIcon } from "./icons";
 
 export type ModifiedAvailableTourType = AvailableTourType & {
   title: string;
+  displayPrice: number;
+  originalPrice: {
+    passengerCount: number;
+    pricePerPerson: number;
+  }[];
+  overview: string;
+  images: string[];
+  days: number;
 };
 
 export const InfiniteScrollingTours = ({

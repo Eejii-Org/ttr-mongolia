@@ -19,3 +19,4 @@ export * from "./selectnationality";
 export * from "./storageimage";
 export * from "./imagesEditor";
 export * from "./infinitescrolltours";
+export * from "./tourcard";

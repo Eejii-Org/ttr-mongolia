@@ -6,6 +6,7 @@ import {
   Overview,
   Reviews,
   SimilarTours,
+  TourCardDataType,
   TourInfo,
   TourIntro,
   TourPlan,
@@ -92,7 +93,7 @@ const getTourPageDetails = async (tourid: string) => {
       throw e;
     }
     const minimumPrice = _.min(saleTours.map((t) => t.salePrice));
-    let similarTours: TourType[] = [];
+    let similarTours: TourCardDataType[] = [];
     const { data: dataWithSameCategory } = await supabase
       .from("random_tours")
       .select(`*`)
@@ -139,7 +140,7 @@ const getTourPageDetails = async (tourid: string) => {
       saleTours: saleTours as AvailableTourType[],
       categories: categories as CategoryType[],
       minimumPrice: minimumPrice as number,
-      similarTours: similarTours as TourType[],
+      similarTours: similarTours as TourCardDataType[],
     };
   } catch (error: any) {
     console.error("Error fetching tour categories:", error.message);
@@ -168,6 +169,7 @@ const TourPage = async ({ params }: { params: { tourid: string } }) => {
     redirect("/tours");
     return;
   }
+  console.log(similarTours);
   return (
     <MainLayout headerTransparent>
       <div className="flex flex-col gap-4 md:gap-12">

@@ -8,8 +8,9 @@ import {
   MainLayout,
   PrivateTour,
   TourCategories,
-  InfiniteScrollingTours,
   ModifiedAvailableTourType,
+  SaleDepartures,
+  TourCardDataType,
 } from "@components";
 import { createClient } from "@/utils/supabase/server";
 
@@ -53,13 +54,14 @@ const getAvailableTours = async () => {
       .select("salePrice, tourId, date")
       .eq("status", "active")
       .gte("date", new Date().toISOString())
-      .order("date")
-      .limit(5);
+      .not("salePrice", "is", null)
+      .order("salePrice")
+      .limit(3);
     if (err) throw err;
     const tourIdArray = availableTours?.map((aTour) => aTour.tourId) || [];
     const { data: tours, error } = await supabase
       .from("tours")
-      .select("title, id")
+      .select("title, id, displayPrice, originalPrice, overview, images, days")
       .in("id", tourIdArray);
     if (error) throw error;
     const combinedAvailableToursData =
@@ -68,9 +70,7 @@ const getAvailableTours = async () => {
         : availableTours.map((availableTour) => {
             return {
               ...availableTour,
-              title:
-                tours.find((tour) => tour.id == availableTour.tourId)?.title ||
-                null,
+              ...tours.find((tour) => tour.id == availableTour.tourId),
             };
           });
     return combinedAvailableToursData;
@@ -87,10 +87,11 @@ const Home: FC = async () => {
     <MainLayout headerTransparent>
       <div className="flex-1 w-full flex flex-col gap-28">
         <Intro intro={intro as IntroType[]} />
-        <InfiniteScrollingTours
+        {/* <InfiniteScrollingTours
           tours={availableTours as ModifiedAvailableTourType[]}
-        />
+        /> */}
         <div className="container mx-auto flex flex-col gap-28">
+          <SaleDepartures data={availableTours as TourCardDataType[]} />
           <Values />
           <TourCategories categories={categories as CategoryType[]} />
         </div>
