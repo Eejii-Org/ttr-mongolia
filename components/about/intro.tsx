@@ -33,7 +33,7 @@ export const AboutIntro = () => {
       </div>
       <div className="flex-1 relative min-h-80 w-full md:h-[min(596px,70vh)] rounded-lg overflow-hidden">
         <StorageImage
-          src="images/about-us.JPG"
+          src="images/about-us.webp"
           alt="intro"
           fill
           className="object-cover"

@@ -16,7 +16,7 @@ import { Availability } from "@/components/tour/availability";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { Metadata, ResolvingMetadata } from "next";
+import { Metadata } from "next";
 
 type Props = {
   params: { tourid: string };
@@ -169,7 +169,6 @@ const TourPage = async ({ params }: { params: { tourid: string } }) => {
     redirect("/tours");
     return;
   }
-  console.log(similarTours);
   return (
     <MainLayout headerTransparent>
       <div className="flex flex-col gap-4 md:gap-12">

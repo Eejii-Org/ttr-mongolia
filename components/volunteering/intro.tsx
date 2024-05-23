@@ -44,7 +44,7 @@ export const VolunteeringIntro = () => {
 
       <div className="flex-1 relative min-h-80 w-full md:h-[min(596px,70vh)] rounded-lg overflow-hidden">
         <StorageImage
-          src="images/volunteering-intro.jpg"
+          src="images/volunteering-intro.webp"
           alt="intro"
           fill
           className="object-cover"

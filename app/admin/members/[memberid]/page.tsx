@@ -43,8 +43,6 @@ const Member = () => {
           newMember.image = filePath;
         }
       }
-      console.log("WTF");
-      console.log(newMember);
       const { data, error } = await supabase
         .from("members")
         .insert({ ...newMember })
