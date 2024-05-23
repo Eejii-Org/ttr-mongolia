@@ -2,6 +2,8 @@
 
 import { ChevronLeftIcon, ChevronRightIcon, StorageImage } from "@components";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+
 export const Intro = ({ intro }: { intro: IntroType[] }) => {
   const [index, setIndex] = useState(0);
   const carouselClick = (direction: "left" | "right") => {
@@ -104,6 +106,16 @@ export const Intro = ({ intro }: { intro: IntroType[] }) => {
             "linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 25%), linear-gradient(0deg, rgba(0,0,0,0) 75%, rgba(0,0,0,0.4) 100%)",
         }}
       ></div>
+      <div
+        key={0}
+        className={`absolute w-full h-full select-none ${
+          0 == index ? "opacity-100" : "opacity-0"
+        }`}
+        style={{
+          transition: "all 400ms",
+          top: 0,
+        }}
+      ></div>
       {intro?.map((item, i) => (
         <div
           key={i}
@@ -115,16 +127,29 @@ export const Intro = ({ intro }: { intro: IntroType[] }) => {
             top: 0,
           }}
         >
-          <StorageImage
-            src={item.image || ""}
-            fill
-            alt={item.title}
-            priority
-            // unoptimized={true}
-            className={`object-cover select-none${
-              i == index ? "introImageAnimation" : ""
-            }`}
-          />
+          {i == 0 ? (
+            <Image
+              src={"/static/intro.webp"}
+              fill
+              alt={"Intro"}
+              priority
+              // unoptimized={true}
+              className={`object-cover select-none${
+                i == index ? "introImageAnimation" : ""
+              }`}
+            />
+          ) : (
+            <StorageImage
+              src={item.image || ""}
+              fill
+              alt={item.title}
+              priority
+              // unoptimized={true}
+              className={`object-cover select-none${
+                i == index ? "introImageAnimation" : ""
+              }`}
+            />
+          )}
         </div>
       ))}
     </div>
