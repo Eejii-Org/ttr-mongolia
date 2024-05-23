@@ -24,31 +24,31 @@ export async function POST(request: Request) {
   if (error) {
     return Response.json(error);
   }
-  const { data: availableTour, error: err } = await supabase
-    .from("availableTours")
-    .select()
-    .eq("id", data.availableTourId)
-    .limit(1)
-    .single();
-  if (err) {
-    return Response.json(err);
-  }
+  // const { data: availableTour, error: err } = await supabase
+  //   .from("availableTours")
+  //   .select()
+  //   .eq("id", data.availableTourId)
+  //   .limit(1)
+  //   .single();
+  // if (err) {
+  //   return Response.json(err);
+  // }
   const res = await checkInvoice(transactionId);
-  const { data: transactionData, error: er } = await supabase
-    .from("transactions")
-    .update({
-      transactionDetail: res.data,
-    })
-    .eq("transactionId", transactionId)
-    .select();
+  // const { data: transactionData, error: er } = await supabase
+  //   .from("transactions")
+  //   .update({
+  //     transactionDetail: res.data,
+  //   })
+  //   .eq("transactionId", transactionId)
+  //   .select();
 
-  if (er) {
-    return Response.json(er);
-  }
+  // if (er) {
+  //   return Response.json(er);
+  // }
 
   return Response.json({
-    transaction: transactionData,
-    availableTour: availableTour,
+    // transaction: transactionData,
+    // availableTour: availableTour,
     invoice: res.data,
   });
 }

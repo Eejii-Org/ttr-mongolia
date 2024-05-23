@@ -55,6 +55,7 @@ const PaymentResult = () => {
       const res = await axios.post(`/api/check-transaction`, {
         transactionId: transactionid,
       });
+      console.log(res);
       setTransactionDetail(res.data);
       setLoading(false);
     };
