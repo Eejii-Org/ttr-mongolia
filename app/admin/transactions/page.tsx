@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 const AdminTransactions = () => {
   const [transactions, setTransactions] = useState<TransactionType[]>([]);
   const [input, setInput] = useState("");
+  console.log(transactions);
   const results = useMemo(() => {
     if (input == "") return transactions;
     return transactions.filter(
@@ -15,7 +16,7 @@ const AdminTransactions = () => {
         transaction.email.includes(input) ||
         transaction.phoneNumber.includes(input)
     );
-  }, [input]);
+  }, [input, transactions]);
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
