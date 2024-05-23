@@ -7,7 +7,6 @@ import { useEffect, useMemo, useState } from "react";
 const AdminTransactions = () => {
   const [transactions, setTransactions] = useState<TransactionType[]>([]);
   const [input, setInput] = useState("");
-  console.log(transactions);
   const results = useMemo(() => {
     if (input == "") return transactions;
     return transactions.filter(
