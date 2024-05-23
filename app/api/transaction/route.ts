@@ -24,7 +24,7 @@ export async function POST(request: Request) {
       .update({
         transactionDetail: body,
       })
-      .eq("transactionId", "HYius7DtsZMiz")
+      .eq("transactionId", body.transactionId)
       .select("*")
       .single();
 
