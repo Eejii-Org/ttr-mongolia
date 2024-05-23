@@ -116,40 +116,48 @@ export const Intro = ({ intro }: { intro: IntroType[] }) => {
           top: 0,
         }}
       ></div>
-      {intro?.map((item, i) => (
+      <div
+        className={`absolute w-full h-full select-none ${
+          0 == index ? "opacity-100" : "opacity-0"
+        }`}
+        style={{
+          transition: "all 400ms",
+          top: 0,
+        }}
+      >
+        <Image
+          src={"/static/intro.webp"}
+          fill
+          alt={"Intro"}
+          priority
+          // unoptimized={true}
+          className={`object-cover select-none${
+            0 == index ? "introImageAnimation" : ""
+          }`}
+        />
+      </div>
+
+      {intro.slice(1)?.map((item, i) => (
         <div
-          key={i}
+          key={i + 1}
           className={`absolute w-full h-full select-none ${
-            i == index ? "opacity-100" : "opacity-0"
+            i + 1 == index ? "opacity-100" : "opacity-0"
           }`}
           style={{
             transition: "all 400ms",
             top: 0,
           }}
         >
-          {i == 0 ? (
-            <Image
-              src={"/static/intro.webp"}
-              fill
-              alt={"Intro"}
-              priority
-              // unoptimized={true}
-              className={`object-cover select-none${
-                i == index ? "introImageAnimation" : ""
-              }`}
-            />
-          ) : (
-            <StorageImage
-              src={item.image || ""}
-              fill
-              alt={item.title}
-              priority
-              // unoptimized={true}
-              className={`object-cover select-none${
-                i == index ? "introImageAnimation" : ""
-              }`}
-            />
-          )}
+          <StorageImage
+            src={item.image || ""}
+            fill
+            alt={item.title}
+            priority
+            // unoptimized={true}
+            className={`object-cover select-none${
+              i + 1 == index ? "introImageAnimation" : ""
+            }`}
+          />
         </div>
       ))}
     </div>
