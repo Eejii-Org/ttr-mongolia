@@ -1,3 +1,4 @@
+import NextTopLoader from "nextjs-toploader";
 import { Analytics } from "@vercel/analytics/react";
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
@@ -32,6 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={GeistSans.className}>
       <body className="bg-background text-foreground gip">
+        <NextTopLoader showSpinner={false} color="#fda403" />
         <main className="min-h-screen flex flex-col items-center">
           {children}
         </main>
