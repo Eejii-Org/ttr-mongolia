@@ -100,10 +100,11 @@ const AdminTransactions = () => {
               key={i}
             >
               <td className="py-2 px-3 ">{id}</td>
-              <td className="text-left px-3 py-2 font-semibold md:text-lg">
-                {transactionDetail &&
-                transactionDetail !== "" &&
-                transactionDetail?.status == "SENT" ? (
+              <td
+                className="text-left px-3 py-2 font-semibold md:text-lg"
+                onClick={() => console.log(transactionDetail)}
+              >
+                {transactionDetail?.errorCode === "000" ? (
                   <div
                     className={`border border-green-500 bg-green-500/10 w-min px-3 py-1 text-sm rounded text-green-500`}
                   >
@@ -111,7 +112,7 @@ const AdminTransactions = () => {
                   </div>
                 ) : (
                   <div
-                    className={`border border-red-500 bg-red-500/10 w-min px-3 py-1 text-sm rounded text-red-500`}
+                    className={`border border-yellow-500 bg-yellow-500/10 w-min px-3 py-1 text-sm rounded text-yellow-500`}
                   >
                     Awaiting
                   </div>

@@ -118,7 +118,7 @@ const Detail = ({
         <div>
           {transaction?.transactionDetail &&
           transaction?.transactionDetail !== "" &&
-          transaction?.transactionDetail?.status == "SENT" ? (
+          transaction?.transactionDetail?.errorCode == "000" ? (
             <div
               className={`border border-green-500 bg-green-500/10 w-min px-5 py-3 text-base rounded text-green-500`}
             >

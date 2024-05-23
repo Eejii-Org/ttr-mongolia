@@ -55,7 +55,6 @@ const PaymentResult = () => {
       const res = await axios.post(`/api/check-transaction`, {
         transactionId: transactionid,
       });
-      console.log(res);
       setTransactionDetail(res.data);
       setLoading(false);
     };
@@ -70,13 +69,17 @@ const PaymentResult = () => {
           <div className="flex flex-col items-center justify-center gap-4">
             <div className="text-2xl font-semibold lg:text-4xl">
               {transactionDetail?.invoice?.status === "SENT"
-                ? "Success"
-                : "Failed"}
+                ? transactionDetail?.invoice?.errorCode === "000"
+                  ? "Success"
+                  : "Failed"
+                : "Pending"}
             </div>
             <div className="text-base lg:text-lg">
               {transactionDetail?.invoice?.status === "SENT"
-                ? "Your payment has been processed successfully"
-                : "Unfortunately payment was rejected"}
+                ? transactionDetail?.invoice?.errorCode === "000"
+                  ? "Your payment has been processed successfully"
+                  : "Unfortunately payment was rejected"
+                : "Transaction is Pending"}
             </div>
             <button
               onClick={() => router.push("/")}
