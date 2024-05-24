@@ -18,8 +18,7 @@ export async function POST(request: Request) {
     .from("transactions")
     .select()
     .eq("transactionId", transactionId)
-    .limit(1)
-    .single();
+    .maybeSingle();
 
   if (error) {
     return Response.json(error);
@@ -33,7 +32,19 @@ export async function POST(request: Request) {
   // if (err) {
   //   return Response.json(err);
   // }
-  const res = await checkInvoice(transactionId);
+  try {
+    const res = await checkInvoice(transactionId);
+    return Response.json({
+      transaction: data,
+      // availableTour: availableTour,
+      invoice: res.data,
+    });
+  } catch (e) {
+    return Response.json({
+      transaction: data,
+      invoice: null,
+    });
+  }
   // const { data: transactionData, error: er } = await supabase
   //   .from("transactions")
   //   .update({
@@ -45,12 +56,6 @@ export async function POST(request: Request) {
   // if (er) {
   //   return Response.json(er);
   // }
-
-  return Response.json({
-    // transaction: transactionData,
-    // availableTour: availableTour,
-    invoice: res.data,
-  });
 }
 
 const hmac256 = (message: string) => {

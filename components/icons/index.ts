@@ -33,3 +33,5 @@ export * from "./bigsuccessicon";
 export * from "./bigerroricon";
 export * from "./arrowuprighticon";
 export * from "./staricon";
+export * from "./calendaricon";
+export * from "./durationicon";

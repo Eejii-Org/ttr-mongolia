@@ -1,4 +1,5 @@
 "use client";
+import supabase from "@/utils/supabase/client";
 import { MainLayout } from "@components";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
@@ -18,20 +19,25 @@ type transactionDetailType = {
     transactionId: string;
   };
   transaction: {
-    additionalInformation: "";
-    amount: null;
-    availableTourId: "";
-    created_at: "";
-    dateOfBirth: "";
-    email: "";
-    firstName: "";
+    additionalInformation: string;
+    availableTourId: string;
+    created_at: string;
+    dateOfBirth: string;
+    deposit: string;
+    email: string;
+    firstName: string;
     id: number;
-    lastName: "";
-    nationality: "";
+    lastName: string;
+    nationality: string;
+    pax: number;
+    paymentMethod: "invoice" | "credit-card";
+    paymentType: "half" | "full";
     peopleCount: number;
-    phoneNumber: "";
-    transactionDetail: null;
-    transactionId: "";
+    phoneNumber: string;
+    total: number;
+    transactionDetail: string | null;
+    transactionId: string;
+    invoiceProcessed: boolean;
   };
   availalbeTour: {
     created_at: string;
@@ -68,18 +74,38 @@ const PaymentResult = () => {
         ) : (
           <div className="flex flex-col items-center justify-center gap-4">
             <div className="text-2xl font-semibold lg:text-4xl">
-              {transactionDetail?.invoice?.status === "SENT"
-                ? transactionDetail?.invoice?.errorCode === "000"
-                  ? "Success"
-                  : "Failed"
-                : "Pending"}
+              {transactionDetail?.transaction.paymentMethod == "invoice" ? (
+                transactionDetail?.transaction.invoiceProcessed ? (
+                  "Success"
+                ) : (
+                  "Processing"
+                )
+              ) : (
+                <>
+                  {transactionDetail?.invoice?.status === "SENT"
+                    ? transactionDetail?.invoice?.errorCode === "000"
+                      ? "Success"
+                      : "Failed"
+                    : "Pending"}
+                </>
+              )}
             </div>
             <div className="text-base lg:text-lg">
-              {transactionDetail?.invoice?.status === "SENT"
-                ? transactionDetail?.invoice?.errorCode === "000"
-                  ? "Your payment has been processed successfully"
-                  : "Unfortunately payment was rejected"
-                : "Transaction is Pending"}
+              {transactionDetail?.transaction.paymentMethod == "invoice" ? (
+                transactionDetail?.transaction.invoiceProcessed ? (
+                  "We have successfully sent invoice to your email."
+                ) : (
+                  "Your departure has been successfully booked. We are currently processing your invoice. Please check your email regularly for the invoice."
+                )
+              ) : (
+                <>
+                  {transactionDetail?.invoice?.status === "SENT"
+                    ? transactionDetail?.invoice?.errorCode === "000"
+                      ? "Your payment has been processed successfully"
+                      : "Unfortunately payment was rejected"
+                    : "Transaction is Pending"}
+                </>
+              )}
             </div>
             <button
               onClick={() => router.push("/")}

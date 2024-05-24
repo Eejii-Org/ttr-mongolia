@@ -1,34 +1,78 @@
 import crypto from "crypto";
 import axios from "axios";
 import { createClient } from "@/utils/supabase/server";
+import { mailTemplate } from "@/utils";
+import nodemailer from "nodemailer";
 export const dynamic = "force-dynamic"; // defaults to auto
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, // Use `true` for port 465, `false` for all other ports
+  auth: {
+    user: process.env.CONTACT_EMAIL,
+    pass: process.env.CONTACT_PASSWORD,
+  },
+});
+
+type BodyType = {
+  personalDetail: {
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+    email: string;
+    nationality: string;
+    dateOfBirth: string;
+    peopleCount: number;
+    additionalInformation: string;
+  };
+  paymentType: string;
+  paymentMethod: string;
+  availableTourId: number;
+  tourTitle: string;
+  startingDate: string;
+  deposit: string;
+  pax: number;
+  total: number;
+};
 
 export async function POST(request: Request) {
   const supabase = createClient();
-  const body = await request.json();
-  if (!body.amount || !body.availableTourId) {
-    return Response.json({
-      status: 400,
-      statusText: "Bad Request",
-    });
-  }
-  const { amount } = body;
+  const body: BodyType = await request.json();
+  const { deposit, pax, total, availableTourId, paymentMethod, paymentType } =
+    body;
+  // deposit can be either half or total amount the value
   const transactionId = generateTransactionId();
-  const res = await getInvoice(transactionId, amount);
+
+  /* Save to Database */
   const { error } = await supabase.from("transactions").insert({
     ...body.personalDetail,
-    transactionId: res.data.transactionId,
-    availableTourId: body.availableTourId,
-    amount: body.amount,
+    transactionId: transactionId,
+    availableTourId,
     transactionDetail: null,
+    paymentMethod,
+    paymentType,
+    deposit,
+    pax,
+    total,
+    invoiceProcessed: false,
   });
+
   if (error) {
     return Response.json({
       status: error.code,
       statusText: error.message,
     });
   }
-  return Response.json(res.data);
+
+  /* Generate Invoice through Golomt Bank */
+  if (paymentMethod == "credit-card") {
+    const inv = await getInvoice(transactionId, deposit);
+    return Response.json(inv.data);
+  }
+  const res = await bookInvoice(body);
+  return Response.json(res);
 }
 
 const hmac256 = (message: string) => {
@@ -72,4 +116,36 @@ const getInvoice = async (transactionId: string, amount: string) => {
       },
     }
   );
+};
+const bookInvoice = async (body: any) => {
+  const {
+    text: customerText,
+    html: customerHTML,
+    subject: customerSubject,
+  } = mailTemplate("bookInvoice", {
+    bookingDetail: body,
+  });
+  const {
+    text: adminText,
+    html: adminHTML,
+    subject: adminSubject,
+  } = mailTemplate("adminBookInvoice", {
+    bookingDetail: body,
+  });
+  const customerInfo = await transporter.sendMail({
+    from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`, // sender address
+    to: body.personalDetail.email,
+    subject: customerSubject,
+    text: customerText,
+    html: customerHTML,
+  });
+  const adminInfo = await transporter.sendMail({
+    from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`, // sender address
+    to: process.env.ADMIN_EMAIL,
+    subject: adminSubject,
+    text: adminText,
+    html: adminHTML,
+  });
+  console.log(customerInfo, adminInfo);
+  return customerInfo;
 };

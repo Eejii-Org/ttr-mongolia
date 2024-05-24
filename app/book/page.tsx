@@ -1,24 +1,36 @@
 "use client";
 import { supabase } from "@/utils/supabase/client";
 import {
-  ArrowRight,
+  ChevronDownIcon,
+  DurationIcon,
   EmailIcon,
-  Input,
   MainLayout,
+  MinusIcon,
+  NewInput,
   PhoneIcon,
-  SelectBirthday,
+  PlusIcon,
   SelectNationality,
+  StorageImage,
+  CalendarIcon,
+  Visa,
+  MasterCard,
+  AmericanExpress,
+  UnionPay,
+  MNT,
+  JCB,
 } from "@components";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import Cookies from "js-cookie";
+import _ from "lodash";
 
 type TourType = {
   title: string;
   originalPrice: PriceType[];
   days: number;
+  images: string[];
 };
 type AvailableTourType = {
   tourId: number;
@@ -34,42 +46,27 @@ const Booking = () => {
   const [isAgreedToPrivacy, setIsAgreedToPrivacy] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [bookingError, setBookingError] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const availableTourId = searchParams.get("availableTourId");
   const router = useRouter();
+  const [paymentType, setPaymentType] = useState<"half" | "full" | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<
+    "credit-card" | "invoice" | null
+  >(null);
   const [personalDetail, setPersonalDetail] = useState({
     firstName: "",
     lastName: "",
     phoneNumber: "",
     email: "",
     nationality: "",
-    dateOfBirth: "2000-1-1",
+    dateOfBirth: "",
     peopleCount: 1,
     additionalInformation: "",
   });
 
-  const updatePersonalDetail = (key: string, value: string | number) => {
-    setPersonalDetail({ ...personalDetail, [key]: value });
-  };
   const [bookLoading, setBookLoading] = useState(false);
-  const book = async () => {
-    if (!availableTour) {
-      setError("Tour Not Found");
-      return;
-    }
-    setBookLoading(true);
-    const res = await axios.post(`/api/request-invoice`, {
-      amount: personalDetail.peopleCount * (pricePerPerson || 1000),
-      // amount: "1",
-      availableTourId,
-      personalDetail,
-    });
-    if (res.status !== 200) {
-      setError(res.statusText);
-    }
-    setBookLoading(false);
-    router.push(`/book/payment?invoice=${res.data.invoice}`);
-  };
+
   const pricePerPerson = useMemo(() => {
     if (availableTour?.salePrice == null) {
       if (!tour?.originalPrice) return;
@@ -82,6 +79,72 @@ const Booking = () => {
     }
     return availableTour.salePrice;
   }, [availableTour, personalDetail]);
+
+  const totalAmount = useMemo(() => {
+    if (!pricePerPerson) return null;
+    return personalDetail.peopleCount * pricePerPerson;
+  }, [personalDetail, pricePerPerson]);
+
+  const updatePersonalDetail = (key: string, value: string | number) => {
+    setBookingError(null);
+    setPersonalDetail({ ...personalDetail, [key]: value });
+  };
+
+  const book = async () => {
+    if (!checkInputs()) return;
+    if (!availableTour) {
+      setBookingError(
+        "Selected tour was not found. Please contact us for further inquiry. Thank you"
+      );
+      return;
+    }
+    if (!totalAmount) {
+      setBookingError(
+        "Total Amount Couldn't be calculated. Please contact us for further inquiry. Thank you"
+      );
+      return;
+    }
+    setBookLoading(true);
+    const res = await axios.post(`/api/request-invoice`, {
+      availableTourId,
+      personalDetail,
+      paymentMethod,
+      paymentType,
+      tourTitle: tour?.title,
+      startingDate: availableTour.date,
+      // deposit: paymentType == "full" ? totalAmount : totalAmount * 0.5,
+      deposit: "0.01",
+      pax: pricePerPerson,
+      total: totalAmount,
+    });
+
+    if (res.status !== 200) {
+      setBookingError(
+        "Unexpected error. Please contact us for further inquiry. Thank you"
+      );
+      setBookLoading(false);
+      return;
+    }
+    if (paymentMethod == "invoice") {
+      router.push(`/book/result/${res.data.transactionId}`);
+      return;
+    }
+    setBookLoading(false);
+    router.push(`/book/payment?invoice=${res.data.invoice}`);
+  };
+
+  const checkInputs = () => {
+    if (Object.values(personalDetail).some((val) => val === "")) {
+      setBookingError("Please fill out all of our inputs in form");
+      return false;
+    }
+    if (!paymentMethod || !paymentType) {
+      setBookingError("Please select payment");
+      return false;
+    }
+    return true;
+  };
+
   useEffect(() => {
     const getIsAgreedToPrivacy = () => {
       const isAgreed = Cookies.get("isAgreedToPrivacy");
@@ -114,7 +177,7 @@ const Booking = () => {
       }
       const { data: tourData, error: err } = await supabase
         .from("tours")
-        .select("title, originalPrice, days")
+        .select("title, originalPrice, days, images")
         .eq("id", data[0].tourId);
       if (err) {
         console.error(err);
@@ -134,32 +197,32 @@ const Booking = () => {
     };
     getTour();
   }, [availableTourId]);
-  const dates = useMemo(() => {
-    if (!availableTour || !tour) return null;
-    const startingDate = new Date(availableTour.date);
-    let endingDate = new Date(availableTour.date);
-    endingDate.setDate(startingDate.getDate() + tour?.days - 1);
-    return {
-      startingDate: {
-        day: startingDate.toLocaleString("default", { weekday: "short" }),
-        date:
-          startingDate.toLocaleString("default", { month: "long" }) +
-          " " +
-          startingDate.getDate() +
-          " " +
-          startingDate.getFullYear(),
-      },
-      endingDate: {
-        day: endingDate.toLocaleString("default", { weekday: "short" }),
-        date:
-          endingDate.toLocaleString("default", { month: "long" }) +
-          " " +
-          endingDate.getDate() +
-          " " +
-          endingDate.getFullYear(),
-      },
-    };
-  }, [availableTour]);
+  // const dates = useMemo(() => {
+  //   if (!availableTour || !tour) return null;
+  //   const startingDate = new Date(availableTour.date);
+  //   let endingDate = new Date(availableTour.date);
+  //   endingDate.setDate(startingDate.getDate() + tour?.days - 1);
+  //   return {
+  //     startingDate: {
+  //       day: startingDate.toLocaleString("default", { weekday: "short" }),
+  //       date:
+  //         startingDate.toLocaleString("default", { month: "long" }) +
+  //         " " +
+  //         startingDate.getDate() +
+  //         " " +
+  //         startingDate.getFullYear(),
+  //     },
+  //     endingDate: {
+  //       day: endingDate.toLocaleString("default", { weekday: "short" }),
+  //       date:
+  //         endingDate.toLocaleString("default", { month: "long" }) +
+  //         " " +
+  //         endingDate.getDate() +
+  //         " " +
+  //         endingDate.getFullYear(),
+  //     },
+  //   };
+  // }, [availableTour]);
 
   if (error) {
     return (
@@ -191,8 +254,460 @@ const Booking = () => {
 
   return (
     <MainLayout>
-      <div className="w-screen flex-1 px-3  xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col gap-4 justify-center">
-        <div className=" text-2xl font-semibold lg:text-4xl">{tour?.title}</div>
+      <div className="flex flex-col md:flex-row relative bg-[#F8FAFC]">
+        <div
+          className="flex-1 relative px-4"
+          style={{
+            backgroundImage: "url(/static/book-bg.png)",
+            backgroundSize: "150% 150%",
+            backgroundPosition: "center",
+          }}
+        >
+          <div className="max-w-[764px] mx-auto my-8 flex flex-col gap-4 relative z-10">
+            <h1 className="text-2xl font-bold lg:text-3xl">Personal Info</h1>
+            <Drawer title="Payment Method" open={true}>
+              <div className="flex gap-4 md:gap-6 flex-col md:flex-row">
+                <NewInput
+                  type="text"
+                  label="First Name:"
+                  value={personalDetail.firstName}
+                  placeholder="John"
+                  onChange={(e) => {
+                    updatePersonalDetail("firstName", e.target.value);
+                  }}
+                  required
+                />
+                <NewInput
+                  type="text"
+                  label="Last Name:"
+                  value={personalDetail.lastName}
+                  placeholder="Doe"
+                  onChange={(e) => {
+                    updatePersonalDetail("lastName", e.target.value);
+                  }}
+                  required
+                />
+              </div>
+              <div className="flex gap-4 md:gap-6 flex-col md:flex-row">
+                <NewInput
+                  label="Phone Number:"
+                  type={"tel"}
+                  value={personalDetail.phoneNumber}
+                  placeholder="+976 9999 9999"
+                  icon={<PhoneIcon />}
+                  onChange={(e) => {
+                    updatePersonalDetail("phoneNumber", e.target.value);
+                  }}
+                  required
+                />
+                <NewInput
+                  label="Email Address:"
+                  value={personalDetail.email}
+                  type={"email"}
+                  placeholder="example@gmail.com"
+                  icon={<EmailIcon />}
+                  onChange={(e) => {
+                    updatePersonalDetail("email", e.target.value);
+                  }}
+                  required
+                />
+              </div>
+              <NewInput
+                label="Date of Birth:"
+                value={personalDetail.dateOfBirth}
+                type={"date"}
+                placeholder="yyyy.mm.dd"
+                onChange={(e) => {
+                  updatePersonalDetail("dateOfBirth", e.target.value);
+                }}
+                required
+              />
+              <SelectNationality
+                value={personalDetail.nationality}
+                onChange={(value: string) =>
+                  updatePersonalDetail("nationality", value)
+                }
+              />
+            </Drawer>
+            <Drawer title="Departure Detail" open={true}>
+              <div className="flex-1 flex flex-col gap-[6px]">
+                <label className="font-semibold">
+                  How many people will travel including you?
+                </label>
+                <div className="p-[9.5px] py-3 flex flex-row items-center justify-center border rounded-2xl">
+                  <button
+                    className="ripple rounded-full"
+                    onClick={() =>
+                      updatePersonalDetail(
+                        "peopleCount",
+                        Number(
+                          personalDetail.peopleCount == 1
+                            ? 1
+                            : personalDetail.peopleCount - 1
+                        )
+                      )
+                    }
+                  >
+                    <MinusIcon color="#1e1e1e" />
+                  </button>
+                  <input
+                    className="flex-1 text-center outline-none"
+                    value={personalDetail.peopleCount}
+                    type={"number"}
+                    min={1}
+                    placeholder="3"
+                    onChange={(e) => {
+                      updatePersonalDetail(
+                        "peopleCount",
+                        Number(e.target.value)
+                      );
+                    }}
+                    required
+                  />
+                  <button
+                    className="ripple rounded-full"
+                    onClick={() =>
+                      updatePersonalDetail(
+                        "peopleCount",
+                        Number(personalDetail.peopleCount + 1)
+                      )
+                    }
+                  >
+                    <PlusIcon color="#1e1e1e" />
+                  </button>
+                </div>
+              </div>
+              <div className="flex-1 flex flex-col gap-[6px]">
+                <label className="font-semibold">Additional Information:</label>
+                <textarea
+                  placeholder="Are there anything you would like us to know? Ex. Diet/Food allergies diseases and injuries?"
+                  className="min-h-32 p-4 border rounded-xl"
+                  value={personalDetail.additionalInformation}
+                  onChange={(e) => {
+                    updatePersonalDetail(
+                      "additionalInformation",
+                      e.target.value
+                    );
+                  }}
+                ></textarea>
+              </div>
+            </Drawer>
+            <Drawer title="Payment Method" open={true}>
+              <DetailCard
+                paymentType={paymentType}
+                setPaymentType={setPaymentType}
+                paymentMethod={paymentMethod}
+                setPaymentMethod={setPaymentMethod}
+                setBookingError={setBookingError}
+              />
+            </Drawer>
+          </div>
+        </div>
+        <div className="bg-white drop-shadow-card px-4 lg:px-16 relative py-8 md:pt-0">
+          {/* <div className="w-80"></div> */}
+          <div className="md:sticky md:left-0 md:top-0 flex flex-col gap-4 md:pt-[82px] md:-mt-[82px]">
+            <h1 className="text-2xl font-bold lg:text-3xl">Tour Detail</h1>
+            {/* Tour Card */}
+            <div className="md:w-80 drop-shadow-card">
+              <div className="relative md:w-[320px] h-[220px] rounded-t-2xl overflow-hidden">
+                <StorageImage
+                  fill
+                  alt="tour-image"
+                  className="object-cover"
+                  src={tour.images[0]}
+                />
+              </div>
+              <div className="p-5 pt-4 border border-t-0 rounded-b-xl flex flex-col gap-3">
+                <h3 className="text-lg font-bold">{tour.title}</h3>
+                <div className="flex flex-row gap-4">
+                  <div className="flex flex-row items-center justify-center text-sm font-semibold gap-1">
+                    <CalendarIcon />
+                    {months[Number(availableTour.date?.split("-")[1]) - 1]}{" "}
+                    {availableTour.date?.split("-")[2]}
+                  </div>
+                  <div className="bg-black/20 w-[2px] rounded my-1" />
+                  <div className="flex flex-row justify-center text-sm items-center font-semibold gap-1">
+                    <DurationIcon />
+                    {tour.days}
+                    {tour.days == 1 ? " day" : " days"}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* Pax and pricing detail */}
+            <div className="pt-4 md:pt-0">
+              <div className="flex flex-row justify-between">
+                <label className="text-[#6D6D6D] font-medium">Pax:</label>
+                <p className="font-semibold">${pricePerPerson?.toFixed(2)}</p>
+              </div>
+              <div className="flex justify-end">
+                <p className="text-[#6D6D6D]">
+                  x{personalDetail.peopleCount} person
+                </p>
+              </div>
+            </div>
+            <hr />
+            <div>
+              <div className="flex flex-row justify-between">
+                <label className="text-[#6D6D6D] font-medium">Total:</label>
+                <p className="font-semibold">${totalAmount?.toFixed(2)}</p>
+              </div>
+              {paymentType == "half" && (
+                <div className="flex flex-row justify-between">
+                  <label className="text-[#6D6D6D] font-medium">
+                    50% Deposit:
+                  </label>
+                  <p className="font-semibold">
+                    ${((totalAmount || 0) * 0.5).toFixed(2)}
+                  </p>
+                </div>
+              )}
+            </div>
+            {/* Privacy and Booking button */}
+            <div className="flex flex-row w-80 items-center justify-center gap-2">
+              <input
+                type="checkbox"
+                required
+                checked={isAgreedToPrivacy}
+                onChange={(e) => {
+                  setIsAgreedToPrivacy(e.target.checked);
+                  Cookies.set("isAgreedToPrivacy", e.target.checked + "");
+                }}
+              />
+              <div className=" text-wrap">
+                I agree to the{" "}
+                <Link
+                  href="/termsandconditions"
+                  className="underline font-medium"
+                >
+                  Terms of Conditions
+                </Link>{" "}
+                and{" "}
+                <Link href="/privacypolicy" className="underline font-medium">
+                  Privacy Policy
+                </Link>
+              </div>
+            </div>
+            {bookingError && (
+              <label className="text-red-600 text-center">{bookingError}</label>
+            )}
+
+            <button
+              className="bg-primary px-4 py-3 width-full text-center text-white whitespace-nowrap font-bold ripple rounded-2xl"
+              onClick={() => book()}
+            >
+              {bookLoading ? "Loading" : "Book"}
+            </button>
+          </div>
+        </div>
+      </div>
+    </MainLayout>
+  );
+};
+
+type DrawerType = {
+  children: React.ReactNode;
+  title: string;
+  open?: boolean;
+};
+
+const Drawer = ({ children, title, open = false }: DrawerType) => {
+  const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    setIsOpen(open);
+  }, [open]);
+  return (
+    <div className="drop-shadow-card bg-white rounded-2xl overflow-hidden">
+      <div className="p-4 md:p-6 flex flex-row justify-between items-center">
+        <h2 className="font-bold text-xl text-secondary">{title}</h2>
+        <div className={`transition-all ${isOpen ? "rotate-180" : "rotate-0"}`}>
+          <button
+            className="ripple rounded-full p-2"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <ChevronDownIcon />
+          </button>
+        </div>
+      </div>
+      <hr></hr>
+      <div
+        className={`flex flex-col gap-4 md:gap-6 transition-all origin-top duration-500 ease-in-out ${
+          isOpen
+            ? "max-h-[1000px] p-4 md:p-6 opacity-100"
+            : "max-h-0 p-0 opacity-0"
+        }`}
+      >
+        {children}
+      </div>
+    </div>
+  );
+};
+
+const months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+const DetailCard = ({
+  paymentType,
+  setPaymentType,
+  paymentMethod,
+  setPaymentMethod,
+  setBookingError,
+}: {
+  paymentType: "half" | "full" | null;
+  setPaymentType: Dispatch<SetStateAction<"half" | "full" | null>>;
+  paymentMethod: "credit-card" | "invoice" | null;
+  setPaymentMethod: Dispatch<SetStateAction<"credit-card" | "invoice" | null>>;
+  setBookingError: Dispatch<SetStateAction<string | null>>;
+}) => {
+  return (
+    <div className="flex flex-col">
+      {/* Payment Type */}
+      <div className="flex flex-col md:flex-row gap-4 md:gap-6">
+        <div
+          className={`flex-1 flex flex-row items-center px-4 py-3 rounded-2xl gap-4 cursor-pointer ${
+            paymentType == "half" ? "border border-primary" : "border"
+          }`}
+          onClick={() => setPaymentType("half")}
+        >
+          <div className="p-1 border border-primary bg-quinary rounded-full">
+            <div
+              className={`w-4 h-4 ${
+                paymentType == "half" ? "bg-primary" : "bg-transparent"
+              } transition-all rounded-full`}
+            />
+          </div>
+          <div className="flex-1 h-full flex flex-col gap-2">
+            <h3 className="text-secondary font-bold text-base">50% Deposit</h3>
+            <p className="text-[#6D6D6D]">
+              Pay 50% of the total amount now, and the remaining 50% later.
+            </p>
+          </div>
+        </div>
+        <div
+          className={`flex-1 flex flex-row items-center px-4 py-3 rounded-2xl gap-4 cursor-pointer ${
+            paymentType == "full" ? "border border-primary" : "border"
+          }`}
+          onClick={() => setPaymentType("full")}
+        >
+          <div className="p-1 border border-primary bg-quinary rounded-full">
+            <div
+              className={`w-4 h-4 ${
+                paymentType == "full" ? "bg-primary" : "bg-transparent"
+              } transition-all rounded-full`}
+            />
+          </div>
+          <div className="flex-1 h-full flex flex-col gap-2">
+            <h3 className="text-secondary font-bold text-base">Full Payment</h3>
+            <p className="text-[#6D6D6D]">Pay the total amount now</p>
+          </div>
+        </div>
+      </div>
+      <p className=" text-[#6D6D6D] pt-2 pb-6">
+        50% Deposit is available only if there is more than one month remaining
+        before the due date.
+      </p>
+      {/* Payment Method */}
+      <div className="flex flex-col gap-4 md:gap-6">
+        <div
+          className={`flex-1 flex flex-row items-center px-4 py-3 rounded-2xl gap-4 cursor-pointer ${
+            paymentMethod == "credit-card"
+              ? "border border-[#2CB742]"
+              : "border"
+          }`}
+          onClick={() => setPaymentMethod("credit-card")}
+        >
+          <div className="p-1 border border-[#2CB742] bg-quinary rounded-full">
+            <div
+              className={`w-4 h-4 ${
+                paymentMethod == "credit-card"
+                  ? "bg-[#2CB742]"
+                  : "bg-transparent"
+              } transition-all rounded-full`}
+            />
+          </div>
+          <div className="flex-1 h-full flex flex-col gap-2">
+            <h3 className="text-secondary font-bold text-base">
+              <span className="text-[#2CB742]">Recommended: </span>
+              Credit Card
+            </h3>
+            <div className="flex flex-row flex-wrap gap-4 items-center">
+              <Visa color="black" />
+              <MasterCard />
+              <AmericanExpress />
+              <UnionPay />
+              <MNT />
+              <JCB />
+            </div>
+            {/* <p className="text-[#6D6D6D]">Pay the total amount now</p> */}
+          </div>
+        </div>
+        <div
+          className={`flex-1 flex flex-row items-center px-4 py-3 rounded-2xl gap-4 cursor-pointer ${
+            paymentMethod == "invoice" ? "border border-[#2CB742]" : "border"
+          }`}
+          onClick={() => {
+            setPaymentMethod("invoice");
+            setBookingError(null);
+          }}
+        >
+          <div className="p-1 border border-[#2CB742] bg-quinary rounded-full">
+            <div
+              className={`w-4 h-4 ${
+                paymentMethod == "invoice" ? "bg-[#2CB742]" : "bg-transparent"
+              } transition-all rounded-full`}
+            />
+          </div>
+          <div className="flex-1 h-full flex flex-col gap-2">
+            <h3 className="text-secondary font-bold text-base">Invoice</h3>
+            <p className="text-[#6D6D6D]">
+              We will shortly email you the invoice with the payment details.
+            </p>
+          </div>
+        </div>
+        {/* <div
+          className={`flex-1 flex flex-row items-center px-4 py-3 rounded-2xl gap-4 cursor-pointer ${
+            paymentMethod == "cash" ? "border border-[#2CB742]" : "border"
+          }`}
+          onClick={() => setPaymentMethod("cash")}
+        >
+          <div className="p-1 border border-[#2CB742] bg-quinary rounded-full">
+            <div
+              className={`w-4 h-4 ${
+                paymentMethod == "cash" ? "bg-[#2CB742]" : "bg-transparent"
+              } transition-all rounded-full`}
+            />
+          </div>
+          <div className="flex-1 h-full flex flex-col gap-2">
+            <h3 className="text-secondary font-bold text-base">Cash</h3>
+            <p className="text-[#6D6D6D]">
+              Not recommended. This option will be available at our office or at
+              the time of service delivery. Please contact our support team to
+              arrange cash payments.
+            </p>
+          </div>
+        </div> */}
+      </div>
+    </div>
+  );
+};
+
+export default Booking;
+
+{
+  /* <div className="w-screen flex-1 px-3  xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col gap-4 justify-center">
+        <div className=" text-2xl font-semibold lg:text-3xl">{tour?.title}</div>
         <form
           className="flex flex-1 flex-col gap-4"
           onSubmit={(e) => {
@@ -368,9 +883,5 @@ const Booking = () => {
             </div>
           </div>
         </form>
-      </div>
-    </MainLayout>
-  );
-};
-
-export default Booking;
+      </div> */
+}

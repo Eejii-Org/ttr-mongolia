@@ -1,5 +1,3 @@
-import { ChevronDownIcon } from "./icons";
-
 export const SelectNationality = ({
   onChange,
   value,
@@ -8,14 +6,15 @@ export const SelectNationality = ({
   value: string;
 }) => {
   return (
-    <div className="relative">
-      <div className="absolute left-[100%] top-[50%] -translate-y-3 -translate-x-9">
-        <ChevronDownIcon />
+    <div className="relative flex flex-col gap-[6px]">
+      <div className="absolute left-[100%] top-[50%] translate-y-1 -translate-x-9 pointer-events-none">
+        <FilledCaretDown />
       </div>
+      <label className="font-semibold">Where are you from?</label>
       <select
         name="nationality"
         required
-        className={`text-base px-4 py-3 w-full outline-none border ${
+        className={`text-base px-4 py-3 w-full outline-none rounded-2xl border ${
           value == "" ? "text-[#c1c1c1]" : "text-secondary"
         }`}
         onChange={(e) => onChange(e.target.value)}
@@ -38,6 +37,28 @@ export const SelectNationality = ({
     </div>
   );
 };
+
+const FilledCaretDown = () => (
+  <svg
+    width="25"
+    height="25"
+    viewBox="0 0 25 25"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g id="Arrow / Caret_Down_MD">
+      <path
+        id="Vector"
+        d="M12.5 14.5L16.5 10.5H8.5L12.5 14.5Z"
+        fill="#333333"
+        stroke="#333333"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </g>
+  </svg>
+);
 
 const countryOptions = [
   "Afghan",
