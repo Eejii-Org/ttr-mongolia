@@ -15,6 +15,9 @@ module.exports = {
         quaternary: "var(--quaternary)",
         quinary: "var(--quinary)",
       },
+      dropShadow: {
+        card: "0px 4px 40px rgba(0, 0, 0, 0.06)",
+      },
     },
     screens: {
       sm: "640px",

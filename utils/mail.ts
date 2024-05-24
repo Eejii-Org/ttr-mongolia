@@ -15,7 +15,9 @@ export type templateTypeType =
   | "contact"
   | "contactAdmin"
   | "privateTour"
-  | "adminPrivateTour";
+  | "adminPrivateTour"
+  | "bookInvoice"
+  | "adminBookInvoice";
 export type detailType = {
   name?: string;
   paymentURL?: string;
@@ -78,6 +80,26 @@ export type detailType = {
     additionalRequests: string;
     startingDate: string;
   };
+  bookingDetail?: {
+    personalDetail: {
+      firstName: string;
+      lastName: string;
+      phoneNumber: string;
+      email: string;
+      nationality: string;
+      dateOfBirth: string;
+      peopleCount: number;
+      additionalInformation: string;
+    };
+    paymentType: string;
+    paymentMethod: string;
+    availableTourId: number;
+    tourTitle: string;
+    startingDate: string;
+    deposit: string;
+    pax: number;
+    total: number;
+  };
 };
 // subject: string, body1: string, body2?: string
 export const mailTemplate = (
@@ -94,6 +116,7 @@ export const mailTemplate = (
     paymentDetail,
     adminNote,
     privateTourDetail,
+    bookingDetail,
   } = detail;
   const emailDetails: {
     [K in templateTypeType]: {
@@ -207,6 +230,45 @@ export const mailTemplate = (
         `If you have any questions or require further assitance, pleace feel free to contact our customer support team at info@ttrmongolia.com or +976 7014-1001.`,
         `We look forward to welcoming you on this unforgettable adventure !`,
       ],
+    },
+    bookInvoice: {
+      header: `You are now one step closer 🎉`,
+      top: [
+        `Dear ${
+          bookingDetail?.personalDetail.firstName +
+          " " +
+          bookingDetail?.personalDetail.lastName
+        },`,
+        `Thank you for booking a tour departure.`,
+        `We have received your booking and want to assure you that our team is already working diligently to process it.`,
+      ],
+      bottom: [
+        `Please be patient as we prepare and send invoice.`,
+        `If you have any questions or require further assitance, pleace feel free to contact our customer support team at info@ttrmongolia.com or +976 7014-1001.`,
+        `Thank you for choosing us for your travel needs. We look forward to welcoming you on this unforgettable adventure !`,
+      ],
+    },
+    adminBookInvoice: {
+      header: `[Action Required] Booking Invoice`,
+      top: [
+        `Name: ${
+          bookingDetail?.personalDetail.firstName +
+          " " +
+          bookingDetail?.personalDetail.lastName
+        }`,
+        `Phone: ${bookingDetail?.personalDetail.phoneNumber}`,
+        `Email: ${bookingDetail?.personalDetail.email}`,
+        `Nationality: ${bookingDetail?.personalDetail.nationality}`,
+        `DateOfBirth: ${bookingDetail?.personalDetail.dateOfBirth}`,
+        `PeopleCount: ${bookingDetail?.personalDetail.peopleCount}`,
+        `AdditionalInformation: ${bookingDetail?.personalDetail.additionalInformation}`,
+        `TourStartingDate: ${bookingDetail?.startingDate}`,
+        `Destination: ${bookingDetail?.tourTitle}`,
+        `Pax: ${bookingDetail?.pax}`,
+        `Deposit: ${bookingDetail?.deposit}`,
+        `Total: ${bookingDetail?.total}`,
+      ],
+      bottom: [],
     },
     adminPaymentSuccess: {
       header: `Payment Success ${paymentDetail?.email}`,
