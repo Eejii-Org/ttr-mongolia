@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import { Metadata } from "next";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 // const defaultUrl = process.env.VERCEL_URL
 //   ? `https://${process.env.VERCEL_URL}`
@@ -32,6 +33,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={GeistSans.className}>
+      <GoogleTagManager gtmId="AW-16573753978" />
       <body className="bg-background text-foreground gip">
         <NextTopLoader showSpinner={false} color="#fda403" />
         <main className="min-h-screen flex flex-col items-center">
