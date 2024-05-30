@@ -48,8 +48,19 @@ const getTours = async () => {
               ),
             };
           })
-          .sort((a, b) => b?.availableTours?.length - a?.availableTours?.length)
+          .sort(
+            (a, b) =>
+              a.availableTours.reduce(
+                (a, { salePrice }) => a + (salePrice === null ? 1 : 0),
+                0
+              ) -
+                b.availableTours.reduce(
+                  (a, { salePrice }) => a + (salePrice === null ? 1 : 0),
+                  0
+                ) || b?.availableTours?.length - a?.availableTours?.length
+          )
       : [];
+    console.log(combinedToursData);
     const combinedAvailableToursData =
       !tours || !availableTours
         ? []
