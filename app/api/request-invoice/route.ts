@@ -72,7 +72,7 @@ export async function POST(request: Request) {
     return Response.json(inv.data);
   }
   const res = await bookInvoice(body);
-  return Response.json(res);
+  return Response.json({ mail: res, transactionId });
 }
 
 const hmac256 = (message: string) => {

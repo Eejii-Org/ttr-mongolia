@@ -44,7 +44,9 @@ export const MainLayout = ({
           className={`flex flex-col gap-16 flex-1 ${
             pathname.includes("book") ? "" : "pb-24"
           } ${
-            pathname == "/" || pathname.includes("/tours/") ? "" : "mt-[56px]"
+            pathname == "/" || pathname.includes("/tours/")
+              ? ""
+              : "mt-[65px] md:mt-[56px]"
           } ${
             isPrivateToursVisible && pathname == "/tours"
               ? "pt-24 sm:pt-20 md:pt-16"

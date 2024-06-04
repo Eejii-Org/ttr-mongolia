@@ -5,6 +5,7 @@ import {
   EmailIcon,
   Input,
   MainLayout,
+  NewInput,
   PhoneIcon,
   SelectBirthday,
   SelectNationality,
@@ -74,14 +75,29 @@ const Contact = () => {
           </div>
         </div>
       </div>
+      {/* <div
+        style={{
+          backgroundImage: "url(/static/book-bg.png)",
+          backgroundSize: "150% 150%",
+          backgroundPosition: "center",
+          width: "100%",
+        }}
+      > */}
       <MainLayout>
-        <div className="w-screen flex-1 px-3  container mx-auto flex flex-col gap-4 justify-center">
-          <div className="flex flex-col-reverse md:flex-row gap-4 h-full">
-            <div className="p-3 md:p-4 rounded-xl flex-1 flex flex-col gap-3 justify-between">
-              <div className="text-2xl font-semibold lg:text-4xl">
+        <div className="w-screen flex-1 px-3 container mx-auto flex flex-col gap-4 justify-center ">
+          <div className="flex flex-col md:flex-row gap-4 h-full">
+            <div
+              className="p-4 md:p-6 rounded-xl flex-1 flex flex-col gap-3 justify-center text-black"
+              style={{
+                backgroundImage: "url(/static/book-bg.png)",
+                // backgroundSize: "150% 150%",
+                backgroundPosition: "center",
+              }}
+            >
+              <div className="text-2xl font-semibold lg:text-4xl  pb-8">
                 Contact Us
               </div>
-              <div className="text-base lg:text-lg">
+              <div className="text-base lg:text-lg pb-8">
                 Email, call, or complete the form to learn how TTR Mongolia can
                 solve your problem
               </div>
@@ -99,10 +115,10 @@ const Contact = () => {
                 Ulaanbaatar, Mongolia
               </div>
             </div>
-            <div className="bg-quinary p-3 md:p-4 rounded-xl flex-1 flex flex-col gap-3">
-              <div className="text-xl font-semibold pb-2 lg:text-3xl">
+            <div className="bg-white p-3 md:p-6 rounded-xl flex-1 flex flex-col gap-3">
+              {/* <div className="text-xl font-semibold pb-2 lg:text-2xl">
                 You can reach us any time
-              </div>
+              </div> */}
               <form
                 className="flex flex-col gap-3 md:gap-4"
                 onSubmit={(e) => {
@@ -111,28 +127,31 @@ const Contact = () => {
                 }}
               >
                 <div className="flex gap-3 md:gap-4 flex-col md:flex-row">
-                  <Input
+                  <NewInput
                     type="text"
                     value={contact.firstName}
-                    placeholder="FirstName"
+                    placeholder="John"
+                    label="First Name:"
                     onChange={(e) => {
                       updateContact("firstName", e.target.value);
                     }}
                     required
                   />
-                  <Input
+                  <NewInput
                     type="text"
                     value={contact.lastName}
-                    placeholder="LastName"
+                    placeholder="Doe"
+                    label="Last Name:"
                     onChange={(e) => {
                       updateContact("lastName", e.target.value);
                     }}
                     required
                   />
                 </div>
-                <Input
+                <NewInput
                   type={"tel"}
                   value={contact.phoneNumber}
+                  label="Phone Number:"
                   placeholder="+976 9999 9999"
                   icon={<PhoneIcon />}
                   onChange={(e) => {
@@ -140,9 +159,10 @@ const Contact = () => {
                   }}
                   required
                 />
-                <Input
+                <NewInput
                   value={contact.email}
                   type={"email"}
+                  label="Email:"
                   placeholder="example@gmail.com"
                   icon={<EmailIcon />}
                   onChange={(e) => {
@@ -158,22 +178,25 @@ const Contact = () => {
                   value={contact.dateOfBirth}
                   onChange={(value) => updateContact("dateOfBirth", value)}
                 />
-                <textarea
-                  placeholder="How can we help?"
-                  className=" min-h-32 p-4 border"
-                  value={contact.description}
-                  onChange={(e) => {
-                    updateContact("description", e.target.value);
-                  }}
-                ></textarea>
+                <div className="flex flex-col gap-[6px]">
+                  <label className="font-semibold">How can we help?</label>
+                  <textarea
+                    placeholder="How can we help?"
+                    className=" min-h-32 p-4 border rounded-2xl"
+                    value={contact.description}
+                    onChange={(e) => {
+                      updateContact("description", e.target.value);
+                    }}
+                  ></textarea>
+                </div>
                 <button
                   type="submit"
-                  className="bg-primary px-4 py-3 width-full text-center items-center flex justify-center text-secondary whitespace-nowrap font-bold ripple rounded"
+                  className="bg-primary px-4 py-3 width-full text-center items-center flex justify-center text-white whitespace-nowrap font-bold ripple rounded-2xl"
                 >
                   {loading ? (
                     <span className="loader h-6 w-6"></span>
                   ) : (
-                    "Submit"
+                    "Contact"
                   )}
                 </button>
               </form>
@@ -181,6 +204,7 @@ const Contact = () => {
           </div>
         </div>
       </MainLayout>
+      {/* </div> */}
     </>
   );
 };

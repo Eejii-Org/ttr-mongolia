@@ -31,7 +31,7 @@ export const SelectBirthday = ({
             placeholder="2000"
             min={1900}
             max={new Date().getFullYear()}
-            className="text-base rounded px-4 py-3 w-full outline-none border"
+            className="text-base rounded-2xl px-4 py-3 w-full outline-none border"
           />
         </div>
 
@@ -45,7 +45,7 @@ export const SelectBirthday = ({
             placeholder={"Month"}
             min={1}
             max={12}
-            className="text-base rounded px-4 py-3 w-full outline-none border "
+            className="text-base rounded-2xl px-4 py-3 w-full outline-none border "
           />
         </div>
 
@@ -61,7 +61,7 @@ export const SelectBirthday = ({
             min={1}
             max={31}
             placeholder="Day"
-            className="text-base rounded px-4 py-3 w-full outline-none border "
+            className="text-base rounded-2xl px-4 py-3 w-full outline-none border "
           />
         </div>
       </div>

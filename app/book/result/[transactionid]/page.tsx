@@ -68,7 +68,7 @@ const PaymentResult = () => {
   }, [transactionid]);
   return (
     <MainLayout>
-      <div className="flex flex-1   items-center justify-center">
+      <div className="flex flex-1 items-center justify-center">
         {loading ? (
           <div>Loading</div>
         ) : (
@@ -90,12 +90,12 @@ const PaymentResult = () => {
                 </>
               )}
             </div>
-            <div className="text-base lg:text-lg">
+            <div className="text-base lg:text-lg text-center max-w-[600px] px-6">
               {transactionDetail?.transaction.paymentMethod == "invoice" ? (
                 transactionDetail?.transaction.invoiceProcessed ? (
                   "We have successfully sent invoice to your email."
                 ) : (
-                  "Your departure has been successfully booked. We are currently processing your invoice. Please check your email regularly for the invoice."
+                  "Thank you for booking a tour with us ! We have received your request and will send you your invoice soon. Please check your emails regularly. Note that your tour is not confirmed until we receive payment. Thank you for understanding."
                 )
               ) : (
                 <>
