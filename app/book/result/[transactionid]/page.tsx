@@ -74,8 +74,8 @@ const PaymentResult = () => {
         ) : (
           <div className="flex flex-col items-center justify-center gap-4">
             <div className="text-2xl font-semibold lg:text-4xl">
-              {transactionDetail?.transaction.paymentMethod == "invoice" ? (
-                transactionDetail?.transaction.invoiceProcessed ? (
+              {transactionDetail?.transaction?.paymentMethod == "invoice" ? (
+                transactionDetail?.transaction?.invoiceProcessed ? (
                   "Success"
                 ) : (
                   "Processing"
@@ -91,8 +91,8 @@ const PaymentResult = () => {
               )}
             </div>
             <div className="text-base lg:text-lg text-center max-w-[600px] px-6">
-              {transactionDetail?.transaction.paymentMethod == "invoice" ? (
-                transactionDetail?.transaction.invoiceProcessed ? (
+              {transactionDetail?.transaction?.paymentMethod == "invoice" ? (
+                transactionDetail?.transaction?.invoiceProcessed ? (
                   "We have successfully sent invoice to your email."
                 ) : (
                   "Thank you for booking a tour with us ! We have received your request and will send you your invoice soon. Please check your emails regularly. Note that your tour is not confirmed until we receive payment. Thank you for understanding."
