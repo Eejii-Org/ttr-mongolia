@@ -88,7 +88,7 @@ type TransactionType = {
   dateOfBirth: string;
   peopleCount: string;
   additionalInformation: string;
-  amount: string;
+  deposit: string;
   transactionDetail: any;
   transactionId: string;
   availableTourId: string;

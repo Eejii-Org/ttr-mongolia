@@ -34,6 +34,7 @@ export async function POST(request: Request) {
   // }
   try {
     const res = await checkInvoice(transactionId);
+    console.log(res);
     return Response.json({
       transaction: data,
       // availableTour: availableTour,
@@ -66,11 +67,13 @@ const hmac256 = (message: string) => {
 };
 
 const checkInvoice = async (transactionId: string) => {
+  const checkSum = hmac256(transactionId + transactionId);
+  console.log(checkSum, transactionId);
   return await axios.post(
     "https://ecommerce.golomtbank.com/api/inquiry",
     {
       transactionId: transactionId,
-      checksum: hmac256(transactionId + transactionId),
+      checksum: checkSum,
     },
     {
       headers: {

@@ -149,7 +149,7 @@ const Detail = ({
           <Input
             type="text"
             placeholder="$0000"
-            value={transaction.amount}
+            value={transaction.deposit}
             disabled
           />
         </div>

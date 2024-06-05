@@ -22,7 +22,7 @@ const AdminTransactions = () => {
         const { data, error } = await supabase
           .from("transactions")
           .select("*")
-          .neq("availableTourId", "-1")
+          .eq("availableTourId", "-1")
           .order("id", {
             ascending: false,
           });
@@ -39,7 +39,9 @@ const AdminTransactions = () => {
   return (
     <div className="p-4 flex-1">
       <div className="flex flex-row justify-between pb-4">
-        <div className="text-2xl md:text-4xl font-semibold">Transactions</div>
+        <div className="text-2xl md:text-4xl font-semibold">
+          Custom Transactions
+        </div>
         <div className="flex flex-1 justify-end items-end">
           <div className="min-w-64">
             <Input
@@ -63,10 +65,10 @@ const AdminTransactions = () => {
           <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
             TransactionID
           </th>
-          <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
+          <th className="text-left px-3 py-2 w-full font-semibold md:text-lg  border-b">
             Amount
           </th>
-          <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b w-40">
+          {/* <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b w-40">
             Name
           </th>
           <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
@@ -77,7 +79,7 @@ const AdminTransactions = () => {
           </th>
           <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
             People Count
-          </th>
+          </th> */}
 
           <th className="text-left px-3 py-2 font-semibold md:text-lg max-w-12 border-b w-12"></th>
         </tr>
@@ -121,15 +123,15 @@ const AdminTransactions = () => {
               </td>
               <td className="px-3 py-2">{transactionId}</td>
               <td className="px-3 py-2 font-semibold">${deposit}</td>
-              <td className="py-2 px-3 ">{firstName + " " + lastName}</td>
-              <td className="px-3 py-2">{email}</td>
+              {/* <td className="py-2 px-3 ">{firstName + " " + lastName}</td> */}
+              {/* <td className="px-3 py-2">{email}</td>
               <td className="px-3 py-2">{nationality}</td>
-              <td className="px-3 py-2">{peopleCount}</td>
+              <td className="px-3 py-2">{peopleCount}</td> */}
               <td className="">
                 <div className="flex items-center justify-center">
                   <Link
                     className="font-bold rounded-full ripple p-3 max-w-12 max-h-12"
-                    href={`/admin/transactions/${id}`}
+                    href={`/admin/customtransactions/${id}`}
                   >
                     <ArrowRight color="black" />
                   </Link>
