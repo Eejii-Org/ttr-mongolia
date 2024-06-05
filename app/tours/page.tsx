@@ -60,7 +60,6 @@ const getTours = async () => {
                 ) || b?.availableTours?.length - a?.availableTours?.length
           )
       : [];
-    console.log(combinedToursData);
     const combinedAvailableToursData =
       !tours || !availableTours
         ? []

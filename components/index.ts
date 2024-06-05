@@ -20,3 +20,4 @@ export * from "./storageimage";
 export * from "./imagesEditor";
 export * from "./infinitescrolltours";
 export * from "./tourcard";
+export * from "./drawer";

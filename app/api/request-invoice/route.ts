@@ -146,6 +146,5 @@ const bookInvoice = async (body: any) => {
     text: adminText,
     html: adminHTML,
   });
-  console.log(customerInfo, adminInfo);
   return customerInfo;
 };

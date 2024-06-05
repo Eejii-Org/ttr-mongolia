@@ -42,7 +42,9 @@ export const MainLayout = ({
         />
         <div
           className={`flex flex-col gap-16 flex-1 ${
-            pathname.includes("book") ? "" : "pb-24"
+            pathname.includes("book") || pathname.includes("privatetour")
+              ? ""
+              : "pb-24"
           } ${
             pathname == "/" || pathname.includes("/tours/")
               ? ""
@@ -55,14 +57,15 @@ export const MainLayout = ({
         >
           {children}
         </div>
-        {!pathname.includes("book") && (
-          <a
-            className="sticky bottom-8 left-[calc(100vw-104px)] w-[72px] h-[72.45px] z-30"
-            href="https://wa.me/97688113977"
-          >
-            <Image src="/static/whatsapp.svg" alt="whatsapp" fill />
-          </a>
-        )}
+        {!pathname.includes("book") ||
+          (!pathname.includes("privatetour") && (
+            <a
+              className="sticky bottom-8 left-[calc(100vw-104px)] w-[72px] h-[72.45px] z-30"
+              href="https://wa.me/97688113977"
+            >
+              <Image src="/static/whatsapp.svg" alt="whatsapp" fill />
+            </a>
+          ))}
       </div>
       <Footer />
     </div>

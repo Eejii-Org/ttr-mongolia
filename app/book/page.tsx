@@ -1,7 +1,6 @@
 "use client";
 import { supabase } from "@/utils/supabase/client";
 import {
-  ChevronDownIcon,
   DurationIcon,
   EmailIcon,
   MainLayout,
@@ -18,6 +17,7 @@ import {
   UnionPay,
   MNT,
   JCB,
+  Drawer,
 } from "@components";
 import axios from "axios";
 import Link from "next/link";
@@ -66,6 +66,13 @@ const Booking = () => {
   });
 
   const [bookLoading, setBookLoading] = useState(false);
+
+  const [isPersonalDetailDrawerOpen, setIsPersonalDetailDrawerOpen] =
+    useState(true);
+  const [isDepartureDetailDrawerOpen, setIsDepartureDetailDrawerOpen] =
+    useState(true);
+  const [isPaymentMethodDrawerOpen, setIsPaymentMethodDrawerOpen] =
+    useState(true);
 
   const pricePerPerson = useMemo(() => {
     if (availableTour?.salePrice == null) {
@@ -264,8 +271,12 @@ const Booking = () => {
           }}
         >
           <div className="max-w-[764px] mx-auto my-8 flex flex-col gap-4 relative z-10">
-            <h1 className="text-2xl font-bold lg:text-3xl">Personal Info</h1>
-            <Drawer title="Payment Method" open={true}>
+            <h1 className="text-2xl font-bold lg:text-3xl">Booking Info</h1>
+            <Drawer
+              title="Personal Detail"
+              open={isPersonalDetailDrawerOpen}
+              setOpen={setIsPersonalDetailDrawerOpen}
+            >
               <div className="flex gap-4 md:gap-6 flex-col md:flex-row">
                 <NewInput
                   type="text"
@@ -329,7 +340,11 @@ const Booking = () => {
                 }
               />
             </Drawer>
-            <Drawer title="Departure Detail" open={true}>
+            <Drawer
+              title="Departure Detail"
+              open={isDepartureDetailDrawerOpen}
+              setOpen={setIsDepartureDetailDrawerOpen}
+            >
               <div className="flex-1 flex flex-col gap-[6px]">
                 <label className="font-semibold">
                   How many people will travel including you?
@@ -392,7 +407,11 @@ const Booking = () => {
                 ></textarea>
               </div>
             </Drawer>
-            <Drawer title="Payment Method" open={true}>
+            <Drawer
+              title="Payment Method"
+              open={isPaymentMethodDrawerOpen}
+              setOpen={setIsPaymentMethodDrawerOpen}
+            >
               <DetailCard
                 paymentType={paymentType}
                 setPaymentType={setPaymentType}
@@ -502,44 +521,6 @@ const Booking = () => {
         </div>
       </div>
     </MainLayout>
-  );
-};
-
-type DrawerType = {
-  children: React.ReactNode;
-  title: string;
-  open?: boolean;
-};
-
-const Drawer = ({ children, title, open = false }: DrawerType) => {
-  const [isOpen, setIsOpen] = useState(false);
-  useEffect(() => {
-    setIsOpen(open);
-  }, [open]);
-  return (
-    <div className="drop-shadow-card bg-white rounded-2xl overflow-hidden">
-      <div className="p-4 md:p-6 flex flex-row justify-between items-center">
-        <h2 className="font-bold text-xl text-secondary">{title}</h2>
-        <div className={`transition-all ${isOpen ? "rotate-180" : "rotate-0"}`}>
-          <button
-            className="ripple rounded-full p-2"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            <ChevronDownIcon />
-          </button>
-        </div>
-      </div>
-      <hr></hr>
-      <div
-        className={`flex flex-col gap-4 md:gap-6 transition-all origin-top duration-500 ease-in-out ${
-          isOpen
-            ? "max-h-[1000px] p-4 md:p-6 opacity-100"
-            : "max-h-0 p-0 opacity-0"
-        }`}
-      >
-        {children}
-      </div>
-    </div>
   );
 };
 

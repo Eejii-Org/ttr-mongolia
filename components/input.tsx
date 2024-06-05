@@ -52,7 +52,7 @@ type NewInputType = {
   required?: boolean;
   type: HTMLInputTypeAttribute;
   pattern?: string | undefined;
-  min?: number | undefined;
+  min?: any | undefined;
   max?: number | undefined;
   disabled?: boolean;
   label?: string;

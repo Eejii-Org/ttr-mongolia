@@ -49,10 +49,10 @@ const Contact = () => {
     <>
       <div className={modalMessage == null ? "hidden" : "flex"}>
         <div
-          className={`absolute top-0 left-0 w-screen h-screen bg-black/20 z-50`}
+          className={`fixed top-0 left-0 w-screen h-screen bg-black/20 z-50`}
           onClick={() => setModalMessage(null)}
         ></div>
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-96 p-4 pt-8 flex flex-col gap-4 rounded-2xl items-center z-50">
+        <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-96 p-4 pt-8 flex flex-col gap-4 rounded-2xl items-center z-50">
           {modalMessage == "Fail" ? <BigErrorIcon /> : <BigSuccessIcon />}
           <div className="flex flex-col items-center w-full gap-2">
             <h2 className="text-2xl font-bold">{modalMessage}</h2>

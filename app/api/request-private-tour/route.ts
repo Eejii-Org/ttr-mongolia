@@ -1,4 +1,4 @@
-import { mailTemplate, templateTypeType } from "@/utils";
+import { mailTemplate } from "@/utils";
 import nodemailer from "nodemailer";
 export const dynamic = "force-dynamic"; // defaults to auto
 
@@ -16,27 +16,31 @@ const transporter = nodemailer.createTransport({
 export async function POST(request: Request) {
   const body = await request.json();
   const { text, html, subject } = mailTemplate("privateTour", {
-   name: body?.firstName + " " + body?.lastName,
+    name: body?.firstName + " " + body?.lastName,
   });
-  const { text: adminText, html: adminHTML, subject: adminSubject } = mailTemplate('adminPrivateTour', {
+  const {
+    text: adminText,
+    html: adminHTML,
+    subject: adminSubject,
+  } = mailTemplate("adminPrivateTour", {
     privateTourDetail: body,
   });
-    const info = await transporter.sendMail({
-      from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`, // sender address
-      to: body.email,
-      subject,
-      text,
-      html
-    });
-    const adminInfo = await transporter.sendMail({
-      from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`, // sender address
-      to: process.env.ADMIN_EMAIL,
-      subject: adminSubject, 
-      text: adminText,
-      html: adminHTML
-    });
+  const info = await transporter.sendMail({
+    from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`, // sender address
+    to: body.email,
+    subject,
+    text,
+    html,
+  });
+  const adminInfo = await transporter.sendMail({
+    from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`, // sender address
+    to: process.env.ADMIN_EMAIL,
+    subject: adminSubject,
+    text: adminText,
+    html: adminHTML,
+  });
   return Response.json({
     info,
-    adminInfo
+    adminInfo,
   });
 }
