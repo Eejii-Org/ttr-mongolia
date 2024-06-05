@@ -42,7 +42,9 @@ export const MainLayout = ({
         />
         <div
           className={`flex flex-col gap-16 flex-1 ${
-            pathname.includes("book") || pathname.includes("privatetour")
+            pathname.includes("book") ||
+            pathname.includes("privatetour") ||
+            pathname.includes("newdeparture")
               ? ""
               : "pb-24"
           } ${
@@ -58,7 +60,8 @@ export const MainLayout = ({
           {children}
         </div>
         {!pathname.includes("book") ||
-          (!pathname.includes("privatetour") && (
+          !pathname.includes("privatetour") ||
+          (!pathname.includes("newdeparture") && (
             <a
               className="sticky bottom-8 left-[calc(100vw-104px)] w-[72px] h-[72.45px] z-30"
               href="https://wa.me/97688113977"

@@ -3,14 +3,18 @@ import { supabase } from "@/utils/supabase/client";
 import {
   BigErrorIcon,
   BigSuccessIcon,
+  Drawer,
   EmailIcon,
-  Input,
   MainLayout,
+  MinusIcon,
+  NewInput,
   PhoneIcon,
-  SelectBirthday,
+  PlusIcon,
   SelectNationality,
 } from "@components";
 import axios from "axios";
+import Cookies from "js-cookie";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
@@ -27,10 +31,10 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
   const { tourid } = searchParams;
   const [tours, setTours] = useState<TourType[] | null>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [modalMessage, setModalMessage] = useState<null | "Success" | "Fail">(
     null
   );
+  const [isAgreedToPrivacy, setIsAgreedToPrivacy] = useState(false);
   const router = useRouter();
   const [personalDetail, setPersonalDetail] = useState({
     firstName: "",
@@ -41,15 +45,23 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
     dateOfBirth: "",
     peopleCount: 1,
     additionalInformation: "",
+    startingDate: "",
   });
-  const [tourDate, setTourDate] = useState("");
   const [selectedTour, setSelectedTour] = useState<number | undefined>(tourid);
+
+  const [isPersonalDetailDrawerOpen, setIsPersonalDetailDrawerOpen] =
+    useState(true);
+  const [isDepartureDetailDrawerOpen, setIsDepartureDetailDrawerOpen] =
+    useState(true);
+
+  const [requestError, setRequestError] = useState<string | null>(null);
+
   const selectedTourData = useMemo<TourType | null>(() => {
     if (!tours) return null;
     const tourData = tours.find((t) => t.id == selectedTour);
     return tourData ? tourData : null;
   }, [selectedTour, tours]);
-  const updatePersonalDetail = (key: string, value: string) => {
+  const updatePersonalDetail = (key: string, value: string | number) => {
     setPersonalDetail({ ...personalDetail, [key]: value });
   };
   const pricePerPerson = useMemo(() => {
@@ -62,14 +74,51 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
     return selectedTourData?.originalPrice?.at(-1)?.pricePerPerson;
   }, [selectedTourData, personalDetail]);
   const [requestLoading, setRequestLoading] = useState(false);
-  const requestNewTour = async () => {
-    setRequestLoading(true);
 
+  const checkInputs = () => {
+    if (!selectedTour) {
+      setRequestError("Please fill out all of our inputs in form");
+      return false;
+    }
+    type keysType =
+      | "firstName"
+      | "lastName"
+      | "phoneNumber"
+      | "email"
+      | "nationality"
+      | "dateOfBirth"
+      | "peopleCount";
+    const keysToCheck: keysType[] = [
+      "firstName",
+      "lastName",
+      "phoneNumber",
+      "email",
+      "nationality",
+      "dateOfBirth",
+      "peopleCount",
+    ];
+    for (const key of keysToCheck) {
+      if (personalDetail[key] === "") {
+        setRequestError("Please fill out all of our inputs in form");
+        return false;
+      }
+    }
+    if (!isAgreedToPrivacy) {
+      setRequestError(
+        "Please agree to the terms of conditions and privacy policty"
+      );
+      return false;
+    }
+    return true;
+  };
+
+  const requestNewTour = async () => {
+    if (!checkInputs()) return;
+    setRequestLoading(true);
     try {
       const res = await axios.post(`/api/request-departure`, {
         ...personalDetail,
         tourId: selectedTour,
-        startingDate: tourDate,
         price: selectedTourData?.displayPrice,
       });
     } catch (err: any) {
@@ -88,9 +137,9 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
       dateOfBirth: "",
       peopleCount: 1,
       additionalInformation: "",
+      startingDate: "",
     });
     setRequestLoading(false);
-    setTourDate("");
   };
 
   useEffect(() => {
@@ -109,24 +158,6 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
     };
     getTour();
   }, []);
-
-  if (error) {
-    return (
-      <MainLayout>
-        <div className="w-screen flex-1 px-3   xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col items-center gap-4 justify-center">
-          <div className="flex flex-col gap-4">
-            <div className="text-2xl font-semibold lg:text-4xl">{error}</div>
-            <button
-              onClick={() => router.back()}
-              className="bg-primary px-4 py-3 width-full text-center text-secondary whitespace-nowrap font-bold rounded-xl ripple w-full"
-            >
-              Go Back
-            </button>
-          </div>
-        </div>
-      </MainLayout>
-    );
-  }
 
   if (loading) {
     return (
@@ -168,6 +199,242 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
           </div>
         </div>
       </div>
+      <MainLayout>
+        <div className="flex-1 flex flex-col md:flex-row relative bg-[#F8FAFC]">
+          <div
+            className="flex-1 relative px-4"
+            style={{
+              backgroundImage: "url(/static/book-bg.png)",
+              backgroundSize: "150% 150%",
+              backgroundPosition: "center",
+            }}
+          >
+            <div className="max-w-[764px] mx-auto my-8 flex flex-col gap-4 relative z-10">
+              <h1 className="text-2xl font-bold lg:text-3xl">Personal Info</h1>
+              <Drawer
+                title="Personal Detail"
+                open={isPersonalDetailDrawerOpen}
+                setOpen={setIsPersonalDetailDrawerOpen}
+              >
+                <div className="flex gap-4 md:gap-6 flex-col md:flex-row">
+                  <NewInput
+                    type="text"
+                    label="First Name:"
+                    value={personalDetail.firstName}
+                    placeholder="John"
+                    onChange={(e) => {
+                      updatePersonalDetail("firstName", e.target.value);
+                    }}
+                    required
+                  />
+                  <NewInput
+                    type="text"
+                    label="Last Name:"
+                    value={personalDetail.lastName}
+                    placeholder="Doe"
+                    onChange={(e) => {
+                      updatePersonalDetail("lastName", e.target.value);
+                    }}
+                    required
+                  />
+                </div>
+                <div className="flex gap-4 md:gap-6 flex-col md:flex-row">
+                  <NewInput
+                    label="Phone Number:"
+                    type={"tel"}
+                    value={personalDetail.phoneNumber}
+                    placeholder="+976 9999 9999"
+                    icon={<PhoneIcon />}
+                    onChange={(e) => {
+                      updatePersonalDetail("phoneNumber", e.target.value);
+                    }}
+                    required
+                  />
+                  <NewInput
+                    label="Email Address:"
+                    value={personalDetail.email}
+                    type={"email"}
+                    placeholder="example@gmail.com"
+                    icon={<EmailIcon />}
+                    onChange={(e) => {
+                      updatePersonalDetail("email", e.target.value);
+                    }}
+                    required
+                  />
+                </div>
+                <NewInput
+                  label="Date of Birth:"
+                  value={personalDetail.dateOfBirth}
+                  type={"date"}
+                  placeholder="yyyy.mm.dd"
+                  onChange={(e) => {
+                    updatePersonalDetail("dateOfBirth", e.target.value);
+                  }}
+                  required
+                />
+                <SelectNationality
+                  value={personalDetail.nationality}
+                  onChange={(value: string) =>
+                    updatePersonalDetail("nationality", value)
+                  }
+                />
+              </Drawer>
+              <Drawer
+                title="Departure Detail"
+                open={isDepartureDetailDrawerOpen}
+                setOpen={setIsDepartureDetailDrawerOpen}
+              >
+                <div className="flex-1 flex flex-col gap-[6px]">
+                  <label className="font-semibold">
+                    How many people will travel including you?
+                  </label>
+                  <div className="p-[9.5px] py-3 flex flex-row items-center justify-center border rounded-2xl">
+                    <button
+                      className="ripple rounded-full"
+                      onClick={() =>
+                        updatePersonalDetail(
+                          "peopleCount",
+                          Number(
+                            personalDetail.peopleCount == 1
+                              ? 1
+                              : personalDetail.peopleCount - 1
+                          )
+                        )
+                      }
+                    >
+                      <MinusIcon color="#1e1e1e" />
+                    </button>
+                    <input
+                      className="flex-1 text-center outline-none"
+                      value={personalDetail.peopleCount}
+                      type={"number"}
+                      min={1}
+                      placeholder="3"
+                      onChange={(e) => {
+                        updatePersonalDetail(
+                          "peopleCount",
+                          Number(e.target.value)
+                        );
+                      }}
+                      required
+                    />
+                    <button
+                      className="ripple rounded-full"
+                      onClick={() =>
+                        updatePersonalDetail(
+                          "peopleCount",
+                          Number(personalDetail.peopleCount + 1)
+                        )
+                      }
+                    >
+                      <PlusIcon color="#1e1e1e" />
+                    </button>
+                  </div>
+                </div>
+                <div className="flex-1 flex flex-col gap-[6px]">
+                  <label className="font-semibold">
+                    Additional Information:
+                  </label>
+                  <textarea
+                    placeholder="Are there anything you would like us to know? Ex. Diet/Food allergies diseases and injuries?"
+                    className="min-h-32 p-4 border rounded-xl"
+                    value={personalDetail.additionalInformation}
+                    onChange={(e) => {
+                      updatePersonalDetail(
+                        "additionalInformation",
+                        e.target.value
+                      );
+                    }}
+                  ></textarea>
+                </div>
+              </Drawer>
+            </div>
+          </div>
+          <div className="bg-white drop-shadow-card px-4 lg:px-16 relative py-8 md:pt-0">
+            <div className="md:sticky md:left-0 md:top-0 flex flex-col gap-4 md:pt-[88px] md:-mt-[88px]">
+              <h1 className="text-2xl font-bold lg:text-3xl">
+                Request New Departure
+              </h1>
+              {/* Select Tour  */}
+              <div className="md:w-80 flex flex-col gap-[6px]">
+                <label className="font-semibold">Choose Tour</label>
+                <select
+                  name="tours"
+                  required
+                  className={`text-base px-4 py-3 w-full outline-none border rounded-2xl ${
+                    selectedTour ? "text-secondary" : "text-[#c1c1c1]"
+                  }`}
+                  onChange={(e) => setSelectedTour(Number(e.target.value))}
+                  value={selectedTour}
+                  style={{
+                    appearance: "none",
+                    WebkitAppearance: "none",
+                    MozAppearance: "none",
+                  }}
+                >
+                  <option value="" className="text-quaternary">
+                    Select Tour
+                  </option>
+                  {tours?.map((t) => (
+                    <option value={t.id} key={t.id}>
+                      {t.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {/* Date */}
+              <NewInput
+                label="Tour Starting Date"
+                value={personalDetail.startingDate}
+                required
+                onChange={(e) =>
+                  updatePersonalDetail("startingDate", e.target.value)
+                }
+                type={"date"}
+                min={new Date().toISOString().split("T")[0]}
+              />
+              {/* Privacy and Booking button */}
+              <div className="flex flex-row w-80 items-center justify-center gap-2">
+                <input
+                  type="checkbox"
+                  required
+                  checked={isAgreedToPrivacy}
+                  onChange={(e) => {
+                    setRequestError(null);
+                    setIsAgreedToPrivacy(e.target.checked);
+                    Cookies.set("isAgreedToPrivacy", e.target.checked + "");
+                  }}
+                />
+                <div className=" text-wrap">
+                  I agree to the{" "}
+                  <Link
+                    href="/termsandconditions"
+                    className="underline font-medium"
+                  >
+                    Terms of Conditions
+                  </Link>{" "}
+                  and{" "}
+                  <Link href="/privacypolicy" className="underline font-medium">
+                    Privacy Policy
+                  </Link>
+                </div>
+              </div>
+              {requestError && (
+                <label className="text-red-600 text-center text-wrap md:w-80">
+                  {requestError}
+                </label>
+              )}
+              <button
+                className="bg-primary px-4 py-3 width-full text-center text-white whitespace-nowrap font-bold ripple rounded-2xl"
+                onClick={requestNewTour}
+              >
+                {requestLoading ? "Loading" : "Request A New Departure"}
+              </button>
+            </div>
+          </div>
+        </div>
+      </MainLayout>
+      {/* 
       <MainLayout>
         <div className="w-screen flex-1 px-3  xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col gap-4 justify-center">
           <div className=" text-2xl font-semibold lg:text-4xl">
@@ -329,7 +596,7 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
             </div>
           </form>
         </div>
-      </MainLayout>
+      </MainLayout> */}
     </>
   );
 };

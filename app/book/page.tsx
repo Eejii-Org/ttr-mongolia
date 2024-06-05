@@ -443,7 +443,7 @@ const Booking = () => {
         </div>
         <div className="bg-white drop-shadow-card px-4 lg:px-16 relative py-8 md:pt-0">
           {/* <div className="w-80"></div> */}
-          <div className="md:sticky md:left-0 md:top-0 flex flex-col gap-4 md:pt-[82px] md:-mt-[82px]">
+          <div className="md:sticky md:left-0 md:top-0 flex flex-col gap-4 md:pt-[88px] md:-mt-[88px]">
             <h1 className="text-2xl font-bold lg:text-3xl">Tour Detail</h1>
             {/* Tour Card */}
             <div className="md:w-80 drop-shadow-card">
