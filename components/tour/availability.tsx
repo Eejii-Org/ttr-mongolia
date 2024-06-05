@@ -95,6 +95,7 @@ const AvailabilityItem: FC<AvailabilityItemPropsType> = ({
   days,
   id,
   type,
+  bookable,
 }) => {
   const dates = useMemo(() => {
     const startingDate = new Date(date);
@@ -170,13 +171,21 @@ const AvailabilityItem: FC<AvailabilityItemPropsType> = ({
         <Link
           className="ripple py-3 px-8 bg-primary text-center font-bold text-secondary rounded flex-1 md:flex-auto"
           href={{
-            pathname: type == "near" ? "/contact" : "/book",
+            pathname: bookable
+              ? type == "near"
+                ? "/contact"
+                : "/book"
+              : "/contact",
             query: {
               availableTourId: id,
             },
           }}
         >
-          {type == "near" ? "Contact Us" : "Book Now"}
+          {bookable
+            ? type == "near"
+              ? "Contact Us"
+              : "Book Now"
+            : "Contact Us"}
         </Link>
       </div>
     </div>

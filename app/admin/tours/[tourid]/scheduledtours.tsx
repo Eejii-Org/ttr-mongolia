@@ -18,6 +18,7 @@ export const ScheduledTours = ({ tourId }: { tourId: number }) => {
         salePrice: null,
         status: "active",
         tourId: tourId,
+        bookable: true,
       },
       ...availableTours,
     ]);
@@ -43,11 +44,11 @@ export const ScheduledTours = ({ tourId }: { tourId: number }) => {
       toast.success("Successfully saved departure");
       return;
     }
+    console.log(departure, "HERE");
     const { data, error } = await supabase
       .from("availableTours")
       .insert({
         ...departure,
-        tourId: tourId,
       })
       .select();
     if (error) {
@@ -147,6 +148,9 @@ const ScheduledTour = ({
   const [dep, setDep] = useState<AvailableTourType | null>();
   const isSaveDisabled = useMemo(() => {
     if (!dep?.id) return false;
+    if (dep.bookable !== departure.bookable) {
+      return false;
+    }
     return dep?.salePrice === departure.salePrice;
   }, [dep, departure]);
   // const updateable = useMemo<boolean>(() => {
@@ -160,6 +164,7 @@ const ScheduledTour = ({
   };
   const save = async () => {
     if (!dep) return;
+    console.log(dep);
     setSaveLoading(true);
     await saveDeparture(dep);
     setSaveLoading(false);
@@ -219,7 +224,15 @@ const ScheduledTour = ({
             setDep({ ...dep, salePrice: Number(e.target.value) })
           }
         />
-
+        <div className="flex flex-col h-12 items-start justify-center gap-2">
+          <span className="text-base">Bookable:</span>
+          <input
+            type="checkbox"
+            checked={dep.bookable}
+            className="w-4 h-4"
+            onChange={(e) => setDep({ ...dep, bookable: e.target.checked })}
+          />
+        </div>
         <button
           className={`px-3 py-2 min-w-32 bg-quinary ripple text-lg font-medium`}
           onClick={update}

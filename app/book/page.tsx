@@ -141,9 +141,28 @@ const Booking = () => {
   };
 
   const checkInputs = () => {
-    if (Object.values(personalDetail).some((val) => val === "")) {
-      setBookingError("Please fill out all of our inputs in form");
-      return false;
+    type keysType =
+      | "firstName"
+      | "lastName"
+      | "phoneNumber"
+      | "email"
+      | "nationality"
+      | "dateOfBirth"
+      | "peopleCount";
+    const keysToCheck: keysType[] = [
+      "firstName",
+      "lastName",
+      "phoneNumber",
+      "email",
+      "nationality",
+      "dateOfBirth",
+      "peopleCount",
+    ];
+    for (const key of keysToCheck) {
+      if (personalDetail[key] === "") {
+        setBookingError("Please fill out all of our inputs in form");
+        return false;
+      }
     }
     if (!paymentMethod || !paymentType) {
       setBookingError("Please select payment");

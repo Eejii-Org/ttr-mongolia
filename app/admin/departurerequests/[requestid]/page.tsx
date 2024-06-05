@@ -48,6 +48,7 @@ const DepartureRequest = () => {
               salePrice: null,
               date: departureRequest.startingDate,
               status: "active",
+              bookable: true,
             })
             .select(),
       ]);

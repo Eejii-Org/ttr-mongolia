@@ -17,8 +17,8 @@ const CP = ({ searchParams }: { searchParams: { amount: string } }) => {
       return;
     }
     setPayLoading(true);
-    const res = await axios.post(`/api/request-invoice`, {
-      amount: amount,
+    const res = await axios.post(`/api/custom-invoice`, {
+      deposit: amount,
       availableTourId: -1,
     });
     if (res.status !== 200) {

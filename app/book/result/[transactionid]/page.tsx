@@ -101,7 +101,7 @@ const PaymentResult = () => {
                 <>
                   {transactionDetail?.invoice?.status === "SENT"
                     ? transactionDetail?.invoice?.errorCode === "000"
-                      ? "Your payment has been processed successfully"
+                      ? "Thank you for booking a tour with us ! Your payment was successful. You will receive details of your booking by email. We are happy to welcome you soon for your adventure !"
                       : "Unfortunately payment was rejected"
                     : "Transaction is Pending"}
                 </>

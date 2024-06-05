@@ -17,18 +17,17 @@ export const OurAgency: FC = () => {
         </div>
         <div className="text-base md:text-xl font-medium">
           With experienced guides leading the way, immerse yourself in
-          <span className="text-primary"> unforgettable experiences</span> that
-          not only enrich your soul but also{" "}
-          <span className="text-primary">uplift communities in need</span>. For
+          <span className="text-primary">unforgettable experiences</span> and
+          support <span className="text-primary">meaningful projects</span>. For
           every adventure you embark upon, know that{" "}
-          <span className="text-primary"> 10% of our profits</span> are
-          dedicated to supporting{" "}
-          <span className="text-primary"> education</span>,{" "}
-          <span className="text-primary">healthcare</span>, and{" "}
-          <span className="text-primary">various vital fields</span>. Join us as
-          we navigate towards a brighter future, where every trip taken becomes
-          a <span className="text-primary">beacon of hope</span> and opportunity
-          for those who need it most.
+          <span className="text-primary">10% of our profits </span>are donated
+          to our partner EEJII NGO, dedicated to supporting{" "}
+          <span className="text-primary">education, healthcare</span>, and
+          various <span className="text-primary">vital fields</span>. Join us as
+          we navigate towards a brighter future, where{" "}
+          <span className="text-primary">every trip</span> taken becomes an{" "}
+          <span className="text-primary">opportunity</span> for those who need
+          it most.
         </div>
       </div>
       <div className="flex flex-row gap-4">
