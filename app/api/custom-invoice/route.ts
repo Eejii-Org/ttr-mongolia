@@ -18,6 +18,7 @@ export async function POST(request: Request) {
   const { error } = await supabase.from("transactions").insert({
     deposit,
     availableTourId,
+    transactionId,
   });
 
   if (error) {
