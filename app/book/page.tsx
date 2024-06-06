@@ -119,8 +119,8 @@ const Booking = () => {
       paymentType,
       tourTitle: tour?.title,
       startingDate: availableTour.date,
-      // deposit: paymentType == "full" ? totalAmount : totalAmount * 0.5,
-      deposit: "0.01",
+      deposit: paymentType == "full" ? totalAmount : totalAmount * 0.5,
+      // deposit: "0.01",
       pax: pricePerPerson,
       total: totalAmount,
     });
