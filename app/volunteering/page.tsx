@@ -39,7 +39,7 @@ const Volunteering = () => {
             <div className="flex flex-row gap-4">
               <div className="h-72 bg-quinary flex-1 rounded-lg relative overflow-hidden">
                 <StorageImage
-                  src={"images/our-agency-1.webp"}
+                  src={"ourAgencyImages/our-agency-1.webp"}
                   fill
                   alt="ourAgencyPicture1"
                   className="object-cover"
@@ -47,7 +47,7 @@ const Volunteering = () => {
               </div>
               <div className="h-72 bg-quinary flex-1 rounded-lg rounded-tr-[128px] relative overflow-hidden">
                 <StorageImage
-                  src={"images/our-agency-2.webp"}
+                  src={"ourAgencyImages/our-agency-2.webp"}
                   fill
                   alt="ourAgencyPicture2"
                   className="object-cover"
@@ -57,7 +57,7 @@ const Volunteering = () => {
             <div className="flex flex-row  gap-4">
               <div className="h-72 bg-quinary flex-1 rounded-lg rounded-bl-[128px] relative overflow-hidden">
                 <StorageImage
-                  src={"images/our-agency-3.webp"}
+                  src={"ourAgencyImages/our-agency-3.webp"}
                   fill
                   alt="ourAgencyPicture3"
                   className="object-cover"
@@ -65,7 +65,7 @@ const Volunteering = () => {
               </div>
               <div className="h-72 bg-quinary flex-1 rounded-lg relative overflow-hidden">
                 <StorageImage
-                  src={"images/our-agency-4.webp"}
+                  src={"ourAgencyImages/our-agency-4.webp"}
                   fill
                   alt="ourAgencyPicture4"
                   className="object-cover"
