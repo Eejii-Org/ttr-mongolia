@@ -181,8 +181,8 @@ const Detail = ({
           disabled
         />
       </div>
-      <div className="flex flex-col">
-        <label className="pl-2 font-medium">Golomt Information:</label>
+      <div className="flex flex-col gap-[6px]">
+        <label className="font-semibold">Golomt Information:</label>
         <pre id="json" className="p-4 border rounded-xl">
           {JSON.stringify(
             transaction.transactionDetail ||

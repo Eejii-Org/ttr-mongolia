@@ -94,6 +94,8 @@ type TransactionType = {
   availableTourId: string;
   paymentType: string;
   paymentMethod: string;
+  total: number;
+  pax: number;
 };
 
 type DepartureRequestType = {

@@ -149,14 +149,13 @@ const Detail = ({
             </div>
           ) : (
             <div
-              className={`border border-red-500 bg-red-500/10 w-min px-5 py-3 text-base rounded text-red-500`}
+              className={`border border-yellow-500 bg-yellow-500/10 w-min px-5 py-3 text-base rounded text-yellow-500`}
             >
               Awaiting
             </div>
           )}
         </div>
       </div>
-
       <div className="flex flex-row gap-8">
         <div className="min-w-80">
           <label className="pl-2 font-medium">TransactionId:</label>
@@ -168,11 +167,49 @@ const Detail = ({
           />
         </div>
         <div className="min-w-80">
-          <label className="pl-2 font-medium">Amount:</label>
+          <label className="pl-2 font-medium">Payment Type:</label>
           <Input
             type="text"
             placeholder="$0000"
-            value={transaction.deposit}
+            value={transaction?.paymentType}
+            disabled
+          />
+        </div>
+        <div className="min-w-80">
+          <label className="pl-2 font-medium">Payment Method:</label>
+          <Input
+            type="text"
+            placeholder="$0000"
+            value={transaction?.paymentMethod}
+            disabled
+          />
+        </div>
+      </div>
+      <div className="flex flex-row gap-8">
+        <div className="min-w-80">
+          <label className="pl-2 font-medium">Deposit:</label>
+          <Input
+            type="text"
+            placeholder="$0000"
+            value={"$" + Number(transaction?.deposit).toFixed(2)}
+            disabled
+          />
+        </div>
+        <div className="min-w-80">
+          <label className="pl-2 font-medium">Pax:</label>
+          <Input
+            type="text"
+            placeholder="$0000"
+            value={"$" + transaction?.pax?.toFixed(2)}
+            disabled
+          />
+        </div>
+        <div className="min-w-80">
+          <label className="pl-2 font-medium">Total:</label>
+          <Input
+            type="text"
+            placeholder="$0000"
+            value={"$" + transaction?.total?.toFixed(2)}
             disabled
           />
         </div>

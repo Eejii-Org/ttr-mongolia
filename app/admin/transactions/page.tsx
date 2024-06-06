@@ -61,10 +61,10 @@ const AdminTransactions = () => {
             Status
           </th>
           <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
-            TransactionID
+            Method
           </th>
           <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
-            Method
+            TransactionID
           </th>
           <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
             Amount
@@ -127,8 +127,8 @@ const AdminTransactions = () => {
                   </div>
                 )}
               </td>
-              <td className="px-3 py-2">{transactionId}</td>
               <td className="px-3 py-2">{paymentMethod}</td>
+              <td className="px-3 py-2">{transactionId}</td>
               <td className="px-3 py-2 font-semibold">${deposit}</td>
               <td className="px-3 py-2 font-semibold uppercase">
                 {paymentType}
