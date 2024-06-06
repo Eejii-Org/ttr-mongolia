@@ -10,12 +10,11 @@ import axios from "axios";
 const Transaction = () => {
   const router = useRouter();
   const [transaction, setTransaction] = useState<TransactionType | null>(null);
-  const [golomtCheckLoading, setGolomtCheckLoading] = useState(false);
   const [loading, setLoading] = useState(true);
   const params = useParams();
   const { transactionid } = params;
   const [isNotFound, setIsNotFound] = useState(false);
-
+  const [golomtCheckLoading, setGolomtCheckLoading] = useState(false);
   const checkGolomt = async () => {
     if (!transaction) return;
     setGolomtCheckLoading(true);
@@ -132,7 +131,7 @@ const Detail = ({
         </div>
       </div>
 
-      <div className="flex flex-row gap-8">
+      <div className="flex flex-col lg:flex-row gap-8">
         <NewInput
           label="TransactionId:"
           type="text"
@@ -145,6 +144,40 @@ const Detail = ({
           type="text"
           placeholder="$0000"
           value={"$" + Number(transaction.deposit).toFixed(2)}
+          disabled
+        />
+        <div className="flex-1 hidden lg:flex"></div>
+        <div className="flex-1 hidden lg:flex"></div>
+      </div>
+      <div className="flex flex-col lg:flex-row flex-wrap gap-8">
+        <NewInput
+          label="FirstName:"
+          type="text"
+          placeholder="John"
+          value={transaction.firstName}
+          disabled
+        />
+        <NewInput
+          label="LastName:"
+          type="text"
+          placeholder="Doe"
+          value={transaction.lastName}
+          disabled
+        />
+        <NewInput
+          label="PhoneNumber:"
+          type="text"
+          placeholder="+976 9999 9999"
+          value={transaction.phoneNumber}
+          icon={<PhoneIcon />}
+          disabled
+        />
+        <NewInput
+          label="Email:"
+          type="text"
+          placeholder="test@gmail.com"
+          value={transaction.email}
+          icon={<EmailIcon />}
           disabled
         />
       </div>

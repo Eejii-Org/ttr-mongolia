@@ -5,18 +5,32 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import _ from "lodash";
+import axios from "axios";
 
 const Transaction = () => {
   const router = useRouter();
   const [transaction, setTransaction] = useState<TransactionType | null>(null);
   const [tourData, setTourData] = useState<TourType | null>(null);
-  const [departureData, setDepartureData] = useState<AvailableTourType | null>(
-    null
-  );
   const [loading, setLoading] = useState(true);
   const params = useParams();
   const { transactionid } = params;
   const [isNotFound, setIsNotFound] = useState(false);
+  const [golomtCheckLoading, setGolomtCheckLoading] = useState(false);
+  const checkGolomt = async () => {
+    if (!transaction) return;
+    setGolomtCheckLoading(true);
+    const { data } = await axios.post("/api/check-transaction", {
+      transactionId: transaction.transactionId,
+    });
+    const { error } = await supabase
+      .from("transactions")
+      .update({
+        transactionDetail: data.invoice,
+      })
+      .eq("id", transactionid);
+    setTransaction({ ...transaction, transactionDetail: data.invoice });
+    setGolomtCheckLoading(false);
+  };
   const leave = async () => {
     router.push("/admin/transactions");
     return;
@@ -93,7 +107,12 @@ const Transaction = () => {
         <>
           <div className="border overflow-scroll h-full w-full bg-white rounded-md flex-1 flex flex-col relative">
             <div className="flex-1 p-4">
-              <Detail transaction={transaction} tourData={tourData} />
+              <Detail
+                transaction={transaction}
+                tourData={tourData}
+                golomtCheckLoading={golomtCheckLoading}
+                checkGolomt={checkGolomt}
+              />
             </div>
           </div>
         </>
@@ -105,9 +124,13 @@ const Transaction = () => {
 const Detail = ({
   transaction,
   tourData,
+  golomtCheckLoading,
+  checkGolomt,
 }: {
   transaction: TransactionType;
   tourData: TourType | null;
+  golomtCheckLoading: boolean;
+  checkGolomt: () => void;
 }) => {
   return (
     <div className="flex flex-col gap-4">
@@ -244,6 +267,14 @@ const Detail = ({
             2
           )}
         </pre>
+      </div>
+      <div>
+        <button
+          className="bg-primary px-4 py-3 width-full text-center text-white whitespace-nowrap font-bold ripple rounded-2xl"
+          onClick={checkGolomt}
+        >
+          {golomtCheckLoading ? "Loading..." : "Check Golomt Again"}
+        </button>
       </div>
     </div>
   );

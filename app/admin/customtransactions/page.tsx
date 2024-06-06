@@ -65,22 +65,18 @@ const AdminTransactions = () => {
           <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
             TransactionID
           </th>
-          <th className="text-left px-3 py-2 w-full font-semibold md:text-lg  border-b">
+          <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
             Amount
           </th>
-          {/* <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b w-40">
+          <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b w-40">
             Name
           </th>
           <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
             Email
           </th>
           <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
-            Nationality
+            PhoneNumber
           </th>
-          <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
-            People Count
-          </th> */}
-
           <th className="text-left px-3 py-2 font-semibold md:text-lg max-w-12 border-b w-12"></th>
         </tr>
         {results.map(
@@ -90,8 +86,7 @@ const AdminTransactions = () => {
               firstName,
               lastName,
               email,
-              nationality,
-              peopleCount,
+              phoneNumber,
               deposit,
               transactionId,
               transactionDetail,
@@ -123,9 +118,10 @@ const AdminTransactions = () => {
               </td>
               <td className="px-3 py-2">{transactionId}</td>
               <td className="px-3 py-2 font-semibold">${deposit}</td>
-              {/* <td className="py-2 px-3 ">{firstName + " " + lastName}</td> */}
-              {/* <td className="px-3 py-2">{email}</td>
-              <td className="px-3 py-2">{nationality}</td>
+              <td className="py-2 px-3 ">{firstName + " " + lastName}</td>
+              <td className="px-3 py-2">{email}</td>
+              <td className="px-3 py-2">{phoneNumber}</td>
+              {/* <td className="px-3 py-2">{nationality}</td>
               <td className="px-3 py-2">{peopleCount}</td> */}
               <td className="">
                 <div className="flex items-center justify-center">

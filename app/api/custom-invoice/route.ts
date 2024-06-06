@@ -6,16 +6,23 @@ export const dynamic = "force-dynamic"; // defaults to auto
 type BodyType = {
   deposit: string;
   availableTourId: number;
+  personalDetail: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber: string;
+  };
 };
 
 export async function POST(request: Request) {
   const supabase = createClient();
   const body: BodyType = await request.json();
-  const { deposit, availableTourId } = body;
+  const { deposit, availableTourId, personalDetail } = body;
   const transactionId = generateTransactionId();
 
   /* Save to Database */
   const { error } = await supabase.from("transactions").insert({
+    ...personalDetail,
     deposit,
     availableTourId,
     transactionId,

@@ -34,16 +34,16 @@ export async function POST(request: Request) {
   // }
   try {
     const res = await checkInvoice(transactionId);
-    console.log(res);
+    console.log(res, "wtf");
     return Response.json({
       transaction: data,
       // availableTour: availableTour,
       invoice: res.data,
     });
-  } catch (e) {
+  } catch (e: any) {
     return Response.json({
       transaction: data,
-      invoice: null,
+      invoice: e.response.data,
     });
   }
   // const { data: transactionData, error: er } = await supabase

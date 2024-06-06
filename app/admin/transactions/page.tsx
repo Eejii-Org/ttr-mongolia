@@ -64,7 +64,13 @@ const AdminTransactions = () => {
             TransactionID
           </th>
           <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
+            Method
+          </th>
+          <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
             Amount
+          </th>
+          <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
+            P-Type
           </th>
           <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b w-40">
             Name
@@ -72,11 +78,11 @@ const AdminTransactions = () => {
           <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
             Email
           </th>
-          <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
+          {/* <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
             Nationality
-          </th>
+          </th> */}
           <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
-            People Count
+            People
           </th>
 
           <th className="text-left px-3 py-2 font-semibold md:text-lg max-w-12 border-b w-12"></th>
@@ -93,6 +99,8 @@ const AdminTransactions = () => {
               deposit,
               transactionId,
               transactionDetail,
+              paymentType,
+              paymentMethod,
             },
             i
           ) => (
@@ -120,10 +128,14 @@ const AdminTransactions = () => {
                 )}
               </td>
               <td className="px-3 py-2">{transactionId}</td>
+              <td className="px-3 py-2">{paymentMethod}</td>
               <td className="px-3 py-2 font-semibold">${deposit}</td>
+              <td className="px-3 py-2 font-semibold uppercase">
+                {paymentType}
+              </td>
               <td className="py-2 px-3 ">{firstName + " " + lastName}</td>
               <td className="px-3 py-2">{email}</td>
-              <td className="px-3 py-2">{nationality}</td>
+              {/* <td className="px-3 py-2">{nationality}</td> */}
               <td className="px-3 py-2">{peopleCount}</td>
               <td className="">
                 <div className="flex items-center justify-center">
