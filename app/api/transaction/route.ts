@@ -55,7 +55,7 @@ export async function POST(request: Request) {
         );
       }
       const { text, html, subject } = mailTemplate("customPayReceipt", {
-        transactionDetail: { ...transaction },
+        transactionDetail: transaction,
       });
       await transporter.sendMail({
         from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`,
@@ -153,7 +153,14 @@ export async function POST(request: Request) {
       html: receiptHTML,
       subject: receiptSubject,
     } = mailTemplate("bookSuccessReceipt", {
-      transactionDetail: { ...transaction },
+      transactionDetail: transaction,
+      tourDetail: {
+        title: tourData.title,
+        date: "",
+        duration: 0,
+        peopleCount: 1,
+        paidAmount: 0,
+      },
     });
     await transporter.sendMail({
       from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`,
