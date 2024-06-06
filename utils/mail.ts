@@ -17,7 +17,25 @@ export type templateTypeType =
   | "privateTour"
   | "adminPrivateTour"
   | "bookInvoice"
+  | "adminBookInvoice"
+  | "customPayReceipt"
+  | "bookSuccessReceipt";
+export type templateKeysType =
+  | "requestApprove"
+  | "requestDeny"
+  | "requestReply"
+  | "requestAdmin"
+  | "bookSuccess"
+  | "bookFail"
+  | "adminPaymentSuccess"
+  | "adminPaymentFailure"
+  | "contact"
+  | "contactAdmin"
+  | "privateTour"
+  | "adminPrivateTour"
+  | "bookInvoice"
   | "adminBookInvoice";
+// bookSuccessReceipt bhgu cus it's not used for other emails
 export type detailType = {
   name?: string;
   paymentURL?: string;
@@ -100,6 +118,7 @@ export type detailType = {
     pax: number;
     total: number;
   };
+  transactionDetail?: TransactionType;
 };
 // subject: string, body1: string, body2?: string
 export const mailTemplate = (
@@ -117,9 +136,50 @@ export const mailTemplate = (
     adminNote,
     privateTourDetail,
     bookingDetail,
+    transactionDetail,
   } = detail;
+
+  if (templateType == "customPayReceipt") {
+    if (transactionDetail) {
+      const html = receiptEmailGet(
+        "Custom Payment",
+        "custom",
+        transactionDetail
+      );
+      return {
+        subject: "TTR Mongolia Receipt",
+        text: convert(html, options),
+        html: html,
+      };
+    }
+    return {
+      subject: "TTR Mongolia Receipt",
+      text: "",
+      html: "",
+    };
+  }
+  if (templateType == "bookSuccessReceipt") {
+    if (transactionDetail) {
+      const html = receiptEmailGet(
+        tourDetail?.title || "Payment",
+        "book",
+        transactionDetail
+      );
+      return {
+        subject: "TTR Mongolia Receipt",
+        text: convert(html, options),
+        html: html,
+      };
+    }
+    return {
+      subject: "TTR Mongolia Receipt",
+      text: "",
+      html: "",
+    };
+  }
+
   const emailDetails: {
-    [K in templateTypeType]: {
+    [K in templateKeysType]: {
       header: string;
       top: string[];
       link?: {
@@ -487,4 +547,464 @@ const getDate = (date?: string, days?: number) => {
     " " +
     endingDate.getFullYear()
   );
+};
+
+const receiptEmailGet = (
+  title: string,
+  receiptType: "custom" | "book",
+  transaction: TransactionType
+) => {
+  const {
+    firstName,
+    lastName,
+    transactionId,
+    created_at,
+    peopleCount,
+    pax,
+    total,
+    deposit,
+  } = transaction;
+  const receipt = `
+  <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        width: 100vw;
+        font-family: "Nunito Sans", sans-serif;
+      }
+
+      .container {
+        width: 520px;
+        margin: 0px auto;
+        padding: 48px 20px;
+      }
+      .title {
+        font-weight: 600;
+        font-size: 26px;
+        font-weight: 700;
+        margin: 0;
+        color: rgba(30, 30, 30, 0.8);
+        text-align: center;
+      }
+      .body-text {
+        font-size: 15px;
+        color: rgba(30, 30, 30, 0.8);
+      }
+      .footer-text {
+        font-size: 12px;
+        color: rgba(30, 30, 30, 0.5);
+        text-align: center;
+      }
+      .button {
+        padding: 8px 32px;
+        font-size: 14px;
+        font-weight: 500;
+        background-color: #fda403;
+        border: 0;
+        border-radius: 4px;
+        text-decoration: none;
+        color: black !important;
+        cursor: pointer;
+      }
+      .text-center {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <table class="container">
+      <thead>
+        <tr>
+          <th style="display: flex; padding-bottom: 24px">
+            <img
+              width="204.31px"
+              height="42px"
+              src="https://www.ttrmongolia.com/static/ttr-row.png"
+              alt="TTRMongolia"
+            />
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <h1 class="title">Your Payment Receipt</h1>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p class="body-text text-center">${new Date(
+              created_at
+            ).toDateString()}</p>
+            <p class="body-text text-center">${firstName} ${lastName}</p>
+            <p class="body-text text-center">TransactionID: ${transactionId}</p>
+            <table
+              cellspacing="0"
+              cellpadding="0"
+              width="100%"
+              bgcolor="#F7F7F7"
+              style="
+                margin: 0px;
+                padding: 0px;
+                background: rgb(247, 247, 247);
+                border-collapse: collapse;
+                width: 100%;
+              "
+            >
+              <tbody>
+                <tr>
+                  <td
+                    style="
+                      border-style: solid;
+                      border-width: 1px;
+                      border-color: rgb(227, 227, 227);
+                    "
+                  >
+                    <table
+                      cellspacing="0"
+                      cellpadding="0"
+                      width="100%"
+                      style="margin: 0px; padding: 0px; width: 100%"
+                    >
+                      <tbody>
+                        <tr
+                          height="10"
+                          valign="middle"
+                          style="
+                            border: none;
+                            margin: 0px;
+                            padding: 0px;
+                            height: 10px;
+                          "
+                        >
+                          <td
+                            colspan="4"
+                            height="10"
+                            valign="middle"
+                            style="
+                              border: none;
+                              margin: 0px;
+                              padding: 0px;
+                              height: 10px;
+                              font-size: 10px;
+                              line-height: 10px;
+                            "
+                          ></td>
+                        </tr>
+                        <tr>
+                          <td
+                            width="5%"
+                            valign="middle"
+                            style="
+                              border: none;
+                              margin: 0px;
+                              padding: 0px;
+                              width: 5%;
+                            "
+                          ></td>
+                          <td valign="middle" style="font-weight: bold">
+                            ${title}
+                          </td>
+                          <td
+                            width="20%"
+                            valign="middle"
+                            style="
+                              text-align: right;
+                              width: 20%;
+                              vertical-align: top;
+                            "
+                          >
+                            ${receiptType == "book" ? pax : deposit}
+                          </td>
+                          <td
+                            width="5%"
+                            valign="middle"
+                            style="
+                              border: none;
+                              margin: 0px;
+                              padding: 0px;
+                              width: 5%;
+                            "
+                          ></td>
+                        </tr>
+                        ${
+                          receiptType == "book" &&
+                          `<tr>
+                          <td
+                            width="5%"
+                            valign="middle"
+                            style="
+                              border: none;
+                              margin: 0px;
+                              padding: 0px;
+                              width: 5%;
+                            "
+                          ></td>
+                          <td colspan="3" valign="middle">${peopleCount} person</td>
+                        </tr>`
+                        }
+                        <tr
+                          height="10"
+                          valign="middle"
+                          style="
+                            border: none;
+                            margin: 0px;
+                            padding: 0px;
+                            height: 10px;
+                          "
+                        >
+                          <td
+                            colspan="4"
+                            height="10"
+                            valign="middle"
+                            style="
+                              border: none;
+                              margin: 0px;
+                              padding: 0px;
+                              height: 10px;
+                              font-size: 10px;
+                              line-height: 10px;
+                            "
+                          ></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style="
+                      border-style: solid;
+                      border-width: 1px;
+                      border-color: rgb(227, 227, 227);
+                    "
+                  >
+                    <table
+                      cellspacing="0"
+                      cellpadding="0"
+                      width="100%"
+                      style="margin: 0px; padding: 0px; width: 100%"
+                    >
+                      <tbody>
+                        <tr
+                          height="10"
+                          valign="middle"
+                          style="
+                            border: none;
+                            margin: 0px;
+                            padding: 0px;
+                            height: 10px;
+                          "
+                        >
+                          <td
+                            colspan="4"
+                            height="10"
+                            valign="middle"
+                            style="
+                              border: none;
+                              margin: 0px;
+                              padding: 0px;
+                              height: 10px;
+                              font-size: 10px;
+                              line-height: 10px;
+                            "
+                          ></td>
+                        </tr>
+                        <tr>
+                          <td
+                            width="5%"
+                            valign="middle"
+                            style="
+                              border: none;
+                              margin: 0px;
+                              padding: 0px;
+                              width: 5%;
+                            "
+                          ></td>
+                          <td valign="middle" style="font-weight: bold">
+                            Total
+                          </td>
+                          <td
+                            width="20%"
+                            valign="middle"
+                            style="
+                              text-align: right;
+                              width: 20%;
+                              vertical-align: top;
+                            "
+                          >
+                            ${total.toFixed(2)} USD
+                          </td>
+                          <td
+                            width="5%"
+                            valign="middle"
+                            style="
+                              border: none;
+                              margin: 0px;
+                              padding: 0px;
+                              width: 5%;
+                            "
+                          ></td>
+                        </tr>
+                        <tr
+                          height="10"
+                          valign="middle"
+                          style="
+                            border: none;
+                            margin: 0px;
+                            padding: 0px;
+                            height: 10px;
+                          "
+                        >
+                          <td
+                            colspan="4"
+                            height="10"
+                            valign="middle"
+                            style="
+                              border: none;
+                              margin: 0px;
+                              padding: 0px;
+                              height: 10px;
+                              font-size: 10px;
+                              line-height: 10px;
+                            "
+                          ></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style="
+                      border-style: solid;
+                      border-width: 1px;
+                      border-color: rgb(227, 227, 227);
+                    "
+                  >
+                    <table
+                      cellspacing="0"
+                      cellpadding="0"
+                      width="100%"
+                      style="margin: 0px; padding: 0px; width: 100%"
+                    >
+                      <tbody>
+                        <tr
+                          height="10"
+                          valign="middle"
+                          style="
+                            border: none;
+                            margin: 0px;
+                            padding: 0px;
+                            height: 10px;
+                          "
+                        >
+                          <td
+                            colspan="4"
+                            height="10"
+                            valign="middle"
+                            style="
+                              border: none;
+                              margin: 0px;
+                              padding: 0px;
+                              height: 10px;
+                              font-size: 10px;
+                              line-height: 10px;
+                            "
+                          ></td>
+                        </tr>
+                        <tr>
+                          <td
+                            width="5%"
+                            valign="middle"
+                            style="
+                              border: none;
+                              margin: 0px;
+                              padding: 0px;
+                              width: 5%;
+                            "
+                          ></td>
+                          <td valign="middle" style="font-weight: bold">
+                            Paid
+                          </td>
+                          <td
+                            width="20%"
+                            valign="middle"
+                            style="
+                              text-align: right;
+                              width: 20%;
+                              vertical-align: top;
+                            "
+                          >
+                            ${Number(deposit).toFixed(2)} USD
+                          </td>
+                          <td
+                            width="5%"
+                            valign="middle"
+                            style="
+                              border: none;
+                              margin: 0px;
+                              padding: 0px;
+                              width: 5%;
+                            "
+                          ></td>
+                        </tr>
+                        <tr
+                          height="10"
+                          valign="middle"
+                          style="
+                            border: none;
+                            margin: 0px;
+                            padding: 0px;
+                            height: 10px;
+                          "
+                        >
+                          <td
+                            colspan="4"
+                            height="10"
+                            valign="middle"
+                            style="
+                              border: none;
+                              margin: 0px;
+                              padding: 0px;
+                              height: 10px;
+                              font-size: 10px;
+                              line-height: 10px;
+                            "
+                          ></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>
+            <p class="footer-text">
+              TTR Mongolia LLC, 1st Floor, 34th Apartment, Chingeltei District,
+              Ulaanbaatar, MN
+            </p>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </body>
+</html>
+`;
+  return receipt;
 };

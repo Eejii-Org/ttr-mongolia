@@ -42,6 +42,38 @@ export async function POST(request: Request) {
       );
     }
 
+    if (transaction.availableTourId == "-1") {
+      /* Custom Payment */
+
+      if (body.errorCode !== "000") {
+        return new Response(
+          JSON.stringify({
+            errorMessage: "Transaction Failed",
+            errorCode: 200,
+          }),
+          { status: 200 }
+        );
+      }
+      const { text, html, subject } = mailTemplate("customPayReceipt", {
+        transactionDetail: { ...transaction },
+      });
+      await transporter.sendMail({
+        from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`,
+        to: transaction.email,
+        subject,
+        text,
+        html,
+      });
+      return new Response(
+        JSON.stringify({
+          errorMessage: "Success",
+          errorCode: 200,
+        }),
+        { status: 200 }
+      );
+      return;
+    }
+
     // Fetch tour and available tour data
     const { data: availableTourData, error: availableTourError } =
       await supabase
@@ -115,6 +147,21 @@ export async function POST(request: Request) {
         },
       }
     );
+    // receipt
+    const {
+      text: receiptText,
+      html: receiptHTML,
+      subject: receiptSubject,
+    } = mailTemplate("bookSuccessReceipt", {
+      transactionDetail: { ...transaction },
+    });
+    await transporter.sendMail({
+      from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`,
+      to: transaction.email,
+      subject: receiptSubject,
+      text: receiptText,
+      html: receiptHTML,
+    });
 
     // Send emails
     await transporter.sendMail({
@@ -150,3 +197,5 @@ export async function POST(request: Request) {
     );
   }
 }
+
+const sentReceipt = (transaction: TransactionType) => {};
