@@ -26,6 +26,7 @@ export async function POST(request: Request) {
     deposit,
     availableTourId,
     transactionId,
+    total: deposit,
   });
 
   if (error) {

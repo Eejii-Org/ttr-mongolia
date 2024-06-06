@@ -724,7 +724,11 @@ const receiptEmailGet = (
                               vertical-align: top;
                             "
                           >
-                            ${receiptType == "book" ? pax : deposit}
+                            ${
+                              receiptType == "book"
+                                ? pax.toFixed(2)
+                                : Number(deposit).toFixed(2)
+                            } USD
                           </td>
                           <td
                             width="5%"
@@ -738,8 +742,8 @@ const receiptEmailGet = (
                           ></td>
                         </tr>
                         ${
-                          receiptType == "book" &&
-                          `<tr>
+                          receiptType == "book"
+                            ? `<tr>
                           <td
                             width="5%"
                             valign="middle"
@@ -752,6 +756,7 @@ const receiptEmailGet = (
                           ></td>
                           <td colspan="3" valign="middle">${peopleCount} person</td>
                         </tr>`
+                            : ""
                         }
                         <tr
                           height="10"
