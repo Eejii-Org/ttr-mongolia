@@ -1,9 +1,11 @@
+import { TiptapContent } from "@/components/tiptapcontent";
 import {
   CaretDownIcon,
   CaretUpIcon,
   ChevronDownIcon,
   Input,
   MinusIcon,
+  Tiptap,
 } from "@components";
 import { Dispatch, FC, SetStateAction, useState } from "react";
 
@@ -152,12 +154,19 @@ const ListItem = ({
         </button>
       </div>
       <div className={`${open ? "flex" : "hidden"} text-base p-3 font-normal`}>
-        <textarea
+        <Tiptap
+          className="min-h-48 w-full p-2 flex-1 border rounded-2xl"
+          content={description}
+          setContent={(s: string) => {
+            updateListData(label, s);
+          }}
+        />
+        {/* <textarea
           placeholder="Overview"
           className=" min-h-48 w-full p-4 border rounded-xl"
           value={description}
           onChange={(e) => updateListData(label, e.target.value)}
-        ></textarea>
+        ></textarea> */}
       </div>
     </div>
   );

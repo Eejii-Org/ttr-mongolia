@@ -38,7 +38,6 @@ export async function POST(request: Request) {
 
   /* Generate Invoice through Golomt Bank */
   const inv = await getInvoice(transactionId, deposit);
-  console.log(inv);
   return Response.json(inv.data);
 }
 

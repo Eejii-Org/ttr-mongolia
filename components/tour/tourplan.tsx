@@ -1,6 +1,7 @@
 "use client";
 import { FC, useState } from "react";
 import { ChevronDownIcon } from "../icons";
+import { TiptapContent } from "../tiptapcontent";
 
 type TourPlanType = {
   itinerary: ItineraryType[];
@@ -51,12 +52,13 @@ const ListItem = ({ title, description, index, length }: DayType) => {
           <ChevronDownIcon />
         </div>
       </div>
+
       <div
         className={`${
           open ? "flex" : "hidden"
         } text-base md:text-lg p-3 text-black/65 font-normal`}
       >
-        {description}
+        <TiptapContent content={description} />
       </div>
       {/* </td> */}
     </div>

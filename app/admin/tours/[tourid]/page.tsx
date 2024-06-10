@@ -6,6 +6,7 @@ import {
   ImagesEditor,
   Input,
   PriceIcon,
+  Tiptap,
 } from "@components";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -326,17 +327,22 @@ const Detail = ({
           });
         }}
       />
-
       <div className="flex flex-col">
         <label className="pl-2 font-medium">Overview:</label>
-        <textarea
+        <Tiptap
+          className="min-h-48 w-full p-2 border rounded-2xl"
+          content={tour.overview}
+          setContent={(s) => {
+            setTour({ ...tour, overview: s });
+          }}
+        />
+        {/* <textarea
           placeholder="Overview"
-          className=" min-h-48 w-full p-4 border"
           value={tour.overview}
           onChange={(e) => {
             setTour({ ...tour, overview: e.target.value });
           }}
-        ></textarea>
+        ></textarea> */}
       </div>
       <div className="flex flex-col">
         <label className="pl-2 font-medium">Category:</label>

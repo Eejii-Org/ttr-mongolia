@@ -44,7 +44,6 @@ export const ScheduledTours = ({ tourId }: { tourId: number }) => {
       toast.success("Successfully saved departure");
       return;
     }
-    console.log(departure, "HERE");
     const { data, error } = await supabase
       .from("availableTours")
       .insert({
@@ -164,7 +163,6 @@ const ScheduledTour = ({
   };
   const save = async () => {
     if (!dep) return;
-    console.log(dep);
     setSaveLoading(true);
     await saveDeparture(dep);
     setSaveLoading(false);

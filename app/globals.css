@@ -159,3 +159,14 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+ol {
+  list-style: decimal !important;
+  padding-left: 16px;
+  margin: auto !important;
+}
+ul {
+  list-style: disc !important;
+  padding-left: 20px;
+  margin: auto !important;
+}

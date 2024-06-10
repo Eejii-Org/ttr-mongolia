@@ -22,3 +22,4 @@ export * from "./infinitescrolltours";
 export * from "./tourcard";
 export * from "./drawer";
 export * from "./analysevisits";
+export * from "./tiptap";

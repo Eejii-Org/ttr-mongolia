@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { DayIcon, PriceIcon } from "../icons";
 import { CombinedToursDataType } from "@/app/tours/page";
 import StorageImage from "../storageimage";
+import { convert } from "html-to-text";
 
 export const Tour = (props: { tour: CombinedToursDataType }) => {
   const { tour } = props;
@@ -30,7 +31,7 @@ export const Tour = (props: { tour: CombinedToursDataType }) => {
         <Link href={"/tours/" + tour.id}>
           <div className="font-bold text-xl lg:text-3xl">{title}</div>
           <div className="text-sm md:text-base tour-item-description">
-            {overview}
+            {convert(overview)}
           </div>
         </Link>
       </div>
