@@ -33,6 +33,7 @@ type AvailableTourType = {
   status?: "active" | "inactive";
   tourId: number;
   bookable: boolean;
+  pinned: boolean;
   // tourId: string;
   // title: string;
   // overview: string;

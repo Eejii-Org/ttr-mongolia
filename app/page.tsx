@@ -53,8 +53,9 @@ const getAvailableTours = async () => {
       .from("availableTours")
       .select("salePrice, tourId, date")
       .eq("status", "active")
+      .eq("pinned", true)
       .gte("date", new Date().toISOString())
-      .not("salePrice", "is", null)
+      // .not("salePrice", "is", null)
       .order("salePrice")
       .limit(3);
     if (err) throw err;

@@ -6,7 +6,7 @@ export const SaleDepartures = ({ data }: { data: TourCardDataType[] }) => {
     <div className="flex flex-col gap-6 mx-3 md:mx-0">
       <div className="flex flex-row justify-between items-end">
         <div className="text-2xl md:text-4xl font-semibold">
-          Departures On Sale
+          Special departures just for you
         </div>
         <Link
           href={{

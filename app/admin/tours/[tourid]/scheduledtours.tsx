@@ -19,6 +19,7 @@ export const ScheduledTours = ({ tourId }: { tourId: number }) => {
         status: "active",
         tourId: tourId,
         bookable: true,
+        pinned: false,
       },
       ...availableTours,
     ]);
@@ -150,6 +151,9 @@ const ScheduledTour = ({
     if (dep.bookable !== departure.bookable) {
       return false;
     }
+    if (dep.pinned !== departure.pinned) {
+      return false;
+    }
     return dep?.salePrice === departure.salePrice;
   }, [dep, departure]);
   // const updateable = useMemo<boolean>(() => {
@@ -229,6 +233,15 @@ const ScheduledTour = ({
             checked={dep.bookable}
             className="w-4 h-4"
             onChange={(e) => setDep({ ...dep, bookable: e.target.checked })}
+          />
+        </div>
+        <div className="flex flex-col h-12 items-start justify-center gap-2">
+          <span className="text-base">Pinned:</span>
+          <input
+            type="checkbox"
+            checked={dep.pinned}
+            className="w-4 h-4"
+            onChange={(e) => setDep({ ...dep, pinned: e.target.checked })}
           />
         </div>
         <button
