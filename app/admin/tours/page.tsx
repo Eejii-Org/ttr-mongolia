@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, TrashIcon } from "@components";
 import Link from "next/link";
 import { toast } from "react-toastify";
+import { convert } from "html-to-text";
 
 const AdminTours = () => {
   const [loading, setLoading] = useState(false);
@@ -96,7 +97,7 @@ const AdminTours = () => {
               </td>
               <td className="py-2 px-3 font-semibold ">{tour.title}</td>
               <td className="px-3 py-2 whitespace-nowrap text-ellipsis max-w-64 overflow-hidden">
-                {tour.overview}
+                {convert(tour.overview)}
               </td>
               <td className="px-3 py-2">{tour.days} days</td>
               <td className=" px-3 font-bold py-2">${tour.displayPrice}</td>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import StorageImage from "./storageimage";
 import { DayIcon, PriceIcon, StarIcon } from "./icons";
 import { ModifiedAvailableTourType } from "./infinitescrolltours";
+import { convert } from "html-to-text";
 
 const months = [
   "Jan",
@@ -65,7 +66,7 @@ export const TourCard = (props: TourCardType) => {
           <div className="flex flex-col gap-2 flex-1">
             <h5 className="text-xl md:text-2xl font-bold">{tourData.title}</h5>
             <p className="tour-item-description-3 text-[#6D6D6D]">
-              {tourData.overview}
+              {convert(tourData.overview)}
             </p>
             <div className="flex flex-row flex-wrap gap-4 text-black/80 font-bold text-sm md:text-md">
               {type == "departure" && (
