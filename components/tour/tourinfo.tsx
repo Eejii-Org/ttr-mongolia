@@ -20,7 +20,7 @@ export const TourInfo = ({
         <div className="flex flex-row text-xl font-semibold gap-1">
           {tour.days}
           <span className="font-medium">
-            {tour.days == 1 ? " day travel" : " days travel"}
+            {tour.days == 1 ? " day" : " days"}
           </span>
         </div>
       </div>
