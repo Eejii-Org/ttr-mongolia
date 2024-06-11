@@ -185,7 +185,7 @@ const TourPage = async ({ params }: { params: { tourid: string } }) => {
               </div>
             </div>
             <div className="z-10">
-              <TourPlan itinerary={tour.itinerary} />
+              <TourPlan map={tour.map} itinerary={tour.itinerary} />
             </div>
             <div id="availableTours" className="pt-24 -mt-24">
               <Availability tour={tour} availableTours={availableTours} />

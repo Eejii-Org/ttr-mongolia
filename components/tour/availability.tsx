@@ -61,7 +61,7 @@ export const Availability = ({
           </>
         )}
 
-        <div className="flex flex-row justify-between gap-4 items-center pt-2">
+        <div className="flex flex-col md:flex-row justify-between gap-4 md:items-center pt-2">
           <div className="text-xl font-semibold">
             Or you can request for a new tour
           </div>

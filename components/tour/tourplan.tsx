@@ -2,11 +2,13 @@
 import { FC, useState } from "react";
 import { ChevronDownIcon } from "../icons";
 import { TiptapContent } from "../tiptapcontent";
+import { Map } from "../map";
 
 type TourPlanType = {
   itinerary: ItineraryType[];
+  map: string | null;
 };
-export const TourPlan: FC<TourPlanType> = ({ itinerary }) => {
+export const TourPlan: FC<TourPlanType> = ({ itinerary, map }) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="text-2xl md:text-4xl font-semibold">Tour Plan</div>
@@ -20,6 +22,7 @@ export const TourPlan: FC<TourPlanType> = ({ itinerary }) => {
           />
         ))}
       </div>
+      {map !== null && map !== "" && <Map src={map} />}
     </div>
   );
 };
@@ -39,7 +42,7 @@ const ListItem = ({ day = "", title, description, index, length }: DayType) => {
     >
       {/* <td> */}
       <div
-        className={`text-lg md:text-xl hover:bg-black/10 p-4 cursor-pointer flex flex-row justify-between items-center ${
+        className={`text-base md:text-xl hover:bg-black/10 p-4 cursor-pointer flex flex-row justify-between items-center ${
           open ? "border-b" : ""
         }`}
         onClick={() => setOpen(!open)}

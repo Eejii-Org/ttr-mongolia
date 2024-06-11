@@ -135,6 +135,7 @@ const Tour = () => {
           reviews: [],
           status: "active",
           displayPrice: 1000,
+          map: "",
         });
         setOriginalTour({
           images: [],
@@ -150,6 +151,7 @@ const Tour = () => {
           reviews: [],
           status: "active",
           displayPrice: 1000,
+          map: "",
         });
         setIsNew(true);
         setLoading(false);
@@ -316,6 +318,15 @@ const Detail = ({
             icon={<DayIcon />}
             min={0}
             onChange={(e) => setTour({ ...tour, days: Number(e.target.value) })}
+          />
+        </div>
+        <div className="max-w-80">
+          <label className="pl-2 font-medium">Map:</label>
+          <Input
+            type="text"
+            placeholder="Map Link"
+            value={tour.map || ""}
+            onChange={(e) => setTour({ ...tour, map: e.target.value })}
           />
         </div>
       </div>
