@@ -437,6 +437,7 @@ const Booking = () => {
                 paymentMethod={paymentMethod}
                 setPaymentMethod={setPaymentMethod}
                 setBookingError={setBookingError}
+                tourDate={availableTour.date}
               />
             </Drawer>
           </div>
@@ -564,22 +565,38 @@ const DetailCard = ({
   paymentMethod,
   setPaymentMethod,
   setBookingError,
+  tourDate,
 }: {
   paymentType: "half" | "full" | null;
   setPaymentType: Dispatch<SetStateAction<"half" | "full" | null>>;
   paymentMethod: "credit-card" | "invoice" | null;
   setPaymentMethod: Dispatch<SetStateAction<"credit-card" | "invoice" | null>>;
   setBookingError: Dispatch<SetStateAction<string | null>>;
+  tourDate: string;
 }) => {
+  const isOneMonthApartFromToday = useMemo(() => {
+    const date = new Date(tourDate);
+    const today = new Date();
+    const oneMonthAfter = new Date(today);
+    oneMonthAfter.setMonth(today.getMonth() + 1);
+    return oneMonthAfter <= date;
+  }, [tourDate]);
   return (
     <div className="flex flex-col">
       {/* Payment Type */}
       <div className="flex flex-col md:flex-row gap-4 md:gap-6">
         <div
-          className={`flex-1 flex flex-row items-center px-4 py-3 rounded-2xl gap-4 cursor-pointer ${
+          className={`flex-1 flex flex-row items-center px-4 py-3 rounded-2xl gap-4 ${
             paymentType == "half" ? "border border-primary" : "border"
+          } ${
+            isOneMonthApartFromToday
+              ? "opacity-100  cursor-pointer"
+              : "opacity-50"
           }`}
-          onClick={() => setPaymentType("half")}
+          onClick={() => {
+            if (!isOneMonthApartFromToday) return;
+            setPaymentType("half");
+          }}
         >
           <div className="p-1 border border-primary bg-quinary rounded-full">
             <div
