@@ -13,7 +13,7 @@ export const Reviews: FC = () => {
         const { data, error } = await supabase
           .from("reviews")
           .select("*")
-          .order("date", { ascending: true });
+          .order("date", { ascending: false });
         if (error) {
           throw error;
         }
