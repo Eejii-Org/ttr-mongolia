@@ -188,10 +188,11 @@ const Booking = () => {
       const { data, error } = await supabase
         .from("availableTours")
         .select("tourId, salePrice, date")
+        .gte("date", new Date().toISOString())
         .eq("id", availableTourId);
       if (error) {
         console.error(error);
-        setError(error.message);
+        setError("Departure Not Found");
         setLoading(false);
         return;
       }
