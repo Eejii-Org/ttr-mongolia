@@ -19,7 +19,7 @@ export const CustomerSupport: FC = () => {
         </div>
         <Link
           href="/contact"
-          className="ripple bg-primary text-tertiary py-3 px-16 gip mt-6 cursor-pointer font-semibold"
+          className="ripple bg-primary text-tertiary py-3 px-16 gip mt-6 cursor-pointer font-semibold rounded"
         >
           Contact Now
         </Link>

@@ -15,7 +15,16 @@ export const TourInfo = ({
       ?.scrollIntoView({ behavior: "smooth" });
   return (
     <div className="flex justify-center md:justify-normal flex-col gap-2">
-      <div className="font-bold text-secondary text-xl">Price</div>
+      <div className="flex flex-col gap-1">
+        <div className="flex flex-row text-xl font-bold gap-1">Duration:</div>
+        <div className="flex flex-row text-xl font-semibold gap-1">
+          {tour.days}
+          <span className="font-medium">
+            {tour.days == 1 ? " day travel" : " days travel"}
+          </span>
+        </div>
+      </div>
+      <div className="font-bold text-secondary text-xl">Price:</div>
       {saleTours.length !== 0 && (
         <div className="flex flex-row justify-between">
           <div className="font-semibold text-primary text-xl">
@@ -77,7 +86,7 @@ export const TourInfo = ({
       </div>
 
       <button
-        className="mt-2 ripple flex-1 py-3 bg-primary text-center font-bold text-secondary rounded"
+        className="mt-2 ripple flex-1 py-3 bg-primary text-center font-bold text-tertiary rounded"
         onClick={checkAvailableDate}
       >
         Check Availability

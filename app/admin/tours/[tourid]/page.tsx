@@ -18,6 +18,7 @@ import { List } from "./list";
 import { SelectTourCategories } from "./selecttourcategories";
 import { Prices } from "./prices";
 import { deleteImagesInS3, uploadImagesToS3 } from "@/utils";
+import { Itinierary } from "./itinerary";
 
 type ModifiedTourType = Omit<TourType, "images"> & {
   images: (Blob | string)[];
@@ -375,11 +376,9 @@ const Detail = ({
       </div>
       <div>
         <label className="pl-2 font-medium">Tour Plan:</label>
-        <List
+        <Itinierary
           listData={tour.itinerary}
           setListData={(listData) => setTour({ ...tour, itinerary: listData })}
-          labelName="title"
-          descriptionName="description"
         />
       </div>
       <div>

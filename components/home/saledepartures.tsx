@@ -6,7 +6,7 @@ export const SaleDepartures = ({ data }: { data: TourCardDataType[] }) => {
     <div className="flex flex-col gap-6 mx-3 md:mx-0">
       <div className="flex flex-row justify-between items-end">
         <div className="text-2xl md:text-4xl font-semibold">
-          Special departures just for you
+          Departures On Sale
         </div>
         <Link
           href={{
@@ -28,7 +28,7 @@ export const SaleDepartures = ({ data }: { data: TourCardDataType[] }) => {
         {3 - data.length > 0 &&
           new Array(3 - data.length)
             .fill(null)
-            .map(() => <div className="flex-1" />)}
+            .map((_, i) => <div className="flex-1" key={i} />)}
       </div>
     </div>
   );

@@ -22,6 +22,7 @@ type AssetType = {
 };
 
 type ItineraryType = {
+  day: string;
   title: string;
   description: string;
 };

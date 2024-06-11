@@ -17,7 +17,7 @@ export const OurAgency: FC = () => {
         </div>
         <div className="text-base md:text-xl font-medium">
           With experienced guides leading the way, immerse yourself in
-          <span className="text-primary">unforgettable experiences</span> and
+          <span className="text-primary"> unforgettable experiences</span> and
           support <span className="text-primary">meaningful projects</span>. For
           every adventure you embark upon, know that{" "}
           <span className="text-primary">10% of our profits </span>are donated

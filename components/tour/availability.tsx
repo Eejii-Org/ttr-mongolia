@@ -72,7 +72,7 @@ export const Availability = ({
                 tourid: tour.id,
               },
             }}
-            className="ripple py-3 px-8 bg-primary text-center font-bold text-secondary rounded"
+            className="ripple py-3 px-8 bg-primary text-center font-semibold text-tertiary rounded"
           >
             Request a New Departure
           </Link>
@@ -169,7 +169,7 @@ const AvailabilityItem: FC<AvailabilityItemPropsType> = ({
       </div>
       <div className="flex items-center">
         <Link
-          className="ripple py-3 px-8 bg-primary text-center font-bold text-secondary rounded flex-1 md:flex-auto"
+          className="ripple py-3 px-8 bg-primary text-center font-bold text-tertiary rounded flex-1 md:flex-auto"
           href={{
             pathname: bookable
               ? type == "near"

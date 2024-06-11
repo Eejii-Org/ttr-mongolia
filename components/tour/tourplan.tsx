@@ -29,7 +29,7 @@ interface DayType extends ItineraryType {
   length: number;
 }
 
-const ListItem = ({ title, description, index, length }: DayType) => {
+const ListItem = ({ day = "", title, description, index, length }: DayType) => {
   const [open, setOpen] = useState(false);
   return (
     <div
@@ -45,7 +45,9 @@ const ListItem = ({ title, description, index, length }: DayType) => {
         onClick={() => setOpen(!open)}
       >
         <div className="flex flex-row items-center">
-          <span className="font-bold text-primary pr-2">Day {index + 1} :</span>
+          <span className="font-bold text-primary pr-2">
+            {day ? day : `Day ${index + 1}`} :
+          </span>
           <h3 className="font-medium">{title}</h3>
         </div>
         <div className={`transition-all ${open ? "rotate-180" : ""}`}>
