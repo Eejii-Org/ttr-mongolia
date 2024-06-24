@@ -25,6 +25,7 @@ export async function POST(request: Request) {
     !body.dateOfBirth ||
     !body.peopleCount ||
     !body.tourId ||
+    !body.tourTitle ||
     !body.startingDate
   ) {
     return NextResponse.json(

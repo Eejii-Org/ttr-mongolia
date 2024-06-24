@@ -119,6 +119,7 @@ const NewTour = ({ searchParams }: { searchParams: { tourid: number } }) => {
       const res = await axios.post(`/api/request-departure`, {
         ...personalDetail,
         tourId: selectedTour,
+        tourTitle: selectedTourData?.title,
         price: selectedTourData?.displayPrice,
       });
     } catch (err: any) {
