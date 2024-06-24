@@ -82,7 +82,7 @@ type PriceType = {
 
 type TransactionType = {
   id?: number;
-  created_at: string;
+  created_at?: string;
   firstName: string;
   lastName: string;
   email: string;
