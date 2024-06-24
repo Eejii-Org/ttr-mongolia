@@ -259,7 +259,7 @@ const Booking = () => {
             <div className="text-2xl font-semibold lg:text-4xl">{error}</div>
             <button
               onClick={() => router.back()}
-              className="bg-primary px-4 py-3 width-full text-center text-secondary whitespace-nowrap font-bold ripple w-full"
+              className="bg-primary px-4 py-3 width-full text-center text-secondary whitespace-nowrap font-bold ripple w-full rounded"
             >
               Go Back
             </button>

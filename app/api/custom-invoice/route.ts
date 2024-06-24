@@ -4,30 +4,30 @@ import { createClient } from "@/utils/supabase/server";
 export const dynamic = "force-dynamic"; // defaults to auto
 
 type BodyType = {
-  deposit: string;
-  availableTourId: number;
+  amount: string;
   personalDetail: {
     firstName: string;
     lastName: string;
     email: string;
     phoneNumber: string;
   };
+  issue: string;
 };
 
 export async function POST(request: Request) {
   const supabase = createClient();
   const body: BodyType = await request.json();
-  const { deposit, availableTourId, personalDetail } = body;
+  const { amount, personalDetail, issue } = body;
   const transactionId = generateTransactionId();
 
   /* Save to Database */
-  const { error } = await supabase.from("transactions").insert({
-    ...personalDetail,
-    deposit,
-    availableTourId,
-    transactionId,
-    total: deposit,
-  });
+  const { error } = await supabase
+    .from("customTransactions")
+    .update({
+      ...personalDetail,
+      transactionId,
+    })
+    .eq("id", issue);
 
   if (error) {
     return Response.json({
@@ -37,7 +37,8 @@ export async function POST(request: Request) {
   }
 
   /* Generate Invoice through Golomt Bank */
-  const inv = await getInvoice(transactionId, deposit);
+  const inv = await getInvoice(transactionId, amount);
+  console.log(inv, amount, transactionId);
   return Response.json(inv.data);
 }
 

@@ -77,7 +77,7 @@ const AdminCategories = () => {
         <div className="text-2xl md:text-4xl font-semibold">Category</div>
         <Link
           href={"/admin/categories/new"}
-          className="cursor-pointer ripple bg-primary px-4 py-2 flex-row text-tertiary  rounded-xl hidden md:flex"
+          className="cursor-pointer ripple bg-primary px-4 py-2 flex-row text-tertiary  rounded hidden md:flex"
         >
           Add Category
         </Link>

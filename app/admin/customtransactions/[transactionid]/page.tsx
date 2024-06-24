@@ -9,7 +9,9 @@ import axios from "axios";
 
 const Transaction = () => {
   const router = useRouter();
-  const [transaction, setTransaction] = useState<TransactionType | null>(null);
+  const [transaction, setTransaction] = useState<CustomTransactionType | null>(
+    null
+  );
   const [loading, setLoading] = useState(true);
   const params = useParams();
   const { transactionid } = params;
@@ -22,7 +24,7 @@ const Transaction = () => {
       transactionId: transaction.transactionId,
     });
     const { error } = await supabase
-      .from("transactions")
+      .from("customTransactions")
       .update({
         transactionDetail: data.invoice,
       })
@@ -39,7 +41,7 @@ const Transaction = () => {
     const fetchTransaction = async () => {
       try {
         const { data, error } = await supabase
-          .from("transactions")
+          .from("customTransactions")
           .select("*")
           .eq("id", transactionid);
 
@@ -51,7 +53,7 @@ const Transaction = () => {
           setLoading(false);
           return;
         }
-        setTransaction(data[0] as TransactionType);
+        setTransaction(data[0] as CustomTransactionType);
       } catch (error: any) {
         console.error("Error fetching transaction:", error.message);
         toast.error("Error fetching transaction:", error.message);
@@ -102,7 +104,7 @@ const Detail = ({
   golomtCheckLoading,
   checkGolomt,
 }: {
-  transaction: TransactionType;
+  transaction: CustomTransactionType;
   golomtCheckLoading: boolean;
   checkGolomt: () => void;
 }) => {
@@ -130,7 +132,6 @@ const Detail = ({
           )}
         </div>
       </div>
-
       <div className="flex flex-col lg:flex-row gap-8">
         <NewInput
           label="TransactionId:"
@@ -143,7 +144,7 @@ const Detail = ({
           label="Amount:"
           type="text"
           placeholder="$0000"
-          value={"$" + Number(transaction.deposit).toFixed(2)}
+          value={"$" + Number(transaction.amount).toFixed(2)}
           disabled
         />
         <div className="flex-1 hidden lg:flex"></div>
@@ -192,14 +193,16 @@ const Detail = ({
           )}
         </pre>
       </div>
-      <div>
-        <button
-          className="bg-primary px-4 py-3 width-full text-center text-white whitespace-nowrap font-bold ripple rounded-2xl"
-          onClick={checkGolomt}
-        >
-          {golomtCheckLoading ? "Loading..." : "Check Golomt Again"}
-        </button>
-      </div>
+      {transaction.transactionId && (
+        <div>
+          <button
+            className="bg-primary px-4 py-3 width-full text-center text-white whitespace-nowrap font-bold ripple rounded-2xl"
+            onClick={checkGolomt}
+          >
+            {golomtCheckLoading ? "Loading..." : "Check Golomt Again"}
+          </button>
+        </div>
+      )}
     </div>
   );
 };

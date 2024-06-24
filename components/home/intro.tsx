@@ -137,7 +137,7 @@ export const Intro = ({ intro }: { intro: IntroType[] }) => {
         />
       </div>
 
-      {intro.slice(1)?.map((item, i) => (
+      {intro?.slice(1)?.map((item, i) => (
         <div
           key={i + 1}
           className={`absolute w-full h-full select-none ${

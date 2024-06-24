@@ -1,14 +1,17 @@
 "use client";
+import supabase from "@/utils/supabase/client";
 import { EmailIcon, MainLayout, NewInput, PhoneIcon } from "@components";
 import axios from "axios";
 import Cookies from "js-cookie";
 import _ from "lodash";
 import Link from "next/link";
 import { redirect, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const CP = ({ searchParams }: { searchParams: { amount: string } }) => {
-  const { amount } = searchParams;
+const CP = ({ searchParams }: { searchParams: { issue: string } }) => {
+  const { issue } = searchParams;
+  const [customTransactionDocument, setCustomTransactionDocument] =
+    useState<CustomTransactionType | null>(null);
   const [isAgreedToPrivacy, setIsAgreedToPrivacy] = useState(false);
   const [personalDetail, setPersonalDetail] = useState({
     firstName: "",
@@ -44,17 +47,21 @@ const CP = ({ searchParams }: { searchParams: { amount: string } }) => {
     return true;
   };
   const pay = async () => {
-    if (!checkInputs()) return;
+    if (!checkInputs() || !customTransactionDocument) return;
     setError(null);
-    if (Number(amount) <= 0 || !_.isNumber(Number(amount))) {
+    if (
+      Number(customTransactionDocument.amount) <= 0 ||
+      !_.isNumber(Number(customTransactionDocument.amount))
+    ) {
       setError("Not a Number");
       return;
     }
     setPayLoading(true);
+
     const res = await axios.post(`/api/custom-invoice`, {
       personalDetail: personalDetail,
-      deposit: amount,
-      availableTourId: -1,
+      amount: customTransactionDocument.amount,
+      issue: issue,
     });
     if (res.status !== 200) {
       setError(res.statusText);
@@ -62,7 +69,21 @@ const CP = ({ searchParams }: { searchParams: { amount: string } }) => {
     setPayLoading(false);
     router.push(`/book/payment?invoice=${res.data.invoice}`);
   };
-  if (!amount) {
+  useEffect(() => {
+    const getCustomTransaction = async () => {
+      if (!issue) return;
+      const { data } = await supabase
+        .from("customTransactions")
+        .select()
+        .eq("id", issue);
+      if (!data) {
+        redirect("/");
+      }
+      setCustomTransactionDocument(data?.[0] as CustomTransactionType);
+    };
+    getCustomTransaction();
+  }, [issue]);
+  if (!issue) {
     redirect("/");
     return;
   }
@@ -71,8 +92,15 @@ const CP = ({ searchParams }: { searchParams: { amount: string } }) => {
       <div className="flex-1 flex items-center justify-center">
         <div className=" flex flex-col gap-4 md:w-auto md:min-w-[600px] px-4">
           <h1 className="font-semibold text-2xl">Custom Payment</h1>
-          <div className="text-xl">
-            <span className="font-semibold">Amount: </span>${amount}
+          <div className="flex flex-col">
+            <div className="text-base">
+              <span className="font-semibold">Amount: </span>$
+              {customTransactionDocument?.amount || ""}
+            </div>
+            <div className="text-base max-w-[568px]">
+              <span className="font-semibold">Note: </span>
+              {customTransactionDocument?.note || ""}
+            </div>
           </div>
           <div className="flex gap-4 md:gap-6 flex-col md:flex-row w-full">
             <NewInput

@@ -17,34 +17,39 @@ export async function POST(request: Request) {
   try {
     const supabase = createClient();
     const body = await request.json();
+    const transactionId = body.transactionId;
 
-    // Update transaction
-    const { data: transaction, error: transactionError } = await supabase
+    // Check if it's custom transaction
+    const { data: t } = await supabase
       .from("transactions")
-      .update({
-        transactionDetail: body,
-      })
-      .eq("transactionId", body.transactionId)
       .select("*")
-      .single();
+      .eq("transactionId", body.transactionId);
+    if (t == null || t?.length == 0) {
+      // It means it's a custom transaction
 
-    if (transactionError) {
-      throw new Error("Failed to update transaction");
-    }
+      // Update custom transaction
+      const { data: transaction, error: transactionError } = await supabase
+        .from("customTransactions")
+        .update({
+          transactionDetail: body,
+        })
+        .eq("transactionId", transactionId)
+        .select("*")
+        .single();
 
-    if (!transaction) {
-      return new Response(
-        JSON.stringify({
-          errorMessage: "No transaction found",
-          errorCode: 404,
-        }),
-        { status: 404 }
-      );
-    }
+      if (transactionError) {
+        throw new Error("Failed to update transaction");
+      }
 
-    if (transaction.availableTourId == "-1") {
-      /* Custom Payment */
-
+      if (!transaction) {
+        return new Response(
+          JSON.stringify({
+            errorMessage: "No transaction found",
+            errorCode: 404,
+          }),
+          { status: 404 }
+        );
+      }
       if (body.errorCode !== "000") {
         return new Response(
           JSON.stringify({
@@ -72,6 +77,30 @@ export async function POST(request: Request) {
         { status: 200 }
       );
       return;
+    }
+
+    // Update transaction
+    const { data: transaction, error: transactionError } = await supabase
+      .from("transactions")
+      .update({
+        transactionDetail: body,
+      })
+      .eq("transactionId", body.transactionId)
+      .select("*")
+      .single();
+
+    if (transactionError) {
+      throw new Error("Failed to update transaction");
+    }
+
+    if (!transaction) {
+      return new Response(
+        JSON.stringify({
+          errorMessage: "No transaction found",
+          errorCode: 404,
+        }),
+        { status: 404 }
+      );
     }
 
     // Fetch tour and available tour data

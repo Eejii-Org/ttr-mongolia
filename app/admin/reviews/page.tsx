@@ -47,7 +47,7 @@ const AdminReviews = () => {
           <div className="text-2xl md:text-4xl font-semibold">Reviews</div>
           <Link
             href={"/admin/reviews/new"}
-            className="cursor-pointer ripple bg-primary px-4 py-2 flex-row text-tertiary  rounded-xl hidden md:flex"
+            className="cursor-pointer ripple bg-primary px-4 py-2 flex-row text-tertiary  rounded hidden md:flex"
           >
             Add Review
           </Link>

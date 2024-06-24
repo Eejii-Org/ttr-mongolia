@@ -101,6 +101,19 @@ type TransactionType = {
   pax: number;
 };
 
+type CustomTransactionType = {
+  id?: number;
+  created_at?: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  amount: string;
+  transactionDetail: any;
+  transactionId: string;
+  note: null | string;
+};
+
 type DepartureRequestType = {
   id?: number;
   created_at?: string;
