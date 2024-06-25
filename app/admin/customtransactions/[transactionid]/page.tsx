@@ -150,6 +150,13 @@ const Detail = ({
         <div className="flex-1 hidden lg:flex"></div>
         <div className="flex-1 hidden lg:flex"></div>
       </div>
+      <NewInput
+        label="Note:"
+        type="text"
+        placeholder="Note"
+        value={transaction.note || ""}
+        disabled
+      />
       <div className="flex flex-col lg:flex-row flex-wrap gap-8">
         <NewInput
           label="FirstName:"

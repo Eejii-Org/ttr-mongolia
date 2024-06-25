@@ -143,9 +143,9 @@ const AdminTransactions = () => {
           <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
             Status
           </th>
-          <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
+          {/* <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
             TransactionID
-          </th>
+          </th> */}
           <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
             Amount
           </th>
@@ -156,8 +156,11 @@ const AdminTransactions = () => {
             Email
           </th>
           <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
-            PhoneNumber
+            Note
           </th>
+          {/* <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
+            PhoneNumber
+          </th> */}
           <th className="text-left px-3 py-2 font-semibold md:text-lg max-w-12 border-b w-12"></th>
         </tr>
         {results.map(
@@ -171,6 +174,7 @@ const AdminTransactions = () => {
               amount,
               transactionId,
               transactionDetail,
+              note,
             },
             i
           ) => (
@@ -194,13 +198,11 @@ const AdminTransactions = () => {
                   </div>
                 )}
               </td>
-              <td className="px-3 py-2">{transactionId}</td>
+              {/* <td className="px-3 py-2">{transactionId}</td> */}
               <td className="px-3 py-2 font-semibold">${amount}</td>
               <td className="py-2 px-3 ">{firstName + " " + lastName}</td>
               <td className="px-3 py-2">{email}</td>
-              <td className="px-3 py-2">{phoneNumber}</td>
-              {/* <td className="px-3 py-2">{nationality}</td>
-              <td className="px-3 py-2">{peopleCount}</td> */}
+              <td className="px-3 py-2">{note}</td>
               <td className="">
                 <div className="flex items-center justify-center">
                   <Link
