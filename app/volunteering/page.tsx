@@ -21,8 +21,8 @@ const Volunteering = () => {
           />
           <Image
             src="/static/amarbayasgalanthiid.png"
-            width={115 * 1.2}
-            height={92 * 1.2}
+            width={392 / 3.8}
+            height={353.36 / 3.8}
             className="object-contain mix-blend-luminosity"
             alt="eejii"
           />
