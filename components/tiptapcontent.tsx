@@ -3,6 +3,7 @@
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Heading from "@tiptap/extension-heading";
+import Youtube from "@tiptap/extension-youtube";
 
 export const TiptapContent = ({ content }: { content: string }) => {
   const editor = useEditor({
@@ -12,6 +13,13 @@ export const TiptapContent = ({ content }: { content: string }) => {
         HTMLAttributes: {
           class: "text-2xl",
           levels: [2],
+        },
+      }),
+      Youtube.configure({
+        controls: false,
+        nocookie: true,
+        HTMLAttributes: {
+          class: "my-iframe-class",
         },
       }),
     ],

@@ -82,6 +82,11 @@ export const Header: FC<HeaderPropsType> = ({
                 Volunteering
               </div>
             </Link>
+            <Link href="/blogs">
+              <div className="font-bold gip text-base text-lime-600 hover:bg-gray-600/20 px-3 py-1 rounded cursor-pointer ripple flex">
+                Blogs
+              </div>
+            </Link>
             <Link href="/tours">
               <div className="font-bold gip text-black hover:bg-gray-600/20 px-3 py-1 rounded cursor-pointer ripple flex">
                 Tours
@@ -103,6 +108,11 @@ export const Header: FC<HeaderPropsType> = ({
           <Link href="/volunteering">
             <div className="font-bold gip text-base text-lime-600 hover:bg-gray-600/20 px-3 py-1 rounded cursor-pointer ripple flex">
               Volunteering
+            </div>
+          </Link>
+          <Link href="/blogs">
+            <div className="font-bold gip text-base hover:bg-gray-600/20 px-3 py-1 rounded cursor-pointer ripple flex">
+              Blogs
             </div>
           </Link>
           <Link href="/tours">

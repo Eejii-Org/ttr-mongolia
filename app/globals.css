@@ -170,3 +170,8 @@ ul {
   padding-left: 20px;
   margin: auto !important;
 }
+
+.my-iframe-class {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}

@@ -4,6 +4,7 @@ import StarterKit from "@tiptap/starter-kit";
 import Heading from "@tiptap/extension-heading";
 import React from "react";
 import { Toolbar } from "./toolbar";
+import Youtube from "@tiptap/extension-youtube";
 
 type TiptapPropsType = React.HTMLAttributes<HTMLDivElement> & {
   content: string;
@@ -18,6 +19,13 @@ export const Tiptap = ({ content, setContent, className }: TiptapPropsType) => {
         HTMLAttributes: {
           class: "text-2xl",
           levels: [2],
+        },
+      }),
+      Youtube.configure({
+        controls: false,
+        nocookie: true,
+        HTMLAttributes: {
+          class: "my-iframe-class",
         },
       }),
     ],

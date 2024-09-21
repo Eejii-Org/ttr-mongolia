@@ -140,3 +140,11 @@ type MemberType = {
   positionType: string;
   order: number;
 };
+
+type BlogType = {
+  id?: number;
+  created_at?: string;
+  title: string;
+  description: string;
+  image: string | null;
+};
