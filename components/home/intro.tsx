@@ -106,7 +106,7 @@ export const Intro = ({ intro }: { intro: IntroType[] }) => {
             "linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 25%), linear-gradient(0deg, rgba(0,0,0,0) 75%, rgba(0,0,0,0.4) 100%)",
         }}
       ></div>
-      <div
+      {/* <div
         key={0}
         className={`absolute w-full h-full select-none ${
           0 == index ? "opacity-100" : "opacity-0"
@@ -115,8 +115,8 @@ export const Intro = ({ intro }: { intro: IntroType[] }) => {
           transition: "all 400ms",
           top: 0,
         }}
-      ></div>
-      <div
+      ></div> */}
+      {/* <div
         className={`absolute w-full h-full select-none ${
           0 == index ? "opacity-100" : "opacity-0"
         }`}
@@ -135,13 +135,13 @@ export const Intro = ({ intro }: { intro: IntroType[] }) => {
             0 == index ? "introImageAnimation" : ""
           }`}
         />
-      </div>
+      </div> */}
 
-      {intro?.slice(1)?.map((item, i) => (
+      {intro?.map((item, i) => (
         <div
-          key={i + 1}
+          key={i}
           className={`absolute w-full h-full select-none ${
-            i + 1 == index ? "opacity-100" : "opacity-0"
+            i == index ? "opacity-100" : "opacity-0"
           }`}
           style={{
             transition: "all 400ms",
@@ -155,7 +155,7 @@ export const Intro = ({ intro }: { intro: IntroType[] }) => {
             priority
             // unoptimized={true}
             className={`object-cover select-none${
-              i + 1 == index ? "introImageAnimation" : ""
+              i == index ? "introImageAnimation" : ""
             }`}
           />
         </div>
