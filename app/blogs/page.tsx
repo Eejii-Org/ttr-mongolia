@@ -15,7 +15,7 @@ const getBlogs = async () => {
     const { data: blogs, error } = await supabase
       .from("blogs")
       .select("id, created_at, title, description, image")
-      .order("created_at", { ascending: true });
+      .order("created_at", { ascending: false });
     if (error) {
       throw error;
     }

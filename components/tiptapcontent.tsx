@@ -4,6 +4,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Heading from "@tiptap/extension-heading";
 import Youtube from "@tiptap/extension-youtube";
+import Image from "@tiptap/extension-image";
 
 export const TiptapContent = ({ content }: { content: string }) => {
   const editor = useEditor({
@@ -22,6 +23,7 @@ export const TiptapContent = ({ content }: { content: string }) => {
           class: "my-iframe-class",
         },
       }),
+      Image,
     ],
     content: content,
     editorProps: {

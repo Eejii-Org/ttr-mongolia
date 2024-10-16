@@ -18,6 +18,17 @@ export const Toolbar = ({ editor }: Props) => {
       >
         H2
       </Toggle>
+      {/* <button
+        className={`rounded active:bg-quinary hover:bg-quinary cursor-pointer px-3 h-8 flex items-center justify-center text-sm`}
+        onClick={() => {
+          const url = window.prompt("URL");
+          if (url) {
+            editor.chain().focus().setImage({ src: url }).run();
+          }
+        }}
+      >
+        Add Image
+      </button> */}
       <Toggle
         pressed={editor.isActive("bold")}
         onPressedChange={() => {
@@ -64,13 +75,13 @@ const Toggle = ({
   children: React.ReactNode;
 }) => {
   return (
-    <div
+    <button
       className={`${
         pressed ? "bg-quinary" : ""
-      } rounded hover:bg-quinary cursor-pointer px-3 h-8 flex items-center justify-center text-sm`}
+      } rounded active:bg-quinary hover:bg-quinary cursor-pointer px-3 h-8 flex items-center justify-center text-sm`}
       onClick={onPressedChange}
     >
       {children}
-    </div>
+    </button>
   );
 };

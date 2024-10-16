@@ -5,6 +5,7 @@ import Heading from "@tiptap/extension-heading";
 import React from "react";
 import { Toolbar } from "./toolbar";
 import Youtube from "@tiptap/extension-youtube";
+import Image from "@tiptap/extension-image";
 
 type TiptapPropsType = React.HTMLAttributes<HTMLDivElement> & {
   content: string;
@@ -28,6 +29,7 @@ export const Tiptap = ({ content, setContent, className }: TiptapPropsType) => {
           class: "my-iframe-class",
         },
       }),
+      Image,
     ],
     content: content,
     editorProps: {
