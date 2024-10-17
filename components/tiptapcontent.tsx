@@ -33,5 +33,5 @@ export const TiptapContent = ({ content }: { content: string }) => {
     },
     editable: false,
   });
-  return <EditorContent editor={editor} />;
+  return <EditorContent className="flex-1" editor={editor} />;
 };

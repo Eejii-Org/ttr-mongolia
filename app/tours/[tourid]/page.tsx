@@ -17,6 +17,7 @@ import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
+import { AvailableTourType, CategoryType, TourType } from "@/utils/types";
 
 type Props = {
   params: { tourid: string };

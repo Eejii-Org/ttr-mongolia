@@ -40,6 +40,16 @@ export const AdminSidebar = () => {
         Blogs
       </Link>
       <Link
+        href="/admin/rentalcars"
+        className={`px-2 py-2 hover:bg-black/10 font-medium border-b text-primary ${
+          pathname.includes("admin/rentalcars")
+            ? "text-primary"
+            : "text-secondary"
+        }`}
+      >
+        Rental Cars
+      </Link>
+      <Link
         href="/admin/departurerequests"
         className={`px-2 py-2 hover:bg-black/10 font-medium border-b text-primary ${
           pathname.includes("admin/departurerequests")

@@ -1,4 +1,6 @@
-type TourType = {
+import { StringLiteral } from "typescript";
+
+export type TourType = {
   id?: number;
   created_at?: string;
   images: string[];
@@ -17,18 +19,18 @@ type TourType = {
   map: string | null;
 };
 
-type AssetType = {
+export type AssetType = {
   name: string;
   explanation: string;
 };
 
-type ItineraryType = {
+export type ItineraryType = {
   day: string;
   title: string;
   description: string;
 };
 
-type AvailableTourType = {
+export type AvailableTourType = {
   id?: number;
   date: string;
   salePrice: number | null;
@@ -50,7 +52,7 @@ type AvailableTourType = {
   // }[];
 };
 
-type ReviewType = {
+export type ReviewType = {
   id?: number;
   firstName: string;
   lastName: string;
@@ -60,7 +62,7 @@ type ReviewType = {
   images: string[];
 };
 
-type IntroType = {
+export type IntroType = {
   id?: number;
   image: string | null;
   title: string;
@@ -69,18 +71,18 @@ type IntroType = {
   order: number;
 };
 
-type CategoryType = {
+export type CategoryType = {
   id?: number;
   name: string;
   image: string | null;
 };
 
-type PriceType = {
+export type PriceType = {
   passengerCount: number;
   pricePerPerson: number;
 };
 
-type TransactionType = {
+export type TransactionType = {
   id?: number;
   created_at?: string;
   firstName: string;
@@ -101,7 +103,7 @@ type TransactionType = {
   pax: number;
 };
 
-type CustomTransactionType = {
+export type CustomTransactionType = {
   id?: number;
   created_at?: string;
   firstName: string;
@@ -114,7 +116,7 @@ type CustomTransactionType = {
   note: null | string;
 };
 
-type DepartureRequestType = {
+export type DepartureRequestType = {
   id?: number;
   created_at?: string;
   firstName: string;
@@ -131,7 +133,7 @@ type DepartureRequestType = {
   adminNote: string | null;
 };
 
-type MemberType = {
+export type MemberType = {
   id?: number;
   firstName: string;
   lastName: string;
@@ -141,10 +143,27 @@ type MemberType = {
   order: number;
 };
 
-type BlogType = {
+export type BlogType = {
   id?: number;
   created_at?: string;
   title: string;
   description: string;
   image: string | null;
+};
+export type RentalCarType = {
+  id?: number;
+  created_at?: string;
+  name: string;
+  subDescription: string;
+  description: string;
+  mainImage: string;
+  otherImages: string[];
+  status: "active" | "inactive";
+  carDetail: {
+    numberOfSeats: string;
+    transmission: string;
+    engine: string;
+    ac: string;
+    pricePerDay: string;
+  };
 };
