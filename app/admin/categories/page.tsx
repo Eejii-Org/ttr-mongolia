@@ -1,5 +1,5 @@
 "use client";
-import { deleteImageInS3 } from "@/utils";
+import { CategoryType, deleteImageInS3 } from "@/utils";
 import { supabase } from "@/utils/supabase/client";
 import { ArrowRight, StorageImage, TrashIcon } from "@components";
 import Image from "next/image";

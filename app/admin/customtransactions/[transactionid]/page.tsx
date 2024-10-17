@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import _ from "lodash";
 import axios from "axios";
+import { CustomTransactionType } from "@/utils";
 
 const Transaction = () => {
   const router = useRouter();

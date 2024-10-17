@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRightIcon } from "./icons";
+import { AvailableTourType } from "@/utils";
 
 export type ModifiedAvailableTourType = AvailableTourType & {
   title: string;

@@ -25,6 +25,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import Cookies from "js-cookie";
 import _ from "lodash";
+import { PriceType } from "@/utils";
 
 type TourType = {
   title: string;

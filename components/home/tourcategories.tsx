@@ -3,6 +3,7 @@ import { FC } from "react";
 import { ArrowCircleIcon } from "../icons";
 import Link from "next/link";
 import StorageImage from "../storageimage";
+import { CategoryType } from "@/utils";
 
 export const TourCategories = ({
   categories,

@@ -1,4 +1,5 @@
 "use client";
+import { PriceType } from "@/utils";
 import { supabase } from "@/utils/supabase/client";
 import {
   BigErrorIcon,

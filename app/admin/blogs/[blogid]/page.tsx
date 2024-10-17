@@ -20,6 +20,7 @@ import {
 import { toast } from "react-toastify";
 import _ from "lodash";
 import { updateImageInS3, uploadImageToS3 } from "@/utils";
+import { BlogType } from "@/utils/types";
 
 const Blog = () => {
   const router = useRouter();

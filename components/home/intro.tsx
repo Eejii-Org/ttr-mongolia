@@ -3,6 +3,7 @@
 import { ChevronLeftIcon, ChevronRightIcon, StorageImage } from "@components";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { IntroType } from "@/utils";
 
 export const Intro = ({ intro }: { intro: IntroType[] }) => {
   const [index, setIndex] = useState(0);

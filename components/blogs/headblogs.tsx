@@ -2,6 +2,7 @@ import { convert } from "html-to-text";
 import StorageImage from "../storageimage";
 import { toDateText } from "@/utils";
 import Link from "next/link";
+import { BlogType } from "@/utils/types";
 
 export const HeadBlogs = ({
   headlineBlog,

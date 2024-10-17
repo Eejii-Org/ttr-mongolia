@@ -1,4 +1,5 @@
 "use client";
+import { TransactionType } from "@/utils";
 import { supabase } from "@/utils/supabase/client";
 import { ArrowRight, Input, SearchIcon } from "@components";
 import Link from "next/link";

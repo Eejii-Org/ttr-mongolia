@@ -1,4 +1,5 @@
 "use client";
+import { CustomTransactionType } from "@/utils";
 import supabase from "@/utils/supabase/client";
 import { EmailIcon, MainLayout, NewInput, PhoneIcon } from "@components";
 import axios from "axios";

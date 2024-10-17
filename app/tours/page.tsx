@@ -1,5 +1,6 @@
 import { MainLayout, ToursFilter } from "@components";
 import { createClient } from "@/utils/supabase/server";
+import { AvailableTourType } from "@/utils";
 
 export interface CombinedToursDataType extends TType {
   availableTours: AvailableTourType[];

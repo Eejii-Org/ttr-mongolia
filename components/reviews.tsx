@@ -3,6 +3,7 @@ import { supabase } from "@/utils/supabase/client";
 import { FC, useEffect, useMemo, useState } from "react";
 import { CloseIcon, StarsIcon } from "./icons";
 import StorageImage from "./storageimage";
+import { ReviewType } from "@/utils";
 
 export const Reviews: FC = () => {
   const [reviews, setReviews] = useState<ReviewType[]>([]);

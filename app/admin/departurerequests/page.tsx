@@ -1,4 +1,5 @@
 "use client";
+import { DepartureRequestType } from "@/utils";
 import { supabase } from "@/utils/supabase/client";
 import { ArrowRight } from "@components";
 import Link from "next/link";
