@@ -21,6 +21,7 @@ const getRentalCars = async () => {
 
 const RentalCars = async () => {
   const { rentalCars } = await getRentalCars();
+  // Test deploy
   return (
     <MainLayout>
       <div className="flex flex-col gap-8 px-3 lg:p-0 lg:mx-auto lg:container lg:px-4">
