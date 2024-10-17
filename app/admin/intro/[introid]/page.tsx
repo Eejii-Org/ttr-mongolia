@@ -18,7 +18,7 @@ import {
 } from "react";
 import { toast } from "react-toastify";
 import _ from "lodash";
-import { updateImageInS3, uploadImageToS3 } from "@/utils";
+import { IntroType, updateImageInS3, uploadImageToS3 } from "@/utils";
 
 const Intro = () => {
   const router = useRouter();

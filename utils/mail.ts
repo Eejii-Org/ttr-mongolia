@@ -1,4 +1,5 @@
 import { convert } from "html-to-text";
+import { CustomTransactionType, TransactionType } from "./types";
 
 const options = {
   wordwrap: 130,

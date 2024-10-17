@@ -1,4 +1,5 @@
 import { supabase } from "@/utils/supabase/client";
+import { MemberType } from "@/utils/types";
 import { MainLayout, AboutIntro, StorageImage } from "@components";
 
 const getMembers = async () => {

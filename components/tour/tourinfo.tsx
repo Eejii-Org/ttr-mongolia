@@ -1,4 +1,5 @@
 "use client";
+import { AvailableTourType, TourType } from "@/utils";
 import _ from "lodash";
 export const TourInfo = ({
   tour,

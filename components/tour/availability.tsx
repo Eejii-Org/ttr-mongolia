@@ -1,6 +1,7 @@
 import { FC, useMemo } from "react";
 import { ArrowRight } from "../icons";
 import Link from "next/link";
+import { AvailableTourType, PriceType, TourType } from "@/utils";
 
 export const Availability = ({
   tour,

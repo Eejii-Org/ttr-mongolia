@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { Metadata } from "next";
 import { TiptapContent } from "@/components/tiptapcontent";
 import { toDateText } from "@/utils";
+import { BlogType } from "@/utils/types";
 
 type Props = {
   params: { blogid: string };

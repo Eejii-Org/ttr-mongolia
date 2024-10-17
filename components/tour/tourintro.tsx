@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import StorageImage from "../storageimage";
 import { ChevronLeftIcon, ChevronRightIcon } from "../icons";
+import { CategoryType, TourType } from "@/utils";
 
 export const TourIntro = ({
   tour,

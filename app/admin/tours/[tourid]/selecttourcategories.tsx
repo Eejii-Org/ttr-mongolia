@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
+import { CategoryType } from "@/utils";
 
 type ToursPropsType = {
   selectedCategories: number[];

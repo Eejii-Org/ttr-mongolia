@@ -19,7 +19,7 @@ import {
 } from "react";
 import { toast } from "react-toastify";
 import _ from "lodash";
-import { deleteImagesInS3, uploadImagesToS3 } from "@/utils";
+import { deleteImagesInS3, ReviewType, uploadImagesToS3 } from "@/utils";
 
 type ModifiedReviewType = Omit<ReviewType, "images"> & {
   images: (Blob | string)[];

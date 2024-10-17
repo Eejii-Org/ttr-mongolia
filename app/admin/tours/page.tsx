@@ -5,6 +5,7 @@ import { ArrowRight, TrashIcon } from "@components";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import { convert } from "html-to-text";
+import { TourType } from "@/utils";
 
 const AdminTours = () => {
   const [loading, setLoading] = useState(false);

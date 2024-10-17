@@ -1,5 +1,5 @@
 "use client";
-import { deleteImageInS3 } from "@/utils";
+import { deleteImageInS3, MemberType } from "@/utils";
 import { supabase } from "@/utils/supabase/client";
 import {
   ArrowRight,

@@ -1,3 +1,5 @@
+import { TourType } from "@/utils";
+
 export const NotIncluded = ({ tour }: { tour: TourType }) => {
   return (
     <div className="flex flex-col gap-4">

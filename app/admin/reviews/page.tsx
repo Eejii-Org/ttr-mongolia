@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, StarsIcon, TrashIcon } from "@components";
 import Link from "next/link";
 import { toast } from "react-toastify";
-import { deleteImagesInS3, toDateText } from "@/utils";
+import { deleteImagesInS3, ReviewType, toDateText } from "@/utils";
 
 const AdminReviews = () => {
   const [loading, setLoading] = useState(false);

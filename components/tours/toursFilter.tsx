@@ -3,6 +3,7 @@ import {
   CombinedAvailableToursDataType,
   CombinedToursDataType,
 } from "@/app/tours/page";
+import { CategoryType } from "@/utils";
 import { AvailableDates, Tour, TourCategoriesFilter } from "@components";
 import { useState, useMemo, Suspense } from "react";
 

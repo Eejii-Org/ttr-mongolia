@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { mailTemplate } from "@/utils";
+import { mailTemplate, TransactionType } from "@/utils";
 import { createClient } from "@/utils/supabase/server";
 
 const transporter = nodemailer.createTransport({

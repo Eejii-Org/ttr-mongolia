@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { supabase } from "@/utils/supabase/client";
 import _ from "lodash";
+import { AvailableTourType } from "@/utils";
 
 export const ScheduledTours = ({ tourId }: { tourId: number }) => {
   const [availableTours, setAvailableTours] = useState<AvailableTourType[]>([]);

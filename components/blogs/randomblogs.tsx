@@ -2,6 +2,7 @@ import Link from "next/link";
 import StorageImage from "../storageimage";
 import { convert } from "html-to-text";
 import { toDateText } from "@/utils";
+import { BlogType } from "@/utils/types";
 
 export const RandomBlogs = ({ randomBlogs }: { randomBlogs: BlogType[] }) => {
   if (randomBlogs.length == 0) {

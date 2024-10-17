@@ -1,3 +1,4 @@
+import { PriceType } from "@/utils";
 import { Input, MinusIcon } from "@components";
 import { Dispatch, FC, SetStateAction, useState } from "react";
 

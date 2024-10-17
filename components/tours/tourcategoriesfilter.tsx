@@ -1,6 +1,7 @@
 "use client";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import { CategoryType } from "@/utils";
 
 type ToursPropsType = {
   selectedCategory: number | "All";
