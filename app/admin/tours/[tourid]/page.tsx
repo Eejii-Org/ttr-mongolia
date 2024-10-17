@@ -19,6 +19,7 @@ import { SelectTourCategories } from "./selecttourcategories";
 import { Prices } from "./prices";
 import { deleteImagesInS3, uploadImagesToS3 } from "@/utils";
 import { Itinierary } from "./itinerary";
+import { PriceType, TourType } from "@/utils/types";
 
 type ModifiedTourType = Omit<TourType, "images"> & {
   images: (Blob | string)[];

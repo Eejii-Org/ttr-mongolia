@@ -49,7 +49,7 @@ export const Tiptap = ({ content, setContent, className }: TiptapPropsType) => {
     >
       <Toolbar editor={editor} />
       <div className="w-full flex-1 h-full flex">
-        <EditorContent editor={editor} />
+        <EditorContent className="w-full" editor={editor} />
       </div>
     </div>
   );

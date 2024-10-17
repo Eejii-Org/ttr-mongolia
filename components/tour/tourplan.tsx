@@ -3,6 +3,7 @@ import { FC, useState } from "react";
 import { ChevronDownIcon } from "../icons";
 import { TiptapContent } from "../tiptapcontent";
 import { Map } from "../map";
+import { ItineraryType } from "@/utils/types";
 
 type TourPlanType = {
   itinerary: ItineraryType[];
@@ -48,7 +49,7 @@ const ListItem = ({ day = "", title, description, index, length }: DayType) => {
         onClick={() => setOpen(!open)}
       >
         <div className="flex flex-row items-center">
-          <span className="font-bold text-primary pr-2">
+          <span className="font-bold text-primary pr-2 whitespace-nowrap">
             {day ? day : `Day ${index + 1}`} :
           </span>
           <h3 className="font-medium">{title}</h3>

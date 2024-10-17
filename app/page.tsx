@@ -8,11 +8,11 @@ import {
   MainLayout,
   PrivateTour,
   TourCategories,
-  ModifiedAvailableTourType,
   SaleDepartures,
   TourCardDataType,
 } from "@components";
 import { createClient } from "@/utils/supabase/server";
+import { CategoryType, IntroType } from "@/utils/types";
 
 const getIntro = async () => {
   const supabase = createClient();

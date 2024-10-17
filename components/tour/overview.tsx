@@ -1,3 +1,4 @@
+import { TourType } from "@/utils/types";
 import { TiptapContent } from "../tiptapcontent";
 
 export const Overview = ({ tour }: { tour: TourType }) => {

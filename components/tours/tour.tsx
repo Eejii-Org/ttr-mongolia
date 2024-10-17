@@ -4,6 +4,7 @@ import { DayIcon, PriceIcon } from "../icons";
 import { CombinedToursDataType } from "@/app/tours/page";
 import StorageImage from "../storageimage";
 import { convert } from "html-to-text";
+import { AvailableTourType } from "@/utils/types";
 
 export const Tour = (props: { tour: CombinedToursDataType }) => {
   const { tour } = props;

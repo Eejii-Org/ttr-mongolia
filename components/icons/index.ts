@@ -35,3 +35,7 @@ export * from "./arrowuprighticon";
 export * from "./staricon";
 export * from "./calendaricon";
 export * from "./durationicon";
+export * from "./personicon";
+export * from "./engineicon";
+export * from "./transmissionicon";
+export * from "./acicon";

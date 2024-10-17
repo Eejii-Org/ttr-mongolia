@@ -24,3 +24,4 @@ export * from "./drawer";
 export * from "./analysevisits";
 export * from "./tiptap";
 export * from "./blogs";
+export * from "./rentalcars";

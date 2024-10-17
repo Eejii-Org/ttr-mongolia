@@ -152,7 +152,7 @@ const Blog = () => {
           <ArrowLeft color="black" />
         </button>
         <div className="text-2xl md:text-4xl font-semibold">
-          {isNotFound ? "Tour not found" : blog?.title}
+          {isNotFound ? "Blog not found" : blog?.title}
         </div>
       </div>
       {blog && (
