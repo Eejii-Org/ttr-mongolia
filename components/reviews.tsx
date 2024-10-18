@@ -120,7 +120,7 @@ export const Review: FC<ReviewItemType> = ({
             <StarsIcon color={"#c1c1c1"} />
           </div>
         </div>
-        <div className="text-base lg:text-lg text-ellipsis h-64 overflow-scroll">
+        <div className="text-base lg:text-lg text-ellipsis h-64 overflow-y-scroll">
           {review}
         </div>
         <div className="font-semibold text-[#6D6D6D] text-end">{dateText}</div>
@@ -147,7 +147,7 @@ const Modal = ({
   }, [open]);
   return (
     <div
-      className={`fixed z-50 top-0 bottom-0 w-screen h-screen overflow-scroll backdrop-blur-sm bg-black/50 items-center justify-center ${
+      className={`fixed z-50 top-0 bottom-0 w-screen h-screen overflow-hidden backdrop-blur-sm bg-black/50 items-center justify-center ${
         open ? "flex" : "hidden"
       }`}
     >

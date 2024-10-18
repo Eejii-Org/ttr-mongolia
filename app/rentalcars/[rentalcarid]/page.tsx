@@ -1,11 +1,13 @@
 import {
   ACIcon,
   ArrowRight,
+  CloseIcon,
   EngineIcon,
   MainLayout,
   PersonIcon,
   PriceIcon,
   RentalCarCardType,
+  RentalCarGallery,
   StorageImage,
   TourCardDataType,
   TransmissionIcon,
@@ -17,6 +19,7 @@ import { redirect } from "next/navigation";
 import { Metadata } from "next";
 import { CategoryType, RentalCarType, TourType } from "@/utils/types";
 import { TiptapContent } from "@/components/tiptapcontent";
+import { useEffect } from "react";
 
 type Props = {
   params: { rentalcarid: string };
@@ -101,7 +104,6 @@ const RentalCarPage = async ({
     rentalCar,
     // randomRentalCars,
   } = pageDetails;
-  console.log(rentalCar, params.rentalcarid);
   if (!rentalCar) {
     redirect("/rentalcars");
     return;
@@ -181,73 +183,10 @@ const RentalCarPage = async ({
             </div>
           </div>
         </div>
-        <div className="flex items-center flex-col gap-8">
-          <div className="text-xl md:text-2xl font-semibold">Gallery</div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 w-full">
-            {rentalCar.otherImages.map((otherImage, index) => (
-              <div className="aspect-video relative">
-                <StorageImage
-                  src={otherImage}
-                  alt={"otherImage" + index}
-                  className="bg-quaternary object-contain"
-                  fill
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+        <RentalCarGallery rentalCar={rentalCar} />
       </div>
     </MainLayout>
   );
 };
 
 export default RentalCarPage;
-
-// useEffect(() => {
-//   setScrollImages([
-//     images[images.length - 2],
-//     images[images.length - 1],
-//     ...images.slice(0, 3),
-//   ]);
-//   const interval = setInterval(() => {
-//     setScrollImages((prev) => [
-//       ...prev.slice(1),
-//       images[Math.abs(index + 3) % images.length],
-//     ]);
-//     console.log(
-//       [...scrollImages.slice(1), images[Math.abs(index + 3) % images.length]],
-//       index
-//     );
-//     setIndex((prev) => (prev == images.length - 1 ? 0 : prev + 1));
-//   }, 1500);
-
-//   return () => clearInterval(interval);
-// }, [images]);
-
-// useEffect(() => {
-//   const interval = setInterval(() => {
-//     setIndex((prev) => prev + 1);
-//     setTimeout(() => {
-//       if (index % images.length == 0) {
-//         scrollRef?.current?.scrollTo({
-//           top: 0,
-//           left: 0,
-//           behavior: "instant",
-//         });
-//       } else {
-//         scrollRef?.current?.scrollTo({
-//           top: 0,
-//           left: ((window.innerWidth - 32) / 3) * index + 16,
-//           behavior: "smooth",
-//         });
-//       }
-//     }, 1500);
-//     setScrollImages([
-//       scrollImages[scrollImages.length - 1],
-//       ...scrollImages.slice(1, -1),
-//       scrollImages[0],
-//     ]);
-//   }, 1000);
-
-//   return () => clearInterval(interval);
-// }, [index, tour]);
