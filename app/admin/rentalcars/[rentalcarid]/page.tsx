@@ -69,41 +69,13 @@ const RentalCar = () => {
           newRentalCar.mainImage = filePath;
         }
       }
-      const uploadablePictures =
-        rentalCar?.otherImages?.filter((image) =>
-          typeof image === "string" || image instanceof String ? false : true
-        ) || [];
-      const deletedPictures =
-        originalRentalCar?.otherImages?.filter(
-          (image) => !rentalCar?.otherImages.includes(image)
-        ) || [];
-      if (deletedPictures && deletedPictures.length > 0) {
-        await deleteImagesInS3(deletedPictures);
-      }
       const paths = await uploadImagesToS3(
-        uploadablePictures as Blob[],
+        rentalCar?.otherImages as Blob[],
         "rentalCarImages"
       );
-      let newImages = [];
-      if (rentalCar?.otherImages) {
-        for (let i = 0, j = 0; i < rentalCar?.otherImages.length; i++) {
-          if (
-            typeof rentalCar.otherImages[i] === "string" ||
-            rentalCar.otherImages[i] instanceof String
-          ) {
-            newImages.push(rentalCar.otherImages[i]);
-          } else {
-            if (paths?.[j]) {
-              newImages.push(paths[j]);
-              j++;
-            }
-          }
-        }
-      }
       if (newRentalCar) {
-        newRentalCar.otherImages = newImages;
+        newRentalCar.otherImages = paths as string[];
       }
-
       // new
       const { data, error } = await supabase
         .from("rentalCars")
@@ -133,6 +105,40 @@ const RentalCar = () => {
       if (newRentalCar) {
         newRentalCar.mainImage = filePath;
       }
+    }
+    const uploadablePictures =
+      rentalCar?.otherImages?.filter((image) =>
+        typeof image === "string" || image instanceof String ? false : true
+      ) || [];
+    const deletedPictures =
+      originalRentalCar?.otherImages?.filter(
+        (image) => !rentalCar?.otherImages.includes(image)
+      ) || [];
+    if (deletedPictures && deletedPictures.length > 0) {
+      await deleteImagesInS3(deletedPictures);
+    }
+    const paths = await uploadImagesToS3(
+      uploadablePictures as Blob[],
+      "rentalCarImages"
+    );
+    let newImages = [];
+    if (rentalCar?.otherImages) {
+      for (let i = 0, j = 0; i < rentalCar?.otherImages.length; i++) {
+        if (
+          typeof rentalCar.otherImages[i] === "string" ||
+          rentalCar.otherImages[i] instanceof String
+        ) {
+          newImages.push(rentalCar.otherImages[i]);
+        } else {
+          if (paths?.[j]) {
+            newImages.push(paths[j]);
+            j++;
+          }
+        }
+      }
+    }
+    if (newRentalCar) {
+      newRentalCar.otherImages = newImages;
     }
     const { error } = await supabase
       .from("rentalCars")
