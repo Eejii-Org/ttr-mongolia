@@ -77,24 +77,24 @@ export const Header: FC<HeaderPropsType> = ({
                 <CloseIcon width={24} height={24} />
               </button>
             </div>
-            <Link href="/rentalcars">
-              <div className="font-bold gip text-base text-[#0066B1]hover:bg-gray-600/20 px-3 py-1 rounded cursor-pointer ripple flex">
-                Car Rental
-              </div>
-            </Link>
             <Link href="/volunteering">
               <div className="font-bold gip text-base text-lime-600 hover:bg-gray-600/20 px-3 py-1 rounded cursor-pointer ripple flex">
                 Volunteering
               </div>
             </Link>
             <Link href="/blogs">
-              <div className="font-bold gip text-base text-lime-600 hover:bg-gray-600/20 px-3 py-1 rounded cursor-pointer ripple flex">
+              <div className="font-bold gip text-black hover:bg-gray-600/20 px-3 py-1 rounded cursor-pointer ripple flex">
                 Blogs
               </div>
             </Link>
             <Link href="/tours">
               <div className="font-bold gip text-black hover:bg-gray-600/20 px-3 py-1 rounded cursor-pointer ripple flex">
                 Tours
+              </div>
+            </Link>
+            <Link href="/rentalcars">
+              <div className="font-bold gip text-black hover:bg-gray-600/20 px-3 py-1 rounded cursor-pointer ripple flex">
+                Car Rental
               </div>
             </Link>
             <Link href="/contact">
@@ -110,11 +110,6 @@ export const Header: FC<HeaderPropsType> = ({
           </div>
         </div>
         <div className="flex-row gap-1 hidden md:flex">
-          <Link href="/rentalcars">
-            <div className="font-bold gip text-base text-[#0066B1] hover:bg-gray-600/20 px-3 py-1 rounded cursor-pointer ripple flex">
-              Car Rental
-            </div>
-          </Link>
           <Link href="/volunteering">
             <div className="font-bold gip text-base text-lime-600 hover:bg-gray-600/20 px-3 py-1 rounded cursor-pointer ripple flex">
               Volunteering
@@ -128,6 +123,11 @@ export const Header: FC<HeaderPropsType> = ({
           <Link href="/tours">
             <div className="font-bold gip text-base hover:bg-gray-600/20 px-3 py-1 rounded cursor-pointer ripple flex">
               Tours
+            </div>
+          </Link>
+          <Link href="/rentalcars">
+            <div className="font-bold gip text-base hover:bg-gray-600/20 px-3 py-1 rounded cursor-pointer ripple flex">
+              Car Rental
             </div>
           </Link>
           <Link href="/contact">
