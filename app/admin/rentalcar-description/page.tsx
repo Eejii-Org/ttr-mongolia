@@ -42,7 +42,7 @@ const AdminRentalCarsDescription = () => {
       }
       toast.success("Successfully Saved");
       setSaveLoading(false);
-      router.push(`/admin/rentalCars/description`);
+      router.push(`/admin/rentalcar-description`);
       return;
     }
 

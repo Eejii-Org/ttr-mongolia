@@ -42,7 +42,7 @@ export const AdminSidebar = () => {
       <Link
         href="/admin/rentalcars"
         className={`px-2 py-2 hover:bg-black/10 font-medium border-b text-primary ${
-          "/admin/rentalcars".match(pathname)
+          pathname.match("/admin/rentalcars")
             ? "text-primary"
             : "text-secondary"
         }`}
@@ -50,9 +50,9 @@ export const AdminSidebar = () => {
         Rental Cars
       </Link>
       <Link
-        href="/admin/rentalcars/description"
+        href="/admin/rentalcar-description"
         className={`px-2 py-2 hover:bg-black/10 font-medium border-b text-primary ${
-          pathname.includes("admin/rentalcars/description")
+          pathname.includes("admin/rentalcar-description")
             ? "text-primary"
             : "text-secondary"
         }`}
