@@ -167,3 +167,11 @@ export type RentalCarType = {
     pricePerDay: string;
   };
 };
+
+export type TextContentType = {
+  id?: number;
+  page?: string | null;
+  content?: string | null;
+  created_at?: string;
+  updated_at?: string;
+};
