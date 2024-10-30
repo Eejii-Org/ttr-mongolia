@@ -1,5 +1,7 @@
 import { MainLayout, RentalCarCard } from "@components";
 import { createClient } from "@/utils/supabase/server";
+import { TextContentType } from "@/utils";
+import { TiptapContent } from "@/components/tiptapcontent";
 
 const getRentalCars = async () => {
   const supabase = createClient();
@@ -19,9 +21,32 @@ const getRentalCars = async () => {
   }
 };
 
+const getRentalCarDescription = async () => {
+  const supabase = createClient();
+  try {
+    const { data, error } = await supabase
+      .from("textContents")
+      .select("*")
+      .eq("page", "/admin/rentalcar-description");
+
+    if (error) {
+      throw error;
+    }
+    if (data.length == 0) {
+      return []
+    }
+    return data as TextContentType[];
+    
+  } catch (error: any) {
+    console.error("Error fetching rentalCar description:", error);
+    return []
+  }
+};
+
 const RentalCars = async () => {
   const { rentalCars } = await getRentalCars();
-  // Test deploy
+  const content = await getRentalCarDescription();  
+
   return (
     <MainLayout>
       <div className="flex flex-col gap-8 px-3 lg:p-0 lg:mx-auto lg:container lg:px-4">
@@ -41,6 +66,13 @@ const RentalCars = async () => {
           ))}
         </div>
       </div>
+        {
+          content && content.map((item) => (
+            <div className="flex flex-col gap-8 px-3 lg:p-0 lg:mx-auto lg:container lg:px-4">
+              <TiptapContent content={item.content || ''} />
+            </div>
+          ))
+        }
     </MainLayout>
   );
 };

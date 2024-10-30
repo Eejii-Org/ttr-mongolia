@@ -92,7 +92,7 @@ const AdminRentalCarsDescription = () => {
         }
         setTextContent(data[0]);
       } catch (error: any) {
-        console.error("Error fetching rentalCar:", error);
+        console.error("Error fetching rentalCar description:", error);
       }
       setLoading(false);
     };

@@ -1,7 +1,5 @@
 import {
   ACIcon,
-  ArrowRight,
-  CloseIcon,
   EngineIcon,
   MainLayout,
   PersonIcon,
@@ -9,7 +7,6 @@ import {
   RentalCarCardType,
   RentalCarGallery,
   StorageImage,
-  TourCardDataType,
   TransmissionIcon,
 } from "@components";
 import _ from "lodash";
@@ -17,9 +14,8 @@ import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
-import { CategoryType, RentalCarType, TourType } from "@/utils/types";
+import { RentalCarType } from "@/utils/types";
 import { TiptapContent } from "@/components/tiptapcontent";
-import { useEffect } from "react";
 
 type Props = {
   params: { rentalcarid: string };
@@ -99,6 +95,7 @@ const RentalCarPage = async ({
 }: {
   params: { rentalcarid: string };
 }) => {
+
   const pageDetails = await getRentalCarPageDetails(params.rentalcarid);
   const {
     rentalCar,
@@ -108,6 +105,7 @@ const RentalCarPage = async ({
     redirect("/rentalcars");
     return;
   }
+
   return (
     <MainLayout>
       <div className="px-4 flex flex-col gap-8">
