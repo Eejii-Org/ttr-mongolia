@@ -1,4 +1,5 @@
 "use client";
+import { CarRentalRequestType } from "@/utils";
 import supabase from "@/utils/supabase/client";
 import {
   BigErrorIcon,
@@ -27,7 +28,7 @@ type RentalCarType = {
 }
 
 const RequestCar = () => {
-  const [requestData, setRequestData] = useState({
+  const [requestData, setRequestData] = useState<CarRentalRequestType>({
     firstName: "",
     lastName: "",
     email: "",

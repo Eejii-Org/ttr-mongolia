@@ -175,3 +175,20 @@ export type TextContentType = {
   created_at?: string;
   updated_at?: string;
 };
+
+export type CarRentalRequestType = {
+  id?: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  age: string;
+  internationalDriverLicence: string | boolean;
+  startDate: string;
+  endDate: string;
+  rentalCarId: string;
+  rentalCarName: string;
+  withDriver: string | boolean;
+  price: string;
+  status?: string;
+}
