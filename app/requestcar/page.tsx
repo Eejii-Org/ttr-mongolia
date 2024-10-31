@@ -193,7 +193,7 @@ const RequestCar = () => {
                           required
                           className={`text-base px-4 py-3 w-full outline-none rounded-2xl border ${requestData.internationalDriverLicence == "" ? "text-[#c1c1c1]" : "text-secondary"}  mt-1.5`}
                           onChange={(e) => updateRequestData("internationalDriverLicence", e.target.value)}
-                          value={requestData.internationalDriverLicence}
+                          value={requestData.internationalDriverLicence as string}
                           style={{
                             appearance: "none",
                             WebkitAppearance: "none",
@@ -296,7 +296,7 @@ const RequestCar = () => {
                           required
                           className={`text-base px-4 py-3 w-full outline-none rounded-2xl border ${requestData.withDriver == "" ? "text-[#c1c1c1]" : "text-secondary"}  mt-1.5`}
                           onChange={(e) => updateRequestData("withDriver", e.target.value)}
-                          value={requestData.withDriver}
+                          value={requestData.withDriver as string}
                           style={{
                             appearance: "none",
                             WebkitAppearance: "none",
