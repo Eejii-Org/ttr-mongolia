@@ -8,7 +8,9 @@ export type templateTypeType =
   | "requestApprove"
   | "requestDeny"
   | "requestReply"
+  | "requestCarRentalReply"
   | "requestAdmin"
+  | "requestCarRentalAdmin"
   | "bookSuccess"
   | "bookFail"
   | "adminPaymentSuccess"
@@ -25,7 +27,9 @@ export type templateKeysType =
   | "requestApprove"
   | "requestDeny"
   | "requestReply"
+  | "requestCarRentalReply"
   | "requestAdmin"
+  | "requestCarRentalAdmin"
   | "bookSuccess"
   | "bookFail"
   | "adminPaymentSuccess"
@@ -84,6 +88,19 @@ export type detailType = {
     peopleCount: number;
     additionalInformation: string;
   };
+  carRentalDetail?: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber: string;
+    age: string;
+    internationalDriverLicence: string;
+    startDate: string;
+    endDate: string;
+    rentalCarName: string;
+    withDriver: string;
+    price: number;
+  };
   privateTourDetail?: {
     firstName: string;
     lastName: string;
@@ -138,6 +155,7 @@ export const mailTemplate = (
     privateTourDetail,
     bookingDetail,
     transactionDetail,
+    carRentalDetail
   } = detail;
 
   if (templateType == "customPayReceipt") {
@@ -231,6 +249,19 @@ export const mailTemplate = (
         `Thank you for choosing us for your travel needs. We look forward to welcoming you on this unforgettable adventure !`,
       ],
     },
+    requestCarRentalReply: {
+      header: `You are now one step closer 🎉`,
+      top: [
+        `Dear ${name},`,
+        `Thank you for requesting a car rental.`,
+        `We have received your message and want to assure you that our team is already working diligently to process it.`,
+      ],
+      bottom: [
+        `Please be patient as we review your request. We will get back to you promptly with confirmation or any alternative options that may be available.`,
+        `If you have any questions or require further assitance, pleace feel free to contact our customer support team at info@ttrmongolia.com or +976 7014-1001.`,
+        `Thank you for choosing us for your travel needs. We look forward to welcoming you on this unforgettable adventure !`,
+      ],
+    },
     requestAdmin: {
       header: `[Action Required] New Departure Request from ${departureDetail?.email}`,
       top: [
@@ -244,6 +275,23 @@ export const mailTemplate = (
         `DateOfBirth: ${departureDetail?.dateOfBirth}`,
         `PeopleCount: ${departureDetail?.peopleCount}`,
         `AdditionalInformation: ${departureDetail?.additionalInformation}`,
+      ],
+      bottom: [],
+    },
+    requestCarRentalAdmin: {
+      header: `[Action Required] New Car Rental Request from ${carRentalDetail?.email}`,
+      top: [
+        `Vehicle: ${carRentalDetail?.rentalCarName}`,
+        `StartDate: ${carRentalDetail?.startDate}`,
+        `EndDate: ${carRentalDetail?.endDate}`,
+        ``,
+        `Name: ${carRentalDetail?.firstName + " " + carRentalDetail?.lastName}`,
+        `Phone: ${carRentalDetail?.phoneNumber}`,
+        `Email: ${carRentalDetail?.email}`,
+        `Age: ${carRentalDetail?.age}`,
+        `WithDriver: ${carRentalDetail?.withDriver == "1" ? 'YES' : 'NO'}`,
+        `Price: ${carRentalDetail?.price}`,
+        `InternationalDriverLicence: ${carRentalDetail?.internationalDriverLicence == "1" ? 'YES' : 'NO'}`,
       ],
       bottom: [],
     },

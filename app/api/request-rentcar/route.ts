@@ -26,6 +26,7 @@ export async function POST(request: Request) {
     !body.startDate ||
     !body.endDate ||
     !body.rentalCarId ||
+    !body.rentalCarName ||
     !body.withDriver ||
     !body.price
   ) {
@@ -83,38 +84,38 @@ export async function POST(request: Request) {
     );
   }
 
-  // const { text, html, subject } = mailTemplate("requestReply", {
-  //   name: firstName + " " + lastName,
-  // });
+  const { text, html, subject } = mailTemplate("requestCarRentalReply", {
+    name: firstName + " " + lastName,
+  });
 
-  // const {
-  //   text: adminText,
-  //   html: adminHTML,
-  //   subject: adminSubject,
-  // } = mailTemplate("requestAdmin", {
-  //   departureDetail: body,
-  // });
+  const {
+    text: adminText,
+    html: adminHTML,
+    subject: adminSubject,
+  } = mailTemplate("requestCarRentalAdmin", {
+    carRentalDetail: body,
+  });
 
-  // const info = await transporter.sendMail({
-  //   from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`, // sender address
-  //   to: email,
-  //   subject,
-  //   text,
-  //   html,
-  // });
+  const info = await transporter.sendMail({
+    from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`, // sender address
+    to: email,
+    subject,
+    text,
+    html,
+  });
 
-  // const adminInfo = await transporter.sendMail({
-  //   from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`, // sender address
-  //   to: process.env.ADMIN_EMAIL,
-  //   subject: adminSubject,
-  //   text: adminText,
-  //   html: adminHTML,
-  // });
+  const adminInfo = await transporter.sendMail({
+    from: `"TTR Mongolia" <${process.env.CONTACT_EMAIL}>`, // sender address
+    to: process.env.ADMIN_EMAIL,
+    subject: adminSubject,
+    text: adminText,
+    html: adminHTML,
+  });
 
   return NextResponse.json(
     {
-      // info,
-      // adminInfo,
+      info,
+      adminInfo,
       response: 'success'
     },
     {

@@ -37,8 +37,9 @@ const RequestCar = () => {
     startDate: "",
     endDate: "",
     rentalCarId: "",
+    rentalCarName: "",
     withDriver: "",
-    price: "200",
+    price: "",
   });
   const [loading, setLoading] = useState(false);
   const [vehicles, setVehicles] = useState<RentalCarType[]>();
@@ -59,9 +60,6 @@ const RequestCar = () => {
             toast.error(error.message);
             return;
           }
-
-        console.log("===> rentalCars:")
-        console.log(rentalCars)
         
         setVehicles(rentalCars as RentalCarType[])
         
@@ -80,16 +78,19 @@ const RequestCar = () => {
   const requestSubmit = async () => {
     setLoading(true);
     try {
+      const selectedCar = vehicles?.filter((f) => `${f.id}` == requestData.rentalCarId) as RentalCarType[];
 
-      console.log("requestSubmit -> requestData:")
-      console.log(requestData)
-      
-      const result = await axios.post(`api/request-rentcar`, requestData);
-      console.log("requestSubmit -> result:")
-      console.log(result)
+      let params = requestData;
+      if(selectedCar && selectedCar?.length > 0){
+        const price = selectedCar[0].carDetail.pricePerDay;
+        const rentalCarName = selectedCar[0].name;
+        params = {...params, price, rentalCarName}
+      }
+      const result = await axios.post(`api/request-rentcar`, params);
 
       if (result.status === 200 && result.data.response === "success") {
-      // if (result.data.adminInfo.response.includes("OK")) {
+        if (!result.data.adminInfo.response.includes("OK")) console.log("Admin email could not sent.")
+        if (!result.data.info.response.includes("OK")) console.log("User email could not sent.")
         setModalMessage("Success");
       } else {
         setModalMessage("Fail");
@@ -263,7 +264,14 @@ const RequestCar = () => {
                         <select
                           required
                           className={`text-base px-4 py-3 w-full outline-none rounded-2xl border ${params.get("rentalcarid") == "" ? "text-[#c1c1c1]" : "text-secondary"}  mt-1.5`}
-                          onChange={(e) => updateRequestData("rentalCarId", e.target.value)}
+                          onChange={(e) => {
+                            updateRequestData("rentalCarId", e.target.value);
+                            const selectedCar = vehicles?.filter((f) => `${f.id}` == e.target.value) as RentalCarType[];
+                            if(selectedCar && selectedCar?.length > 0){
+                              updateRequestData("price", selectedCar[0].carDetail.pricePerDay);
+                              updateRequestData("rentalCarName", selectedCar[0].name);
+                            }
+                          }}
                           value={requestData.rentalCarId === "" ? params.get("rentalcarid") || '' : requestData.rentalCarId}
                           style={{
                             appearance: "none",
