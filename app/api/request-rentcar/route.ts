@@ -52,6 +52,7 @@ export async function POST(request: Request) {
     startDate,
     endDate,
     rentalCarId,
+    rentalCarName,
     withDriver,
     price,
   } = body;
@@ -68,6 +69,7 @@ export async function POST(request: Request) {
     startDate,
     endDate,
     rentalCarId,
+    rentalCarName,
     withDriver: withDriver == "1" ? true : false,
     price,
     status: "Pending",

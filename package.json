@@ -19,6 +19,7 @@
     "@vercel/analytics": "^1.2.2",
     "autoprefixer": "10.4.17",
     "axios": "^1.6.8",
+    "dayjs": "^1.11.13",
     "geist": "^1.2.1",
     "html-to-text": "^9.0.5",
     "js-cookie": "^3.0.5",

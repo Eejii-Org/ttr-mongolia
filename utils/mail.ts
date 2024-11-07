@@ -8,6 +8,8 @@ export type templateTypeType =
   | "requestApprove"
   | "requestDeny"
   | "requestReply"
+  | "requestRentcarApprove"
+  | "requestRentcarDeny"
   | "requestCarRentalReply"
   | "requestAdmin"
   | "requestCarRentalAdmin"
@@ -27,6 +29,8 @@ export type templateKeysType =
   | "requestApprove"
   | "requestDeny"
   | "requestReply"
+  | "requestRentcarApprove"
+  | "requestRentcarDeny"
   | "requestCarRentalReply"
   | "requestAdmin"
   | "requestCarRentalAdmin"
@@ -43,8 +47,9 @@ export type templateKeysType =
 // bookSuccessReceipt bhgu cus it's not used for other emails
 export type detailType = {
   name?: string;
-  paymentURL?: string;
   bookURL?: string;
+  paymentURL?: string;
+  rentalcarURL?: string;
   adminNote?: string;
   tourDetail?: {
     title: string;
@@ -147,6 +152,7 @@ export const mailTemplate = (
     name,
     bookURL,
     paymentURL,
+    rentalcarURL,
     tourDetail,
     userDetail,
     departureDetail,
@@ -260,6 +266,29 @@ export const mailTemplate = (
         `Please be patient as we review your request. We will get back to you promptly with confirmation or any alternative options that may be available.`,
         `If you have any questions or require further assitance, pleace feel free to contact our customer support team at info@ttrmongolia.com or +976 7014-1001.`,
         `Thank you for choosing us for your travel needs. We look forward to welcoming you on this unforgettable adventure !`,
+      ],
+    },
+    requestRentcarApprove: {
+      header: `Car Rental Request Approved ! Rent Your Car Now 🎉`,
+      top: [
+        `Dear ${name},`,
+        `We are thrilled to inform you that your car rental request has been approved! Our team will send you soon an email with all necessary information for the renting procedure.`,
+        `Admin's Note: To secure your car and confirm your renting, simply follow the instructions that will follow.`,
+      ],
+      bottom: [
+        `If you have any questions or require further assitance, pleace feel free to contact our customer support team at info@ttrmongolia.com or +976 7014-1001.`,
+        `We look forward to welcoming you on this unforgettable adventure!`,
+      ],
+    },
+    requestRentcarDeny: {
+      header: `Rent Car Request Denied!`,
+      top: [
+        `Dear ${name},`,
+        `Regrettably, we must inform you that your car rental request has been denied. Unfortunately, we were unable to accommodate your request at this time. We apologize for any inconvenience this may cause.`,
+        `Admin's Note:`
+      ],
+      bottom: [
+        `If you have any questions or require further assitance, pleace feel free to contact our customer support team at info@ttrmongolia.com or +976 7014-1001.`,
       ],
     },
     requestAdmin: {

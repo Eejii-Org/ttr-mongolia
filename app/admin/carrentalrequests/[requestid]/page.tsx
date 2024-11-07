@@ -48,6 +48,18 @@ const CarRentalRequest = () => {
         return;
       }
 
+      const res = await axios.post(`/api/reply-rentcar`, {
+        requestData: requestData,
+        status: newStatus == "Approve" ? "Approved" : "Denied",
+      });
+      console.log("/api/reply-rentcar: response")
+      console.log(res)
+      if (res.status == 400) {
+        console.error(res);
+        toast.error(res.statusText);
+        return;
+      }
+
       toast.success(
         "Status has changed successfully and made the request available"
       );
