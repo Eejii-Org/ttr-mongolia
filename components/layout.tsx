@@ -44,7 +44,8 @@ export const MainLayout = ({
           className={`flex flex-col gap-16 flex-1 ${
             pathname.includes("book") ||
             pathname.includes("privatetour") ||
-            pathname.includes("newdeparture")
+            pathname.includes("newdeparture") ||
+            pathname.includes("requestcar")
               ? ""
               : "pb-24"
           } ${
