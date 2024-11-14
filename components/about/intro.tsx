@@ -9,25 +9,18 @@ export const AboutIntro = () => {
           </div>
           <div className="pr-8 flex flex-col text-base md:text-lg gap-2">
             <p>
-              We are an experienced and dynamic tour operating company devoted
-              to providing travelers with the highest quality of trips in
-              Mongolia. We started in 2013 and are constantly striving to
-              improve our services. We have a team of drivers with the best
-              navigation skills, and multilingual guides with a vast knowledge
-              of the country. We provided our service to hundreds of tourists
-              from more than 10 different countries.
+              Dear travelers,
             </p>
-
             <p>
-              We offer a wide range of ready-made tours available through online
-              booking. However, if you would prefer to travel independently or
-              have travel ideas of your own, we will gladly collaborate in order
-              to create a tailor-made tour just for you. We also offer a variety
-              of low-budget tours. While organizing tours is our forte,
-              employees in the following departments will gladly coordinate
-              additional services to make your experience as enjoyable as
-              possible.
+              Welcome to TTR Mongolia, your gateway to the extraordinary in Mongolia. Located in the heart of Ulaanbaatar, we've had the pleasure of welcoming you since 2013 and accompanying you as you discover our magnificent country.
             </p>
+            <p>Our agency specializes in creating tailor-made trips to suit your desires and interests. We firmly believe that every trip is a unique adventure, which is why we've developed immersive programs like our "Nomad Experiences". For 5 to 7 days, you'll have the opportunity to live with nomadic families, participate in their daily activities, and learn the traditions and customs that make our culture so rich.</p>
+            <p>We also place particular emphasis on the Amarbayasgalant Monastery, one of Mongolia's spiritual gems. Through our tours and activities in this emblematic place, we offer you the opportunity to reconnect with yourself and with nature. We're delighted to announce our next Meditation Stay program, a 10-day retreat within the monastery, where you can explore inner peace while immersing yourself in a majestic setting.</p>
+            <p>We are also passionate about volunteering, and seek to integrate these activities into the heart of our trips. We believe that every trip can have a positive impact, which is why we offer our travelers the chance to participate in social development projects during their stay in Mongolia. Whether it's giving English lessons to young monks in a monastery or replanting trees to combat desertification, every gesture counts. We are actively working to develop new initiatives to enable our customers to contribute to the preservation of our culture and environment while living enriching experiences.</p>
+            <p>We look forward to sharing the wild beauty and spiritual depth of our country with you. Join us for an unforgettable experience.</p>
+            <p>We look forward to welcoming you to Mongolia,</p>
+            <p>Doljinsuren Erdenebat</p>
+            <p>Director, TTR Mongolia</p>
           </div>
         </div>
       </div>
