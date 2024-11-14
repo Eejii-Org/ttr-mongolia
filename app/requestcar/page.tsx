@@ -426,6 +426,10 @@ const RequestCar = () => {
               {/* Pricing detail */}
               <div className="pt-4 md:pt-0">
                 <div className="flex flex-row justify-between">
+                  <label className="text-[#6D6D6D] font-medium">Renting dates:</label>
+                  <p className="font-semibold">{dayjs(requestData.startDate).format('MM/DD/YYYY')} - {dayjs(requestData.endDate).format('MM/DD/YYYY')}</p>
+                </div>
+                <div className="flex flex-row justify-between">
                   <label className="text-[#6D6D6D] font-medium">Per day:</label>
                   <p className="font-semibold">${selectedCar?.carDetail.pricePerDay}</p>
                 </div>
