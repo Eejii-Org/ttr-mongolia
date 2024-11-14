@@ -62,6 +62,7 @@ const RequestCar = () => {
     useState(true);
   const [isAgreedToPrivacy, setIsAgreedToPrivacy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [rentingError, setRentingError] = useState<string | null>(null);
 
   useEffect(() => {
     const getIsAgreedToPrivacy = () => {
@@ -128,7 +129,42 @@ const RequestCar = () => {
     setRequestData({ ...requestData, [key]: value });
   };
 
+  const checkInputs = () => {
+    type keysType =
+      | "firstName"
+      | "lastName"
+      | "email"
+      | "phoneNumber"
+      | "age"
+      | "internationalDriverLicence"
+      | "startDate"
+      | "endDate"
+      | "rentalCarId"
+      | "withDriver"
+    const keysToCheck: keysType[] = [
+      "firstName",
+      "lastName",
+      "email",
+      "phoneNumber",
+      "age",
+      "internationalDriverLicence",
+      "startDate",
+      "endDate",
+      "rentalCarId",
+      "withDriver",
+    ];
+    for (const key of keysToCheck) {
+      if (requestData[key] === "") {
+        setRentingError("Please fill out all of our inputs in form");
+        return false;
+      }
+    }
+    return true;
+  };
+
   const requestSubmit = async () => {
+    if (!checkInputs()) return;
+
     setLoading(true);
     try {
       let params = requestData;
@@ -266,7 +302,7 @@ const RequestCar = () => {
                     />
                   </div>
                   <div className="flex-1 flex-col">
-                    <label className="font-semibold">International Driver license?</label>
+                    <label className="font-semibold">Have an International Driver Licence?</label>
                     <select
                       required
                       className={`text-base px-4 py-3 w-full outline-none rounded-2xl border ${requestData.internationalDriverLicence == "" ? "text-[#c1c1c1]" : "text-secondary"}  mt-1.5`}
@@ -324,23 +360,23 @@ const RequestCar = () => {
                   <NewInput
                     value={requestData.startDate}
                     type="date"
-                    label="Start Date"
-                    placeholder="Start Date"
+                    label="Starting Date"
+                    placeholder="Starting Date"
                     onChange={(e) => updateRequestData("startDate", e.target.value)}
                     required
                   />
                   <NewInput
                     value={requestData.endDate}
                     type="date"
-                    label="End Date"
-                    placeholder="End Date"
+                    label="Ending Date"
+                    placeholder="Ending Date"
                     onChange={(e) => updateRequestData("endDate", e.target.value)}
                     required
                   />
                 </div>
                 <div className="flex gap-4 md:gap-6 flex-col md:flex-row">
                   <div className="flex-1 flex-col w-auto">
-                    <label className="font-semibold pl-2">Vehicle select</label>
+                    <label className="font-semibold pl-2">Select your Vehicle</label>
                     <select
                       required
                       className={`text-base px-4 py-3 w-full outline-none rounded-2xl border ${params.get("rentalcarid") == "" ? "text-[#c1c1c1]" : "text-secondary"}  mt-1.5`}
@@ -369,7 +405,7 @@ const RequestCar = () => {
                     </select>
                   </div>
                   <div className="flex-1 flex-col w-auto">
-                    <label className="font-semibold pl-2">With driver?</label>
+                    <label className="font-semibold pl-2">Rent the car with driver?</label>
                     <select
                       required
                       className={`text-base px-4 py-3 w-full outline-none rounded-2xl border ${requestData.withDriver == "" ? "text-[#c1c1c1]" : "text-secondary"}  mt-1.5`}
@@ -382,13 +418,13 @@ const RequestCar = () => {
                       }}
                     >
                       <option value="" className="text-quaternary">
-                        Select YES or NO
+                        Choose an option
                       </option>
                       <option value={1} key={'yes'}>
-                        Yes
+                        With driver
                       </option>
                       <option value={0} key={'no'}>
-                        No
+                        Self-drive
                       </option>
                     </select>
                   </div>
@@ -427,7 +463,7 @@ const RequestCar = () => {
               <div className="pt-4 md:pt-0">
                 <div className="flex flex-row justify-between">
                   <label className="text-[#6D6D6D] font-medium">Renting dates:</label>
-                  <p className="font-semibold">{dayjs(requestData.startDate).format('MM/DD/YYYY')} - {dayjs(requestData.endDate).format('MM/DD/YYYY')}</p>
+                  <p className="font-semibold">{requestData.startDate && dayjs(requestData.startDate).format('MM/DD/YYYY')} - {requestData.endDate && dayjs(requestData.endDate).format('MM/DD/YYYY')}</p>
                 </div>
                 <div className="flex flex-row justify-between">
                   <label className="text-[#6D6D6D] font-medium">Per day:</label>
@@ -471,10 +507,14 @@ const RequestCar = () => {
                   </Link>
                 </div>
               </div>
-
+              {rentingError && (
+                <label className="text-red-600 text-center">{rentingError}</label>
+              )}
               <button
                 className="bg-primary px-4 py-3 width-full text-center text-white whitespace-nowrap font-bold ripple rounded-2xl"
+                style={{ backgroundColor: `${isAgreedToPrivacy ? '' : 'grey'}`}}
                 onClick={() => requestSubmit()}
+                disabled={!isAgreedToPrivacy}
               >
                 {loading ? "Loading" : "Request to Rent"}
               </button>
