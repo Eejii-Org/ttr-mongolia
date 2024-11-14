@@ -97,11 +97,13 @@ const RentalCar = () => {
     }
 
     let newRentalCar = rentalCar;
+
     if (imageFile) {
       const filePath = await updateImageInS3(
         imageFile,
-        rentalCar?.mainImage as string
+        "rentalCarImages"
       );
+
       if (newRentalCar) {
         newRentalCar.mainImage = filePath;
       }
@@ -117,6 +119,7 @@ const RentalCar = () => {
     if (deletedPictures && deletedPictures.length > 0) {
       await deleteImagesInS3(deletedPictures);
     }
+
     const paths = await uploadImagesToS3(
       uploadablePictures as Blob[],
       "rentalCarImages"
@@ -157,6 +160,7 @@ const RentalCar = () => {
     toast.success("Successfully Saved");
     setSaveLoading(false);
   };
+
   const isChanged = useMemo(() => {
     if (rentalCar == null) return false;
     if (originalRentalCar == null || imageFile !== null) return true;
@@ -167,6 +171,7 @@ const RentalCar = () => {
     router.push("/admin/rentalcars");
     return;
   };
+
   useEffect(() => {
     const fetchRentalCar = async () => {
       if (rentalcarid == "new") {
@@ -204,6 +209,7 @@ const RentalCar = () => {
         setLoading(false);
         return;
       }
+
       try {
         const { data, error } = await supabase
           .from("rentalCars")

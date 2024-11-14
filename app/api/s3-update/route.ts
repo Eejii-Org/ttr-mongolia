@@ -9,16 +9,18 @@ const client = new S3Client({
   },
 });
 
-const updateFileToS3 = async (fileBuffer: Buffer, path: string) => {
+const updateFileToS3 = async (fileBuffer: Buffer, path: string, fileType: string) => {
+  const uniqueId = Math.random().toString(36).substring(2, 9);
+  const filePath = `${path}/${uniqueId}.${fileType}`;
   const params = {
     Bucket: process.env.AWS_S3_BUCKET_NAME,
-    Key: path,
+    Key: filePath,
     Body: fileBuffer,
     ContentType: "image/jpg",
   };
   const command = new PutObjectCommand(params);
   await client.send(command);
-  return path;
+  return filePath;
 };
 
 export async function POST(request: Request) {
@@ -36,11 +38,12 @@ export async function POST(request: Request) {
         }
       );
     }
+
     const buffer = Buffer.from(await file.arrayBuffer());
-    const fileName = await updateFileToS3(buffer, path);
+    const fileType = file.type.split("/").pop() + "";
+    const filePath = await updateFileToS3(buffer, path, fileType);
     return NextResponse.json({
-      success: true,
-      fileName: fileName,
+      filePath
     });
   } catch (error) {
     console.log(error);
