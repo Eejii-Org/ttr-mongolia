@@ -165,6 +165,7 @@ export type RentalCarType = {
     engine: string;
     ac: string;
     pricePerDay: string;
+    pricePerDayWithoutDriver?: string;
   };
 };
 

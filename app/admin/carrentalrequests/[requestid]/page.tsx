@@ -319,6 +319,14 @@ const Detail = ({
                 placeholder="With Driver"
               />
             </div>
+            <div className="flex-1 flex-col w-auto">
+              <label className="pl-2 font-medium">Total Price $:</label>
+              <Input
+                value={requestData.price}
+                type="text"
+                placeholder="Total price"
+              />
+            </div>
           </div>
         </div>
       </div>

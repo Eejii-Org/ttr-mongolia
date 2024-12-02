@@ -58,7 +58,7 @@ const ImageItem = ({
     return typeof image === "string" || image instanceof String;
   }, [image]);
   const imageSrc = useMemo(() => {
-    return isImage ? (image as string) : URL.createObjectURL(image as Blob);
+    return isImage ? (image as string) : URL?.createObjectURL(image as Blob);
   }, [isImage, image]);
   return (
     <div className=" w-[300px] h-[200px] relative">

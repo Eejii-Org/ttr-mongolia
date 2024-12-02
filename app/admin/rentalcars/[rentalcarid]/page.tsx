@@ -188,6 +188,7 @@ const RentalCar = () => {
             engine: "",
             ac: "",
             pricePerDay: "",
+            pricePerDayWithoutDriver: "",
           },
         });
         setOriginalRentalCar({
@@ -203,6 +204,7 @@ const RentalCar = () => {
             engine: "",
             ac: "",
             pricePerDay: "",
+            pricePerDayWithoutDriver: "",
           },
         });
         setIsNew(true);
@@ -354,6 +356,24 @@ const Detail = ({
                 carDetail: {
                   ...rentalCar.carDetail,
                   pricePerDay: e.target.value,
+                },
+              })
+            }
+          />
+        </div>
+        <div className="min-w-80">
+          <label className="pl-2 font-medium">Price Per Day without Driver:</label>
+          <Input
+            type="text"
+            placeholder="$220"
+            icon={<PriceIcon />}
+            value={rentalCar.carDetail?.pricePerDayWithoutDriver || ''}
+            onChange={(e) =>
+              setRentalCar({
+                ...rentalCar,
+                carDetail: {
+                  ...rentalCar.carDetail,
+                  pricePerDayWithoutDriver: e.target.value,
                 },
               })
             }

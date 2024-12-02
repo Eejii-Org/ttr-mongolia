@@ -29,6 +29,7 @@ type RentalCarType = {
     engine: string;
     numberOfSeats: string;
     pricePerDay: string;
+    pricePerDayWithoutDriver: string;
     transmission: string;
   }
 }
@@ -115,14 +116,26 @@ const RequestCar = () => {
     }
   }, [requestData]);
 
+  const carPrice = useMemo(() => {
+    if (!selectedCar) return null;
+    if(requestData.withDriver !== ''){
+      const withDriver = requestData.withDriver as string;
+      console.log("withDriver: " + withDriver)
+      return parseInt(withDriver === '0' ? selectedCar.carDetail.pricePerDayWithoutDriver : selectedCar.carDetail.pricePerDay)
+    }else{
+      return null;
+    }
+  }, [requestData]);
+
   const totalAmount = useMemo(() => {
     if (!selectedCar) return null;
-    if(totalDaysCount){
-      return totalDaysCount * parseInt(selectedCar.carDetail.pricePerDay);
+    if(totalDaysCount && carPrice){
+      return totalDaysCount * carPrice;
     }else{
       return 0;
     }
-  }, [selectedCar, totalDaysCount]);
+  }, [selectedCar, totalDaysCount, requestData]);
+
 
 
   const updateRequestData = (key: string, value: string) => {
@@ -457,6 +470,16 @@ const RequestCar = () => {
                       Per Day
                     </div>
                   </div>
+                  <div className="flex flex-row gap-4">
+                    <div className="flex flex-row items-center justify-center text-sm font-semibold gap-1">
+                      <PriceIcon />
+                      <span>${selectedCar?.carDetail.pricePerDayWithoutDriver}</span>
+                    </div>
+                    <div className="bg-black/20 w-[2px] rounded my-1" />
+                    <div className="flex flex-row justify-center text-sm items-center font-semibold gap-1">
+                      Per Day without Driver
+                    </div>
+                  </div>
                 </div>
               </div>
               {/* Pricing detail */}
@@ -467,7 +490,7 @@ const RequestCar = () => {
                 </div>
                 <div className="flex flex-row justify-between">
                   <label className="text-[#6D6D6D] font-medium">Per day:</label>
-                  <p className="font-semibold">${selectedCar?.carDetail.pricePerDay}</p>
+                  <p className="font-semibold">${carPrice}</p>
                 </div>
                 <div className="flex justify-end">
                   <p className="text-[#6D6D6D]">
