@@ -14,7 +14,9 @@ const AdminDepartureRequests = () => {
       try {
         const { data, error } = await supabase
           .from("departureRequests")
-          .select("*");
+          .select("*")
+          .order('id', { ascending: false });
+          
         if (error) {
           throw error;
         }
