@@ -1,5 +1,5 @@
 "use client";
-import { CarRentalRequestType } from "@/utils";
+import { CarRentalRequestType, RentingCarType } from "@/utils";
 import supabase from "@/utils/supabase/client";
 import {
   BigErrorIcon,
@@ -19,11 +19,14 @@ import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import dayjs from "dayjs";
+import { CarIcon } from "@/components/icons/car";
+import Image from "next/image";
 
 type RentalCarType = {
   id: number;
   name: string;
   mainImage: string;
+  availableCount: string;
   carDetail: {
     ac: string;
     engine: string;
@@ -49,6 +52,18 @@ const RequestCar = () => {
     withDriver: "",
     price: "",
   });
+  const [rentingCar, setRentingCar] = useState<RentingCarType[]>([
+    {
+      carRentalRequestsId: "",
+      rentalCarId: "",
+      rentalCarName: "",
+      withDriver: "",
+      price: "",
+      availableCount: "",
+      requestCount: "",
+      mainImage: "",
+    },
+]);
   const [loading, setLoading] = useState(false);
   const [vehicles, setVehicles] = useState<RentalCarType[]>();
   const [selectedCar, setSelectedCar] = useState<RentalCarType | null>(null);
@@ -84,7 +99,7 @@ const RequestCar = () => {
       try {
         const { data: rentalCars, error } = await supabase
           .from("rentalCars")
-          .select("id, name, carDetail, mainImage");
+          .select("id, name, carDetail, mainImage, availableCount");
           if (error) {
             console.error(error);
             toast.error(error.message);
@@ -135,8 +150,6 @@ const RequestCar = () => {
       return 0;
     }
   }, [selectedCar, totalDaysCount, requestData]);
-
-
 
   const updateRequestData = (key: string, value: string) => {
     setRequestData({ ...requestData, [key]: value });
@@ -202,6 +215,69 @@ const RequestCar = () => {
     setLoading(false);
   };
 
+  const addCar = () => {
+    setRentingCar([...rentingCar, {
+      carRentalRequestsId: "",
+      rentalCarId: "",
+      rentalCarName: "",
+      withDriver: "",
+      price: "",
+    }])
+  }
+
+  const removeCar = () => {
+    if(rentingCar.length > 1){
+      const current = rentingCar;
+      current.splice(rentingCar.length - 1, 1);
+      setRentingCar([...current]);
+      console.log([...current]);
+    }
+  }
+
+  const onSelectVehicle = (index: number, value: string) => {
+    console.log(`onSelectVehicle - Index: ${index}, Value: ${value}`)
+    
+    const car = (vehicles?.filter((f) => `${f.id}` == value) as RentalCarType[])[0] || null;
+    const current = rentingCar;
+    current.splice(index, 1, {
+      ...rentingCar[index],
+      rentalCarId: value,
+      rentalCarName: car?.name,
+      price: car?.carDetail?.pricePerDay,
+      availableCount: car?.availableCount,
+      mainImage: car?.mainImage,
+      withDriver: "",
+    });
+    setRentingCar([...current]);
+    console.log(current);
+  }
+  
+  const onSelectDriver = (index: number, value: string) => {
+    console.log(`onSelectDriver - Index: ${index}, Value: ${value}`)
+
+    const car = (vehicles?.filter((f) => `${f.id}` == rentingCar[index].rentalCarId) as RentalCarType[])[0] || null;
+    const current = rentingCar;
+    current.splice(index, 1, {
+      ...rentingCar[index],
+      withDriver: value,
+      price: parseInt(value) === 0 ? car?.carDetail?.pricePerDayWithoutDriver : parseInt(value) === 1 ? car?.carDetail?.pricePerDay : '',
+    });
+    setRentingCar([...current]);
+    console.log(current);
+  }
+
+  const onRequestCountChange = (index: number, value: string) => {
+    console.log(`onRequestCountChange - Index: ${index}, Value: ${value}`)
+
+    const current = rentingCar;
+    current.splice(index, 1, {
+      ...rentingCar[index],
+      requestCount: value,
+    });
+    setRentingCar([...current]);
+    console.log(current);
+  }
+
   if (error) {
     return (
       <MainLayout>
@@ -229,7 +305,6 @@ const RequestCar = () => {
       </MainLayout>
     );
   }
-
 
   return (
     <>
@@ -387,20 +462,20 @@ const RequestCar = () => {
                     required
                   />
                 </div>
-                <div className="flex gap-4 md:gap-6 flex-col md:flex-row">
-                  <div className="flex-1 flex-col w-auto">
-                    <label className="font-semibold pl-2">Select your Vehicle</label>
+
+                <hr />
+
+               { rentingCar && rentingCar.map((car, index) => 
+                <div className="flex flex-row gap-8">
+                  <div className="max-w-40">
+                    <label className="font-semibold pl-2">Select Vehicle</label>
                     <select
                       required
                       className={`text-base px-4 py-3 w-full outline-none rounded-2xl border ${params.get("rentalcarid") == "" ? "text-[#c1c1c1]" : "text-secondary"}  mt-1.5`}
                       onChange={(e) => {
-                        const car = (vehicles?.filter((f) => `${f.id}` == e.target.value) as RentalCarType[])[0] || null;
-                        setSelectedCar(car);
-                        updateRequestData("rentalCarId", e.target.value);
-                        updateRequestData("price", car?.carDetail?.pricePerDay || '');
-                        updateRequestData("rentalCarName", car?.name || '');
+                        onSelectVehicle(index, e.target.value)
                       }}
-                      value={selectedCar?.id}
+                      value={rentingCar[index].id}
                       style={{
                         appearance: "none",
                         WebkitAppearance: "none",
@@ -417,18 +492,30 @@ const RequestCar = () => {
                       })}
                     </select>
                   </div>
-                  <div className="flex-1 flex-col w-auto">
-                    <label className="font-semibold pl-2">Rent the car with driver?</label>
+                  <div className="max-w-40">
+                    <NewInput
+                      value={rentingCar[index].availableCount || 0}
+                      type={"number"}
+                      label="Available:"
+                      placeholder="0"
+                      readOnly={true}
+                    />
+                  </div>
+                  <div className="max-w-40">
+                    <label className="font-semibold pl-2">Rent with driver?</label>
                     <select
                       required
-                      className={`text-base px-4 py-3 w-full outline-none rounded-2xl border ${requestData.withDriver == "" ? "text-[#c1c1c1]" : "text-secondary"}  mt-1.5`}
-                      onChange={(e) => updateRequestData("withDriver", e.target.value)}
-                      value={requestData.withDriver as string}
+                      className={`text-base px-4 py-3 w-full outline-none rounded-2xl border ${rentingCar[index].withDriver == "" ? "text-[#c1c1c1]" : "text-secondary"}  mt-1.5`}
+                      onChange={(e) => {
+                        onSelectDriver(index, e.target.value)
+                      }}
+                      value={rentingCar[index].withDriver as string}
                       style={{
                         appearance: "none",
                         WebkitAppearance: "none",
                         MozAppearance: "none",
                       }}
+                      disabled={parseInt(rentingCar[index].availableCount || '0') > 0 ? false : true}
                     >
                       <option value="" className="text-quaternary">
                         Choose an option
@@ -441,7 +528,37 @@ const RequestCar = () => {
                       </option>
                     </select>
                   </div>
+                  <div className="max-w-40">
+                    <NewInput
+                      value={rentingCar[index].requestCount || ''}
+                      type={"number"}
+                      label="Request Count:"
+                      placeholder="0"
+                      onChange={(e) => {
+                        onRequestCountChange(index, e.target.value)
+                      }}
+                      required
+                      disabled={parseInt(rentingCar[index].availableCount || '0') > 0 ? false : true}
+                    />
+                  </div>
                 </div>
+               )}
+               <div className="flex gap-4 md:gap-6 flex-col md:flex-row">
+                <div className="flex w-auto gap-4">
+                  <button
+                    className="bg-secondary px-4 py-3 w-32 text-center text-white whitespace-nowrap font-bold ripple rounded-2xl"
+                    onClick={() => removeCar()}
+                  >
+                    {loading ? "Loading" : "Remove Car"}
+                  </button>
+                  <button
+                    className="bg-primary px-4 py-3 w-32 text-center text-white whitespace-nowrap font-bold ripple rounded-2xl"
+                    onClick={() => addCar()}
+                  >
+                    {loading ? "Loading" : "Add Car"}
+                  </button>
+                </div>
+               </div>
               </Drawer>
             </div>
           </div>
@@ -449,39 +566,63 @@ const RequestCar = () => {
             <div className="md:sticky md:left-0 md:top-0 flex flex-col gap-4 md:pt-[88px] md:-mt-[88px]">
               <h1 className="text-2xl font-bold lg:text-3xl">Vehicle Detail</h1>
               {/* Rental Car Card */}
-              <div className="md:w-80 drop-shadow-card">
-                <div className="relative md:w-[320px] h-[220px] rounded-t-2xl overflow-hidden">
-                  <StorageImage
-                    fill
-                    alt="tour-image"
-                    className="object-cover"
-                    src={selectedCar?.mainImage || ''}
-                  />
-                </div>
-                <div className="p-5 pt-4 border border-t-0 rounded-b-xl flex flex-col gap-3">
-                  <h3 className="text-lg font-bold">{selectedCar?.name}</h3>
-                  <div className="flex flex-row gap-4">
-                    <div className="flex flex-row items-center justify-center text-sm font-semibold gap-1">
-                      <PriceIcon />
-                      <span>${selectedCar?.carDetail.pricePerDay}</span>
+
+              { rentingCar && rentingCar.map((car, index) => {
+                return (
+                  <div className="md:w-80 drop-shadow-card" key={index}>
+                    <div className="relative md:w-[320px] h-[220px] rounded-t-2xl overflow-hidden">
+                      { car?.mainImage 
+                        ?
+                        <StorageImage
+                          fill
+                          alt="tour-image"
+                          className="object-cover"
+                          src={car?.mainImage || ''}
+                        />
+                        :
+                        <Image
+                          src="/static/default_car.png"
+                          alt="privatetourbg"
+                          fill
+                          className="object-cover"
+                        />
+                      }
                     </div>
-                    <div className="bg-black/20 w-[2px] rounded my-1" />
-                    <div className="flex flex-row justify-center text-sm items-center font-semibold gap-1">
-                      Per Day
+                    <div className="p-5 pt-4 border border-t-0 rounded-b-xl flex flex-col gap-3">
+                      <h3 className="text-lg font-bold">{car?.rentalCarName}</h3>
+                      { car?.availableCount == "1" ?
+                        <>
+                          <div className="flex flex-row gap-4">
+                            <div className="flex flex-row items-center justify-center text-sm font-semibold gap-1">
+                              <PriceIcon />
+                              { car?.withDriver != '' && 
+                                <span>${car?.price} {car?.withDriver == '0' ? 'Self Drive' : 'with Driver'}</span>
+                              }
+                            </div>
+                            <div className="bg-black/20 w-[2px] rounded my-1" />
+                            <div className="flex flex-row justify-center text-sm items-center font-semibold gap-1">
+                              Per Day
+                            </div>
+                          </div>
+                          <div className="flex flex-row gap-4">
+                            <div className="flex flex-row items-center justify-center text-sm font-semibold gap-1">
+                              <CarIcon />
+                              <span>Request Count {car?.requestCount}</span>
+                            </div>
+                          </div>
+                        </>
+                        :
+                          car?.availableCount == "0"
+                            ?
+                            <div className="flex flex-row gap-4">Not Available Currently</div>
+                            :
+                            <div className="flex flex-row gap-4">Select a Vehicle</div>
+                      }
                     </div>
                   </div>
-                  <div className="flex flex-row gap-4">
-                    <div className="flex flex-row items-center justify-center text-sm font-semibold gap-1">
-                      <PriceIcon />
-                      <span>${selectedCar?.carDetail.pricePerDayWithoutDriver}</span>
-                    </div>
-                    <div className="bg-black/20 w-[2px] rounded my-1" />
-                    <div className="flex flex-row justify-center text-sm items-center font-semibold gap-1">
-                      Per Day without Driver
-                    </div>
-                  </div>
-                </div>
-              </div>
+                )
+              })}
+
               {/* Pricing detail */}
               <div className="pt-4 md:pt-0">
                 <div className="flex flex-row justify-between">

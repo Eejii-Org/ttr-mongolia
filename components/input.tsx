@@ -56,6 +56,7 @@ type NewInputType = {
   max?: number | undefined;
   disabled?: boolean;
   label?: string;
+  readOnly?: boolean;
 };
 
 export const NewInput = ({
@@ -70,6 +71,7 @@ export const NewInput = ({
   max = undefined,
   disabled = false,
   label = "",
+  readOnly = false,
 }: NewInputType) => {
   return (
     <div className="flex-1 flex flex-col gap-[6px]">
@@ -87,6 +89,7 @@ export const NewInput = ({
           onChange={onChange}
           className="text-base text-secondary outline-none flex-1 w-full"
           disabled={disabled}
+          readOnly={readOnly}
         />
       </div>
     </div>

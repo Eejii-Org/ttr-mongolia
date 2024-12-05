@@ -156,6 +156,7 @@ export type RentalCarType = {
   name: string;
   subDescription: string;
   description: string;
+  availableCount: string;
   mainImage: string;
   otherImages: string[];
   status: "active" | "inactive";
@@ -192,4 +193,16 @@ export type CarRentalRequestType = {
   withDriver: string | boolean;
   price: string;
   status?: string;
+}
+
+export type RentingCarType = {
+  id?: number;
+  carRentalRequestsId?: string;
+  rentalCarId?: string;
+  rentalCarName?: string;
+  withDriver?: string;
+  price?: string;
+  availableCount?: string;
+  requestCount?: string;
+  mainImage?: string;
 }

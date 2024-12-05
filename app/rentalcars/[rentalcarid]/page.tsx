@@ -16,6 +16,7 @@ import { redirect } from "next/navigation";
 import { Metadata } from "next";
 import { RentalCarType } from "@/utils/types";
 import { TiptapContent } from "@/components/tiptapcontent";
+import { CarIcon } from "@/components/icons/car";
 
 type Props = {
   params: { rentalcarid: string };
@@ -174,6 +175,15 @@ const RentalCarPage = async ({
                     <label className="font-semibold">Price Per Day:</label>
                     <div className="underline font-bold">
                       ${rentalCar.carDetail.pricePerDay}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-row gap-2">
+                  <CarIcon />
+                  <div className="flex flex-row gap-1 flex-wrap">
+                    <label className="font-semibold">Available Count:</label>
+                    <div>
+                      {rentalCar.availableCount}
                     </div>
                   </div>
                 </div>

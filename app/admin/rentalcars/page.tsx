@@ -65,9 +65,12 @@ const AdminRentalCars = () => {
           <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b w-80">
             Name
           </th>
+          <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b w-80">
+            Available Count
+          </th>
           <th className="text-left px-3 py-2 font-semibold md:text-lg max-w-12 border-b w-12"></th>
         </tr>
-        {rentalCars.map(({ name, mainImage, id }, i) => (
+        {rentalCars.map(({ name, mainImage, id, availableCount }, i) => (
           <tr
             className="hover:bg-black/5 table-row hover:bg-grey/50 cursor-pointer"
             key={i}
@@ -92,6 +95,7 @@ const AdminRentalCars = () => {
               </div>
             </td>
             <td className="py-2 px-3 font-semibold w-80">{name}</td>
+            <td className="py-2 px-3 font-semibold w-80">{availableCount}</td>
             <td className="max-w-12 w-12 h-full">
               <div className="flex items-center justify-center">
                 <Link

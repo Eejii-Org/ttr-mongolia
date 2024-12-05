@@ -32,6 +32,7 @@ import {
   uploadImageToS3,
 } from "@/utils";
 import { RentalCarType } from "@/utils/types";
+import { CarIcon } from "@/components/icons/car";
 
 type ModifiedRentalCarType = Omit<RentalCarType, "otherImages"> & {
   otherImages: (Blob | string)[];
@@ -179,6 +180,7 @@ const RentalCar = () => {
           name: "",
           subDescription: "",
           description: "",
+          availableCount: "",
           mainImage: "",
           otherImages: [],
           status: "active",
@@ -195,6 +197,7 @@ const RentalCar = () => {
           name: "",
           subDescription: "",
           description: "",
+          availableCount: "",
           mainImage: "",
           otherImages: [],
           status: "active",
@@ -313,14 +316,15 @@ const Detail = ({
         </div>
         <div className="min-w-80">
           <label className="pl-2 font-medium">
-            Rental Car Sub Description:
+            Available Count:
           </label>
           <Input
             type="text"
-            placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
-            value={rentalCar.subDescription}
+            placeholder="Available count"
+            icon={<CarIcon />}
+            value={rentalCar.availableCount}
             onChange={(e) =>
-              setRentalCar({ ...rentalCar, subDescription: e.target.value })
+              setRentalCar({ ...rentalCar, availableCount: e.target.value })
             }
           />
         </div>
@@ -458,6 +462,25 @@ const Detail = ({
           />
         </div>
       </div>
+
+
+      <div className="flex flex-col">
+        <div className="min-w-80">
+          <label className="pl-2 font-medium">
+            Rental Car Sub Description:
+          </label>
+          <Input
+            type="text"
+            placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
+            value={rentalCar.subDescription}
+            onChange={(e) =>
+              setRentalCar({ ...rentalCar, subDescription: e.target.value })
+            }
+          />
+        </div>
+      </div>
+
+
       <div className="flex flex-col">
         <label className="pl-2 font-medium">Description:</label>
         <Tiptap
