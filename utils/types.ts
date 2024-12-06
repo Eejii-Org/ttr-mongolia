@@ -188,10 +188,6 @@ export type CarRentalRequestType = {
   internationalDriverLicence: string | boolean;
   startDate: string;
   endDate: string;
-  rentalCarId: string;
-  rentalCarName: string;
-  withDriver: string | boolean;
-  price: string;
   status?: string;
 }
 

@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 import { createClient } from "@/utils/supabase/server";
-import { mailTemplate } from "@/utils";
+import { mailTemplate, RentingCarType } from "@/utils";
 import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic"; // defaults to auto
 const transporter = nodemailer.createTransport({
@@ -16,6 +16,7 @@ const transporter = nodemailer.createTransport({
 export async function POST(request: Request) {
   const supabase = createClient();
   const body = await request.json();
+
   if (
     !body.firstName ||
     !body.lastName ||
@@ -24,11 +25,7 @@ export async function POST(request: Request) {
     !body.age ||
     !body.internationalDriverLicence ||
     !body.startDate ||
-    !body.endDate ||
-    !body.rentalCarId ||
-    !body.rentalCarName ||
-    !body.withDriver ||
-    !body.price
+    !body.endDate
   ) {
     return NextResponse.json(
       {
@@ -51,15 +48,10 @@ export async function POST(request: Request) {
     internationalDriverLicence,
     startDate,
     endDate,
-    rentalCarId,
-    rentalCarName,
-    withDriver,
-    price,
+    carList
   } = body;
 
-
-
-  const { error } = await supabase.from("carRentalRequests").insert({
+  const { data, error: requestError } = await supabase.from("carRentalRequests").insert({
     firstName,
     lastName,
     phoneNumber,
@@ -68,22 +60,47 @@ export async function POST(request: Request) {
     internationalDriverLicence: internationalDriverLicence == "1" ? true : false,
     startDate,
     endDate,
-    rentalCarId,
-    rentalCarName,
-    withDriver: withDriver == "1" ? true : false,
-    price,
     status: "Pending",
-  });
+  }).select('id');
 
-  if (error) {
+
+  if (requestError) {
     return NextResponse.json(
       {
-        error,
+        requestError,
       },
       {
         status: 400,
       }
     );
+  }
+
+  if(data && data[0].id){
+    const rentingCars = carList.map((car: RentingCarType) => {
+      return {
+        carRentalRequestsId: data[0].id,
+        withDriver: car.withDriver == "1" ? true : false,
+        rentalCarId: car.rentalCarId,
+        rentalCarName: car.rentalCarName,
+        price: car.price,
+        availableCount: car.availableCount,
+        requestCount: car.requestCount,
+      }
+    })
+    console.dir(rentingCars)
+    
+    const { error: carError } = await supabase.from("carRentalList").insert(rentingCars);
+
+    if (carError) {
+      return NextResponse.json(
+        {
+          carError,
+        },
+        {
+          status: 400,
+        }
+      );
+    }
   }
 
   const { text, html, subject } = mailTemplate("requestCarRentalReply", {
@@ -118,7 +135,7 @@ export async function POST(request: Request) {
     {
       info,
       adminInfo,
-      response: 'success'
+      response: 'success',
     },
     {
       status: 200,

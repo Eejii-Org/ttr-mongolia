@@ -47,14 +47,9 @@ const RequestCar = () => {
     internationalDriverLicence: "",
     startDate: "",
     endDate: "",
-    rentalCarId: "",
-    rentalCarName: "",
-    withDriver: "",
-    price: "",
   });
   const [rentingCar, setRentingCar] = useState<RentingCarType[]>([
     {
-      carRentalRequestsId: "",
       rentalCarId: "",
       rentalCarName: "",
       withDriver: "",
@@ -109,7 +104,6 @@ const RequestCar = () => {
           
           setVehicles(rentalCars as RentalCarType[])
           const car = rentalCars?.filter((f) => `${f.id}` == rentalcarid) as RentalCarType[];
-          setSelectedCar(car[0] || null);
           setLoading(false);
           
         } catch (error: any) {
@@ -118,7 +112,6 @@ const RequestCar = () => {
       }
     };
     getRentalCars();
-    updateRequestData("rentalCarId", rentalcarid);
   },[params])
 
   const totalDaysCount = useMemo(() => {
@@ -132,24 +125,22 @@ const RequestCar = () => {
   }, [requestData]);
 
   const carPrice = useMemo(() => {
-    if (!selectedCar) return null;
-    if(requestData.withDriver !== ''){
-      const withDriver = requestData.withDriver as string;
-      console.log("withDriver: " + withDriver)
-      return parseInt(withDriver === '0' ? selectedCar.carDetail.pricePerDayWithoutDriver : selectedCar.carDetail.pricePerDay)
-    }else{
-      return null;
-    }
-  }, [requestData]);
+    let sum = 0;
+    rentingCar.map((car) => {
+      if(car.requestCount){
+        sum += (parseInt(car.price || '0') * parseInt(car.requestCount));
+      }
+    })
+    return sum;
+  }, [rentingCar]);
 
   const totalAmount = useMemo(() => {
-    if (!selectedCar) return null;
     if(totalDaysCount && carPrice){
       return totalDaysCount * carPrice;
     }else{
       return 0;
     }
-  }, [selectedCar, totalDaysCount, requestData]);
+  }, [carPrice, totalDaysCount]);
 
   const updateRequestData = (key: string, value: string) => {
     setRequestData({ ...requestData, [key]: value });
@@ -165,8 +156,6 @@ const RequestCar = () => {
       | "internationalDriverLicence"
       | "startDate"
       | "endDate"
-      | "rentalCarId"
-      | "withDriver"
     const keysToCheck: keysType[] = [
       "firstName",
       "lastName",
@@ -176,8 +165,6 @@ const RequestCar = () => {
       "internationalDriverLicence",
       "startDate",
       "endDate",
-      "rentalCarId",
-      "withDriver",
     ];
     for (const key of keysToCheck) {
       if (requestData[key] === "") {
@@ -193,12 +180,11 @@ const RequestCar = () => {
 
     setLoading(true);
     try {
-      let params = requestData;
-      if(selectedCar){
-        const price = totalAmount ? `${totalAmount}` : '0';
-        const rentalCarName = selectedCar.name;
-        params = {...params, price, rentalCarName};
-      }
+      let params = {
+        ...requestData,
+        carList: rentingCar
+      };
+
       const result = await axios.post(`api/request-rentcar`, params);
 
       if (result.status === 200 && result.data.response === "success") {
@@ -235,8 +221,6 @@ const RequestCar = () => {
   }
 
   const onSelectVehicle = (index: number, value: string) => {
-    console.log(`onSelectVehicle - Index: ${index}, Value: ${value}`)
-    
     const car = (vehicles?.filter((f) => `${f.id}` == value) as RentalCarType[])[0] || null;
     const current = rentingCar;
     current.splice(index, 1, {
@@ -253,8 +237,6 @@ const RequestCar = () => {
   }
   
   const onSelectDriver = (index: number, value: string) => {
-    console.log(`onSelectDriver - Index: ${index}, Value: ${value}`)
-
     const car = (vehicles?.filter((f) => `${f.id}` == rentingCar[index].rentalCarId) as RentalCarType[])[0] || null;
     const current = rentingCar;
     current.splice(index, 1, {
@@ -267,8 +249,6 @@ const RequestCar = () => {
   }
 
   const onRequestCountChange = (index: number, value: string) => {
-    console.log(`onRequestCountChange - Index: ${index}, Value: ${value}`)
-
     const current = rentingCar;
     current.splice(index, 1, {
       ...rentingCar[index],
@@ -296,7 +276,7 @@ const RequestCar = () => {
     );
   }
 
-  if (loading || !requestData.rentalCarId) {
+  if (loading) {
     return (
       <MainLayout>
         <div className="w-screen flex-1 px-3  xl:px-0 xl:w-[calc(1024px)] mx-auto flex flex-col gap-4 justify-center">
@@ -475,7 +455,7 @@ const RequestCar = () => {
                       onChange={(e) => {
                         onSelectVehicle(index, e.target.value)
                       }}
-                      value={rentingCar[index].id}
+                      value={rentingCar[index].rentalCarId}
                       style={{
                         appearance: "none",
                         WebkitAppearance: "none",
@@ -590,7 +570,7 @@ const RequestCar = () => {
                     </div>
                     <div className="p-5 pt-4 border border-t-0 rounded-b-xl flex flex-col gap-3">
                       <h3 className="text-lg font-bold">{car?.rentalCarName}</h3>
-                      { car?.availableCount == "1" ?
+                      { car?.availableCount && parseInt(car?.availableCount) > 0 ?
                         <>
                           <div className="flex flex-row gap-4">
                             <div className="flex flex-row items-center justify-center text-sm font-semibold gap-1">
@@ -629,10 +609,14 @@ const RequestCar = () => {
                   <label className="text-[#6D6D6D] font-medium">Renting dates:</label>
                   <p className="font-semibold">{requestData.startDate && dayjs(requestData.startDate).format('MM/DD/YYYY')} - {requestData.endDate && dayjs(requestData.endDate).format('MM/DD/YYYY')}</p>
                 </div>
+
                 <div className="flex flex-row justify-between">
-                  <label className="text-[#6D6D6D] font-medium">Per day:</label>
+                  <label className="text-[#6D6D6D] font-medium">Per day (sum):</label>
                   <p className="font-semibold">${carPrice}</p>
                 </div>
+
+
+
                 <div className="flex justify-end">
                   <p className="text-[#6D6D6D]">
                     x {totalDaysCount || 0} days
