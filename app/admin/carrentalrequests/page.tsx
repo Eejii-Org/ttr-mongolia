@@ -51,12 +51,6 @@ const AdminDepartureRequests = () => {
           <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
             Phone
           </th>
-          <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
-            Vehicle Name
-          </th>
-          <th className="text-left px-3 py-2 font-semibold md:text-lg  border-b">
-            With Driver
-          </th>
           <th className="text-left px-3 py-2 font-semibold md:text-lg max-w-12 border-b w-12"></th>
         </tr>
         {carRentalRequests.map(
@@ -69,8 +63,6 @@ const AdminDepartureRequests = () => {
               phoneNumber,
               startDate,
               endDate,
-              rentalCarName,
-              withDriver,
               status
             },
             i
@@ -104,8 +96,6 @@ const AdminDepartureRequests = () => {
               <td className="py-2 px-3 ">{firstName + " " + lastName}</td>
               <td className="px-3 py-2">{email}</td>
               <td className="px-3 py-2">{phoneNumber}</td>
-              <td className="px-3 py-2">{rentalCarName}</td>
-              <td className="px-3 py-2">{withDriver ? 'YES' : 'NO'}</td>
               <td className="flex justify-end max-w-12 w-12">
                 <Link
                   className="font-bold rounded-full ripple p-3"

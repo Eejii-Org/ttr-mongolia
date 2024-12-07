@@ -58,10 +58,9 @@ const RequestCar = () => {
       requestCount: "",
       mainImage: "",
     },
-]);
+  ]);
   const [loading, setLoading] = useState(false);
   const [vehicles, setVehicles] = useState<RentalCarType[]>();
-  const [selectedCar, setSelectedCar] = useState<RentalCarType | null>(null);
   const [modalMessage, setModalMessage] = useState<null | "Success" | "Fail">(
     null
   );
@@ -104,6 +103,17 @@ const RequestCar = () => {
           
           setVehicles(rentalCars as RentalCarType[])
           const car = rentalCars?.filter((f) => `${f.id}` == rentalcarid) as RentalCarType[];
+
+          setRentingCar([{
+            rentalCarId: `${car[0].id}`,
+            rentalCarName: car[0].name,
+            availableCount: car[0].availableCount,
+            mainImage: car[0].mainImage,
+            requestCount: "",
+            withDriver: "",
+            price: "",
+          }])
+
           setLoading(false);
           
         } catch (error: any) {
@@ -445,10 +455,10 @@ const RequestCar = () => {
 
                 <hr />
 
-               { rentingCar && rentingCar.map((car, index) => 
+               { rentingCar && rentingCar.map((_car, index) => 
                 <div className="flex flex-row gap-8">
                   <div className="max-w-40">
-                    <label className="font-semibold pl-2">Select Vehicle</label>
+                    <label className="font-semibold pl-2">Vehicle</label>
                     <select
                       required
                       className={`text-base px-4 py-3 w-full outline-none rounded-2xl border ${params.get("rentalcarid") == "" ? "text-[#c1c1c1]" : "text-secondary"}  mt-1.5`}
@@ -482,7 +492,7 @@ const RequestCar = () => {
                     />
                   </div>
                   <div className="max-w-40">
-                    <label className="font-semibold pl-2">Rent with driver?</label>
+                    <label className="font-semibold pl-2">Driver?</label>
                     <select
                       required
                       className={`text-base px-4 py-3 w-full outline-none rounded-2xl border ${rentingCar[index].withDriver == "" ? "text-[#c1c1c1]" : "text-secondary"}  mt-1.5`}
@@ -512,7 +522,7 @@ const RequestCar = () => {
                     <NewInput
                       value={rentingCar[index].requestCount || ''}
                       type={"number"}
-                      label="Request Count:"
+                      label="Count:"
                       placeholder="0"
                       onChange={(e) => {
                         onRequestCountChange(index, e.target.value)
@@ -529,13 +539,13 @@ const RequestCar = () => {
                     className="bg-secondary px-4 py-3 w-32 text-center text-white whitespace-nowrap font-bold ripple rounded-2xl"
                     onClick={() => removeCar()}
                   >
-                    {loading ? "Loading" : "Remove Car"}
+                    {loading ? "Loading" : "Remove car"}
                   </button>
                   <button
                     className="bg-primary px-4 py-3 w-32 text-center text-white whitespace-nowrap font-bold ripple rounded-2xl"
                     onClick={() => addCar()}
                   >
-                    {loading ? "Loading" : "Add Car"}
+                    {loading ? "Loading" : "More Car"}
                   </button>
                 </div>
                </div>

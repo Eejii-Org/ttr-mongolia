@@ -6,12 +6,13 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import _ from "lodash";
 import axios from "axios";
-import { CarRentalRequestType } from "@/utils";
+import { CarRentalRequestType, RentingCarType } from "@/utils";
 
 const CarRentalRequest = () => {
   const router = useRouter();
   const [requestData, setCarRentalRequests] =
     useState<CarRentalRequestType | null>(null);
+  const [rentingCar, setRentingCar] = useState<RentingCarType[] | null>(null);
   const [loading, setLoading] = useState(true);
   const params = useParams();
   const { requestid } = params;
@@ -77,7 +78,7 @@ const CarRentalRequest = () => {
   };
 
   useEffect(() => {
-    const fetchTransaction = async () => {
+    const fetchRentRequest = async () => {
       try {
         const { data, error } = await supabase
           .from("carRentalRequests")
@@ -87,18 +88,30 @@ const CarRentalRequest = () => {
           .single();
         if (error) {
           setLoading(false);
-
           throw error;
         }
-
         setCarRentalRequests(data as CarRentalRequestType);
+
+        const { data: carList, error: carListError } = await supabase
+          .from("carRentalList")
+          .select("*")
+          .eq("carRentalRequestsId", requestid)
+          .select();
+        if (carListError) {
+          setLoading(false);
+          throw carListError;
+        }
+        setRentingCar(carList as RentingCarType[]);
+        console.log("carList: ")
+        console.log(carList)
+
       } catch (error: any) {
-        console.error("Error fetching departure request:", error.message);
-        toast.error("Error fetching departure request:", error.message);
+        console.error("Error fetching car renting request:", error.message);
+        toast.error("Error fetching car renting request:", error.message);
       }
       setLoading(false);
     };
-    fetchTransaction();
+    fetchRentRequest();
   }, [requestid]);
 
   if (loading) {
@@ -159,6 +172,7 @@ const CarRentalRequest = () => {
               <div className="flex-1 p-4">
                 <Detail
                   requestData={requestData}
+                  rentingCar={rentingCar}
                 />
               </div>
               {requestData.status == "Pending" && (
@@ -187,14 +201,16 @@ const CarRentalRequest = () => {
 
 const Detail = ({
   requestData,
+  rentingCar
 }: {
   requestData: CarRentalRequestType;
+  rentingCar: RentingCarType[] | null;
 }) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-row gap-4 items-center justify-between">
         <div className="text-2xl md:text-4xl font-semibold">
-          Selected Rental Request: {requestData.rentalCarName}
+          Selected Rental Request:
         </div>
         <div>
           {requestData.status == "Approved" ? (
@@ -279,6 +295,8 @@ const Detail = ({
           </div>
         </div>
       </div>
+
+
       <div className="flex gap-3 md:gap-4 flex-col md:flex-row">
         <div className="bg-white p-3 md:p-6 rounded-xl flex-1 flex flex-col gap-3">
           <div className="text-2xl font-semibold pb-2">
@@ -302,7 +320,46 @@ const Detail = ({
               />
             </div>
           </div>
-          <div className="flex md:gap-4 flex-col md:flex-row min-h-6">
+
+          { rentingCar && rentingCar.map((car, index) => 
+                <div className="flex flex-row gap-8">
+                  <div className="max-w-auto">
+                    <label className="pl-2 font-medium">Vehicle:</label>
+                    <Input
+                      value={car.rentalCarName || ''}
+                      type="text"
+                      placeholder="Car name"
+                    />
+                  </div>
+                  <div className="max-w-auto">
+                    <label className="pl-2 font-medium">Available:</label>
+                    <Input
+                      value={rentingCar[index].availableCount || 0}
+                      type={"number"}
+                      placeholder="0"
+                    />
+                  </div>
+                  <div className="max-w-auto">
+                    <label className="font-semibold pl-2">Driver?</label>
+                    <Input
+                      value={car.withDriver == "1" ? 'Yes' : 'No'}
+                      type={"text"}
+                      placeholder="0"
+                    />
+                  </div>
+                  <div className="max-w-auto">
+                    <label className="font-semibold pl-2">Count:</label>
+                    <Input
+                      value={car.requestCount || ''}
+                      type={"text"}
+                      placeholder="0"
+                    />
+                  </div>
+                </div>
+               )}
+
+
+          {/* <div className="flex md:gap-4 flex-col md:flex-row min-h-6">
             <div className="flex-1 flex-col w-auto">
               <label className="pl-2 font-medium">Vehicle:</label>
               <Input
@@ -327,7 +384,10 @@ const Detail = ({
                 placeholder="Total price"
               />
             </div>
-          </div>
+          </div> */}
+
+
+
         </div>
       </div>
     </div>
