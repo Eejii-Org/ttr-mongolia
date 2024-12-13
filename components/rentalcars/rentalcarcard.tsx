@@ -18,20 +18,24 @@ export type RentalCarCardType = {
 export const RentalCarCard = ({ rentalCar }: RentalCarCardType) => {
   return (
     <div
-      className=" rounded-xl flex-1 flex flex-col"
+      className=" rounded-xl flex-1 flex flex-col m-4"
       style={{
         boxShadow: "0px 4px 40px rgba(0, 0, 0, 0.06)",
         border: "1px solid rgba(0, 0, 0, 0.05)",
       }}
     >
       <div className="relative h-64 md:h-[300px]">
-        <StorageImage
-          src={rentalCar.mainImage}
-          alt={rentalCar.name}
-          quality={5}
-          fill
-          className="object-cover rounded-t-xl"
-        />
+        <Link
+          href={"/rentalcars/" + rentalCar.id}
+        >
+          <StorageImage
+            src={rentalCar.mainImage}
+            alt={rentalCar.name}
+            quality={5}
+            fill
+            className="object-cover rounded-t-xl"
+          />
+        </Link>
       </div>
       <div className="flex flex-1 flex-col p-4 gap-4 md:p-6 md:gap-4">
         <div className="flex flex-col gap-2 flex-1">
