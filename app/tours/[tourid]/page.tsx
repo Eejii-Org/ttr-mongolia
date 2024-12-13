@@ -88,20 +88,21 @@ const getTourPageDetails = async (tourid: string) => {
     );
     const { data: categories, error: e } = await supabase
       .from("tourCategories")
-      .select("*")
+      .select("id")
       .in("id", tour.categories);
     if (e) {
       throw e;
     }
+    
     const minimumPrice = _.min(saleTours.map((t) => t.salePrice));
     let similarTours: TourCardDataType[] = [];
     const { data: dataWithSameCategory } = await supabase
       .from("random_tours")
       .select(`*`)
-      .neq("id", tourid)
       .eq("status", "active")
-      .overlaps("categories", categories)
+      .overlaps("categories", categories.map((f) => {return f.id}))
       .limit(2);
+
     if (dataWithSameCategory) {
       if (dataWithSameCategory?.length == 2) {
         similarTours = [...dataWithSameCategory];
