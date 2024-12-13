@@ -3,7 +3,6 @@ import {
   BigErrorIcon,
   BigSuccessIcon,
   EmailIcon,
-  Input,
   MainLayout,
   NewInput,
   PhoneIcon,
@@ -12,6 +11,7 @@ import {
 } from "@components";
 import axios from "axios";
 import { useState } from "react";
+import Image from "next/image";
 
 const Contact = () => {
   const [contact, setContact] = useState({
@@ -113,6 +113,9 @@ const Contact = () => {
                 Express Tower Chingeltei District,
                 <br />
                 Ulaanbaatar, Mongolia
+              </div>
+              <div className="flex justify-center items-center pt-10">
+                <Image src="/static/ttrmongolia_location.png" alt="TTR Mongolia" width={1000} height={500}/>
               </div>
             </div>
             <div className="bg-white p-3 md:p-6 rounded-xl flex-1 flex flex-col gap-3">
