@@ -160,25 +160,34 @@ const RequestCar = () => {
     type keysType =
       | "firstName"
       | "lastName"
-      | "email"
-      | "phoneNumber"
       | "age"
       | "internationalDriverLicence"
+      | "phoneNumber"
+      | "email"
       | "startDate"
       | "endDate"
     const keysToCheck: keysType[] = [
       "firstName",
       "lastName",
-      "email",
-      "phoneNumber",
       "age",
       "internationalDriverLicence",
+      "phoneNumber",
+      "email",
       "startDate",
       "endDate",
     ];
     for (const key of keysToCheck) {
       if (requestData[key] === "") {
-        setRentingError("Please fill out all of our inputs in form");
+        setRentingError(`${key} is empty. Please fill out all of our inputs in form.`);
+        return false;
+      }
+    }
+    for(const car of rentingCar){
+      if (car.withDriver === "") {
+        setRentingError(`Driver selection is empty.`);
+        return false;
+      }else if (!car.requestCount || car.requestCount === "0") {
+        setRentingError(`Please input requesting Vehicle Count.`);
         return false;
       }
     }
