@@ -1,13 +1,18 @@
-import StorageImage from "../storageimage";
+import Image from "next/image";
+
 export const AboutIntro = () => {
   return (
-    <div className="container m-auto flex flex-col-reverse md:flex-row gap-6 pt-8 items-center px-8">
-      <div className="flex-1 flex flex-col items-start gap-12">
-        <div className="flex flex-col gap-4">
-          <div className="text-3xl md:text-6xl font-bold uppercase leading-tight">
-            <span className="text-primary">#</span> About Us
-          </div>
-          <div className="pr-8 flex flex-col text-base md:text-lg gap-2">
+    <div className="container flex flex-col gap-6 pt-8 items-center px-8">
+      <div className="text-3xl md:text-4xl font-bold uppercase leading-tight">
+        <span className="text-primary">#</span> About Us
+      </div>
+      <div className="flex-1 relative w-full items-center">
+        <Image src={'/static/aboutus.png'} width={1000} height={500} alt="About Us" className="rounded-lg m-auto"/>
+      </div>
+      <div className="flex-1 flex flex-col max-w-screen-lg">
+        <div className="flex flex-col gap-4 w-full items-center">
+          
+          <div className="pr-8 pl-8 flex flex-col text-base md:text-lg gap-2 m-auto text-justify">
             <p>
               Dear travelers,
             </p>
@@ -23,14 +28,6 @@ export const AboutIntro = () => {
             <p>Director, TTR Mongolia</p>
           </div>
         </div>
-      </div>
-      <div className="flex-1 relative min-h-80 w-full md:h-[min(596px,70vh)] rounded-lg overflow-hidden">
-        <StorageImage
-          src="images/about-us.webp"
-          alt="intro"
-          fill
-          className="object-cover"
-        />
       </div>
     </div>
   );
