@@ -178,7 +178,7 @@ const RequestCar = () => {
     ];
     for (const key of keysToCheck) {
       if (requestData[key] === "") {
-        setRentingError(`${key} is empty. Please fill out all of our inputs in form.`);
+        setRentingError(`Please fill out all information in the form.`);
         return false;
       }
     }
